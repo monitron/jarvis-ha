@@ -1,0 +1,19 @@
+{
+  "name": "jarvis-ha",
+  "version": "0.0.1",
+  "description": "A home automation framework",
+  "author": "Justin Streufert <monitron@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/monitron/jarvis-ha"
+  },
+  "bugs": {
+    "url": "https://github.com/monitron/jarvis-ha/issues"
+  },
+  "dependencies": {
+    "coffee-script": "~1.7.1",
+    "backbone": "~1.1.2"
+  },
+  "private": true,
+  "license": "MIT"
+}
