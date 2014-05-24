@@ -1,0 +1,55 @@
+* General Principles
+** Aspects can be addressed as:
+   adapter -> device -> function -> aspect
+** Functions allow compound devices to be exposed.
+   For example a weather station with indoor and outdoor temperature and
+   humidity, or a controller which turns on and off two pumps and monitors
+   the flow rate of each.
+
+   This allows keeping related data, commands and events grouped. When
+   pump #1 is turned on, you want to ensure it's pump #1's flow rate being
+   monitored.
+** An aspect can be null, meaning that it currently isn't valid for IO
+   One example is a combination dimmer/toggle switch. When toggled "off",
+   the dimmer (attenuator) aspect is meaningless.
+** Each aspect exposes an interface consisting of:
+*** Commands
+**** Asynchronous
+**** Return success or failure
+*** State
+**** Units (preferably SI) are prescribed
+*** Events
+*** Attributes
+* Aspect types
+** toggle
+   Used for a switch, a valve, a door lock or anything that can go on and off
+   true means: on, locked, closed, connected
+   
+   State:   boolean state    Is the switch on or off?
+   Command: set(boolean)     Turn the switch on or off
+   Event:   stateChanged     The switch was turned on (or off)
+** attenuator
+   Used for a dimmer switch, a valve or anything with variable flow
+   Values range from 0 (no flow) to 1 (full flow)
+   
+   Data:    float state      Present flow level
+   Command: set(float)       Set flow level
+   Event:   stateChanged     The flow level changed
+** selector
+   Used for something that chooses between options, e.g. an HDMI switch
+   String corresponds to a possible choice, exposed in attributes
+
+   Attrib:  string[] choices What are the possible choices?
+   Data:    string state     Current choice
+   Command: set(string)      Switch to a new choice
+   Event:   stateChanged     Something new has been chosen
+** thermostat
+** multi-controller
+** boolean-sensor
+   Data:    string state     Current state
+   Event:   stateChanged     State has changed
+
+   Used for anything that is either on or off, e.g. a door
+   true means: running, closed...
+** numeric-sensor
+

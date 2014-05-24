@@ -1,0 +1,15 @@
+* Control types
+** Lighting/Scene Dimmer/Toggler
+*** toggle and/or attenuator
+** Thermostat
+*** mode        : selector (heat/cool/off)
+*** current-temp: numeric-sensor
+*** desired-temp: set-point
+*** status      : boolean-sensor (running/not running)
+** Fan speed
+*** selector: (off/speeds...)
+** Sensor Display
+*** sensor: numeric-sensor
+** Lock
+*** lock: toggle
+*** door: boolean-sensor
