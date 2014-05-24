@@ -1,2 +1,2 @@
-require('coffee-script')
-module.exports = require('./lib/jarvis-ha')
+require('coffee-script');
+module.exports = require('./lib/jarvis-ha');

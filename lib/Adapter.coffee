@@ -1,23 +1,18 @@
 
 winston = require('winston')
+Node = require('./Node')
 _ = require('underscore')
 
-module.exports = class Adapter
+module.exports = class Adapter extends Node
   name: "Negligent"
   configDefaults: {}
 
   constructor: (config) ->
-    @config = _.defaults(config.base, @configDefaults)
-    @devices = {}
-    for id, deviceConfig of config.devices
-      @devices[id] = @buildDevice(deviceConfig)
+    super 'root', this
+    @config = _.defaults(config, @configDefaults)
 
   start: ->
     @log "error", "start method must be overridden by #{@name} adapter"
 
-  buildDevice: ->
-    @log "error", "buildDevice method must be overridden by #{@name} adapter"
-    null
-
   log: (level, message) ->
-    winston.log level, message
+    winston.log level, "[#{@name} adapter] #{message}"

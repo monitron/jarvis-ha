@@ -21,10 +21,11 @@ module.exports = class Server
   dummyConfig: ->
     adapters:
       nest:
+        login: "yep"
+        password: "nope"
       insteon:
-        base:
-          "gateway-type": "hub"
-          "gateway-host": "192.168.1.17"
+        "gateway-type": "hub"
+        "gateway-host": "192.168.1.17"
         devices:
           "basement-entry-light":
             type: "dimmer"

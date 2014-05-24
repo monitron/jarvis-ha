@@ -1,16 +1,15 @@
 
 nest = require('unofficial-nest-api')
 Adapter = require('../../Adapter')
-NestThermostatDevice = require('./NestThermostatDevice')
+NestThermostatNode = require('./NestThermostatNode')
 
 module.exports = class NestAdapter extends Adapter
   name: "Nest"
   configDefaults: {}
 
-  buildDevice: (config) ->
-    switch config.type
-      when 'thermostat' then new NestThermostatDevice(config, this)
-      else null
+  constructor: (config) ->
+    super config
+    @setValid false
 
   start: ->
     @log "debug", "Attempting Nest login"
@@ -20,5 +19,8 @@ module.exports = class NestAdapter extends Adapter
         @log "error", "Couldn't log in to Nest (#{err.message})"
       else
         @log "debug", "Nest login success, doing fetchStatus"
-        @nest.fetchStatus (data) =>
-          @log "debug", "Nest fetch status success"
+        @nest.fetchStatus (data) => @processStatus(data)
+
+  processStatus: (data) ->
+    @log "debug", "Nest fetch status success"
+    @setValid true
