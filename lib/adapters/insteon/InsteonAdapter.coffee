@@ -11,3 +11,6 @@ module.exports = class InsteonAdapter extends Adapter
     switch config.type
       when 'dimmer' then new InsteonDimmerDevice(config)
       else null
+
+  start: ->
+    # Do the connect thing

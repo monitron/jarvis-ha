@@ -13,10 +13,7 @@ module.exports = class Adapter
       @devices[id] = @buildDevice(deviceConfig)
 
   start: ->
-    @log "info", "#{@name} adapter starting"
-
-  stop: ->
-    @log "info", "#{@name} adapter stopping"
+    @log "error", "start method must be overridden by #{@name} adapter"
 
   buildDevice: ->
     @log "error", "buildDevice method must be overridden by #{@name} adapter"

@@ -3,6 +3,9 @@ winston = require('winston')
 
 module.exports = class Server
   constructor: ->
+    winston.clear()
+    winston.add winston.transports.Console, level: 'debug'
+    winston.cli()
     winston.info "Jarvis Home Automation server"
     @config = @dummyConfig()
     # Gather adapters
@@ -11,10 +14,13 @@ module.exports = class Server
       adapterClass = require("./adapters/#{id}")
       @adapters[id] = new adapterClass(config)
     # Start adapters
-    adapter.start() for id, adapter of @adapters
+    for id, adapter of @adapters
+      winston.info "Starting #{adapter.name} adapter"
+      adapter.start()
 
   dummyConfig: ->
     adapters:
+      nest:
       insteon:
         base:
           "gateway-type": "hub"
