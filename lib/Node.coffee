@@ -1,10 +1,17 @@
 _ = require('underscore')
+Aspect = require('./Aspect')
 
 module.exports = class Node
+  aspects: {}
+
   constructor: (@id, @adapter, @config) ->
     @_nodes = []
     @_valid = true
     @config ||= {}
+    @_aspects = {}
+    # Instantiate preconfigured aspects
+    for aspectId, aspectConfig of @aspects
+      @_aspects[aspectId] = new Aspect(this, aspectConfig)
 
   addChild: (node) ->
     @_nodes.push node
@@ -23,3 +30,9 @@ module.exports = class Node
 
   log: (level, message) ->
     @adapter.log level, "[Node #{@id}] #{message}"
+
+  getAspect: (id) ->
+    @_aspects[id]
+
+  getAspectIds: ->
+    _.keys(@_aspects)
