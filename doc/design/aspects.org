@@ -1,7 +1,7 @@
 * General Principles
 ** Aspects can be addressed as:
-   adapter -> device -> function -> aspect
-** Functions allow compound devices to be exposed.
+   adapter -> node (...) -> aspect
+** Nested nodes allow compound devices to be exposed.
    For example a weather station with indoor and outdoor temperature and
    humidity, or a controller which turns on and off two pumps and monitors
    the flow rate of each.
