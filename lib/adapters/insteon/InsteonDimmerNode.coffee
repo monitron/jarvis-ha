@@ -1,4 +1,4 @@
 
-InsteonDevice = require('./InsteonDevice')
+InsteonNode = require('./InsteonNode')
 
-module.exports = class InsteonDimmerDevice extends InsteonDevice
+module.exports = class InsteonDimmerNode extends InsteonNode

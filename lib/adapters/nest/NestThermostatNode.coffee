@@ -1,7 +1,7 @@
 
-NestDevice = require('./NestDevice')
+NestNode = require('./NestNode')
 
-module.exports = class NestThermostatDevice extends NestDevice
+module.exports = class NestThermostatNode extends NestNode
   aspects:
     thermostat:
       setTemperature: (temp) ->

@@ -1,4 +1,4 @@
 
-Device = require('../../Device')
+Node = require('../../Node')
 
-module.exports = class NestDevice extends Device
+module.exports = class NestNode extends Node

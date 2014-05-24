@@ -1,4 +1,4 @@
 
-Device = require('../../Device')
+Node = require('../../Node')
 
-module.exports = class InsteonDevice extends Device
+module.exports = class InsteonNode extends Node
