@@ -16,7 +16,8 @@
     "underscore": "~1.6.0",
     "winston": "~0.7.3",
     "unofficial-nest-api": "~0.1.4",
-    "q": "~1.0.1"
+    "q": "~1.0.1",
+    "home-controller": "~0.4.2"
   },
   "devDependencies": {
     "vows": "~0.7.0"

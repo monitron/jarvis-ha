@@ -26,7 +26,4 @@ module.exports = class Server
       insteon:
         "gateway-type": "hub"
         "gateway-host": "192.168.1.17"
-        devices:
-          "basement-entry-light":
-            type: "dimmer"
-            address: "2bc0d3"
+        deviceIds: ["2bc0d3", "2bb7c6"]
