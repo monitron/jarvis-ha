@@ -3,8 +3,12 @@ NestNode = require('./NestNode')
 
 module.exports = class NestThermostatNode extends NestNode
   aspects:
-    "temperature-sensor": {}
-    "humidity-sensor": {}
+    "temperature-sensor":
+      events:
+        changed: (prev, cur) -> prev.value != cur.value
+    "humidity-sensor":
+      events:
+        changed: (prev, cur) -> prev.value != cur.value
     "temperature-set-point":
       commands:
         "set-target": (node, temp) -> node.adapter.setTemperature(node.id, temp)
