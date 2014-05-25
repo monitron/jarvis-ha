@@ -11,8 +11,11 @@ module.exports = class Adapter extends Node
     super 'root', this
     @config = _.defaults(config, @configDefaults)
 
-  start: ->
-    @log "error", "start method must be overridden by #{@name} adapter"
-
   log: (level, message) ->
     winston.log level, "[#{@name} adapter] #{message}"
+
+  start: ->
+    @log "error", "Adapter must override start method"
+
+  refreshData: ->
+    @log "error", "Adapter must override refreshData method"

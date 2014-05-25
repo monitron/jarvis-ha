@@ -8,6 +8,9 @@ module.exports = class NestThermostatNode extends NestNode
     "temperature-set-point":
       commands:
         "set-target": (node, temp) -> node.adapter.setTemperature(node.id, temp)
+      events:
+        "target-changed": (prev, cur) -> prev.target != cur.target
+        "mode-changed"  : (prev, cur) -> prev.mode != cur.mode
 
   processData: (data) ->
     @getAspect("temperature-sensor").setData

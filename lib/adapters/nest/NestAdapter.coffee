@@ -12,6 +12,7 @@ module.exports = class NestAdapter extends Adapter
   constructor: (config) ->
     super config
     @setValid false
+    @hasDiscovered = false
 
   start: ->
     @log "debug", "Attempting Nest login"
@@ -21,15 +22,19 @@ module.exports = class NestAdapter extends Adapter
         @log "error", "Couldn't log in to Nest (#{err.message})"
       else
         @log "debug", "Nest login success"
-        @fetchStatus true
+        @refreshData()
 
-  fetchStatus: (initial = false) ->
+  refreshData: ->
     @log "debug", "Fetching status"
+    deferred = Q.defer()
+    # XXX If an error occurs, nest just never calls us back
     @_nest.fetchStatus (data) =>
       @log "debug", "Fetch status success"
       @_statusData = data
-      if initial then @discoverDevices()
+      unless @hasDiscovered then @discoverDevices()
       @deliverData()
+      deferred.resolve()
+    deferred.promise
 
   deliverData: ->
     for id in @getChildIds()
@@ -47,6 +52,7 @@ module.exports = class NestAdapter extends Adapter
         @addChild new NestThermostatNode(deviceId, this)
       else
         @log "debug", "Ignoring apparently non-thermostat device #{deviceId}"
+    @hasDiscovered = true
     @setValid true
 
   setTemperature: (deviceId, temp) ->

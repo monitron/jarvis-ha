@@ -11,7 +11,10 @@ module.exports = class Node
     @_aspects = {}
     # Instantiate preconfigured aspects
     for aspectId, aspectConfig of @aspects
-      @_aspects[aspectId] = new Aspect(this, aspectConfig)
+      aspect = new Aspect(this, aspectConfig)
+      aspect.on 'aspectEvent', (event) =>
+        @log "debug", "Aspect #{aspectId} emitted event: #{event}"
+      @_aspects[aspectId] = aspect
 
   addChild: (node) ->
     @_nodes.push node
@@ -36,3 +39,9 @@ module.exports = class Node
 
   getAspectIds: ->
     _.keys(@_aspects)
+
+  processData: ->
+    @log "error", "Node class must override processData method"
+
+  refreshData: ->
+    @adapter.refreshData()
