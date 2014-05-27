@@ -6,7 +6,7 @@ InsteonDimmerNode = require('./InsteonDimmerNode')
 module.exports = class InsteonAdapter extends Adapter
   name: "Insteon"
   configDefaults:
-    "gateway-port": 9761
+    gatewayPort: 9761
 
   constructor: (config) ->
     super config
@@ -16,7 +16,7 @@ module.exports = class InsteonAdapter extends Adapter
   start: ->
     @_hub = new Insteon()
     @log "debug", "Attempting to connect to Insteon hub"
-    @_hub.connect @config['gateway-host']
+    @_hub.connect @config.gatewayHost
     @_hub.on 'connect', =>
       @log "debug", "Connected to Insteon hub"
       @setValid true
@@ -24,11 +24,14 @@ module.exports = class InsteonAdapter extends Adapter
     @_hub.on 'closed', =>
       @log "warn", "Disconnected from Insteon hub"
       @setValid false
+    @_hub.on 'command', (message) =>
+      raw = message.standard?.raw
+      @log "debug", "Received Insteon message: #{raw}"
 
   enumerateDevices: ->
     for deviceId in @config.deviceIds
       @log "debug", "Attempting to enumerate device ID #{deviceId}"
-      @_hub.info(deviceId).then (deviceInfo) =>
+      @_hub.info(deviceId).done (deviceInfo) =>
         if deviceInfo?
           nodeClass = switch deviceInfo.deviceCategory.id
             when 1 then InsteonDimmerNode

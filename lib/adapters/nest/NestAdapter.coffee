@@ -39,10 +39,10 @@ module.exports = class NestAdapter extends Adapter
   deliverData: ->
     for id in @getChildIds()
       @getChild(id).processData
-        "current-humidity":    @_statusData.device[id]["current_humidity"]
-        "target-temperature":  @_statusData.shared[id]["target_temperature"]
-        "current-temperature": @_statusData.shared[id]["current_temperature"]
-        "target-type":         @_statusData.shared[id]["target_temperature_type"]
+        currentHumidity:    @_statusData.device[id]["current_humidity"]
+        targetTemperature:  @_statusData.shared[id]["target_temperature"]
+        currentTemperature: @_statusData.shared[id]["current_temperature"]
+        targetType:         @_statusData.shared[id]["target_temperature_type"]
 
   discoverDevices: ->
     for deviceId, deviceStatus of @_statusData.device

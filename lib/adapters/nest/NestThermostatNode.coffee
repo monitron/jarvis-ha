@@ -3,24 +3,24 @@ NestNode = require('./NestNode')
 
 module.exports = class NestThermostatNode extends NestNode
   aspects:
-    "temperature-sensor":
+    temperatureSensor:
       events:
         changed: (prev, cur) -> prev.value != cur.value
-    "humidity-sensor":
+    humiditySensor:
       events:
         changed: (prev, cur) -> prev.value != cur.value
-    "temperature-set-point":
+    temperatureSetPoint:
       commands:
-        "set-target": (node, temp) -> node.adapter.setTemperature(node.id, temp)
+        setTarget: (node, temp) -> node.adapter.setTemperature(node.id, temp)
       events:
-        "target-changed": (prev, cur) -> prev.target != cur.target
-        "mode-changed"  : (prev, cur) -> prev.mode != cur.mode
+        targetChanged: (prev, cur) -> prev.target != cur.target
+        modeChanged  : (prev, cur) -> prev.mode != cur.mode
 
   processData: (data) ->
-    @getAspect("temperature-sensor").setData
-      value: data["current-temperature"]
-    @getAspect("humidity-sensor").setData
-      value: data["current-humidity"]
-    @getAspect("temperature-set-point").setData
-      target: data["target-temperature"]
-      mode: data["target-type"]
+    @getAspect("temperatureSensor").setData
+      value: data["currentTemperature"]
+    @getAspect("humiditySensor").setData
+      value: data["currentHumidity"]
+    @getAspect("temperatureSetPoint").setData
+      target: data["targetTemperature"]
+      mode: data["targetType"]

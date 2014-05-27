@@ -21,9 +21,9 @@ module.exports = class Server
   dummyConfig: ->
     adapters:
       nest:
-        login: "yep"
-        password: "nope"
+        login: "somebody@somewhere.com"
+        password: "correct horse battery staple"
       insteon:
-        "gateway-type": "hub"
-        "gateway-host": "192.168.1.17"
+        gatewayType: "hub"
+        gatewayHost: "192.168.1.17"
         deviceIds: ["2bc0d3", "2bb7c6"]
