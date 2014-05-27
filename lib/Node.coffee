@@ -10,7 +10,7 @@ module.exports = class Node
     @config ||= {}
     @_aspects = {}
     # Instantiate preconfigured aspects
-    for aspectId, aspectConfig of @aspects
+    _.each @aspects, (aspectConfig, aspectId) =>
       aspect = new Aspect(this, aspectConfig)
       aspect.on 'aspectEvent', (event) =>
         @log "debug", "Aspect #{aspectId} emitted event: #{event}"
