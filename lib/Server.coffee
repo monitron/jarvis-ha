@@ -27,3 +27,7 @@ module.exports = class Server
         gatewayType: "hub"
         gatewayHost: "192.168.1.17"
         deviceIds: ["2bc0d3", "2bb7c6"]
+      harmony:
+        email: "somebody@somewhere.com"
+        password: "correct horse battery staple"
+        hubHost: "192.168.1.5"
