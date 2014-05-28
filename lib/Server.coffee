@@ -1,10 +1,11 @@
 
+_ = require('underscore')
 winston = require('winston')
 
 module.exports = class Server
   constructor: ->
     winston.clear()
-    winston.add winston.transports.Console, level: 'debug'
+    winston.add winston.transports.Console, level: 'verbose'
     winston.cli()
     winston.info "Jarvis Home Automation server"
     @config = @dummyConfig()
@@ -17,6 +18,22 @@ module.exports = class Server
     for id, adapter of @adapters
       winston.info "Starting #{adapter.name} adapter"
       adapter.start()
+    # Now let's controls
+    @controls = for controlConfig in @config.controls
+      controlClass = require("./controls/#{controlConfig.type}")
+      new controlClass(this, controlConfig)
+
+  getAdapterNode: (path) ->
+    if _.isString(path) then path = path.split("/")
+    node = @adapters[path.shift()] # First element is adapter name
+    for element in path
+      return undefined unless node?
+      node = node.getChild(element)
+    node
+
+  findControlsByMembership: (path) ->
+    if _.isString(path) then path = path.split("/")
+    _.select(@controls, (control) -> control.isMemberOf(path))
 
   dummyConfig: ->
     adapters:
@@ -31,3 +48,15 @@ module.exports = class Server
         email: "somebody@somewhere.com"
         password: "correct horse battery staple"
         hubHost: "192.168.1.5"
+    controls: [
+      {
+        name: "Basement Entry Light"
+        type: "dimmer"
+        memberships: [
+          "category/Lighting"
+          "location/Main Floor/Living Room"]
+        connections:
+          powerOnOff: "insteon/2bc0d3"
+          dimmer: "insteon/2bc0d3"
+      }
+    ]

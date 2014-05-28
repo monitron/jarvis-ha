@@ -26,7 +26,7 @@ module.exports = class InsteonAdapter extends Adapter
       @setValid false
     @_hub.on 'command', (message) =>
       raw = message.standard?.raw
-      @log "debug", "Received Insteon message: #{raw}"
+      @log "verbose", "Received Insteon message: #{raw}"
 
   enumerateDevices: ->
     for deviceId in @config.deviceIds
