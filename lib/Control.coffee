@@ -7,14 +7,14 @@ module.exports = class Control
     memberships: []
 
   constructor: (@_server, config) ->
-    @config = _.defaults(config, @defaults)
-    @config.memberships = for path in @config.memberships
-      if _.isString(path) then path.split('/') else path
+    @_config = _.defaults(config, @defaults)
+    @_memberships = for membership in @_config.memberships
+      _.extend(membership, path: @_server.normalizePath(membership.path))
 
   getConnectionTarget: (connId) ->
     path = @config.connections[connId]
     return undefined unless path?
     @_server.getAdapterNode(path)
 
-  isMemberOf: (sought) ->
-    _.some(@config.memberships, (path) -> _.isEqual(path, sought))
+  getMembership: (path) ->
+    _.find(@_memberships, (membership) -> _.isEqual(membership.path, path))

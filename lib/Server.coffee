@@ -24,16 +24,22 @@ module.exports = class Server
       new controlClass(this, controlConfig)
 
   getAdapterNode: (path) ->
-    if _.isString(path) then path = path.split("/")
+    path = @normalizePath(path)
     node = @adapters[path.shift()] # First element is adapter name
     for element in path
       return undefined unless node?
       node = node.getChild(element)
     node
 
-  findControlsByMembership: (path) ->
-    if _.isString(path) then path = path.split("/")
-    _.select(@controls, (control) -> control.isMemberOf(path))
+  getMemberControls: (path) ->
+    path = @normalizePath(path)
+    pairs = for control in @controls
+      control: control
+      membership: control.getMembership(path)
+    _.select(pairs, (p) -> p.membership?)
+
+  normalizePath: (path) ->
+    if _.isString(path) then path.split("/") else path
 
   dummyConfig: ->
     adapters:
@@ -53,8 +59,9 @@ module.exports = class Server
         name: "Basement Entry Light"
         type: "dimmer"
         memberships: [
-          "category/Lighting"
-          "location/Main Floor/Living Room"]
+          {path: "category/Lighting"}
+          {path: "location/Main Floor/Living Room"}
+          {path: "location/Basement/Main Room"}]
         connections:
           powerOnOff: "insteon/2bc0d3"
           dimmer: "insteon/2bc0d3"
