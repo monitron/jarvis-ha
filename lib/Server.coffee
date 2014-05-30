@@ -1,6 +1,7 @@
 
 _ = require('underscore')
 winston = require('winston')
+WebServer = require('./web')
 
 module.exports = class Server
   constructor: ->
@@ -22,6 +23,8 @@ module.exports = class Server
     @controls = for controlConfig in @config.controls
       controlClass = require("./controls/#{controlConfig.type}")
       new controlClass(this, controlConfig)
+    # Start a web server
+    @web = new WebServer(this, @config.webServer)
 
   getAdapterNode: (path) ->
     path = @normalizePath(path)
@@ -37,6 +40,9 @@ module.exports = class Server
       control: control
       membership: control.getMembership(path)
     _.select(pairs, (p) -> p.membership?)
+
+  getControl: (id) ->
+    _.findWhere(@controls, id: id)
 
   normalizePath: (path) ->
     if _.isString(path) then path.split("/") else path
@@ -56,6 +62,7 @@ module.exports = class Server
         hubHost: "192.168.1.5"
     controls: [
       {
+        id: "basement-entry-light"
         name: "Basement Entry Light"
         type: "dimmer"
         memberships: [
@@ -65,5 +72,6 @@ module.exports = class Server
         connections:
           powerOnOff: "insteon/2bc0d3"
           dimmer: "insteon/2bc0d3"
-      }
-    ]
+      }]
+    webServer:
+      port: 3000

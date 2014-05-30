@@ -18,7 +18,8 @@
     "unofficial-nest-api": "~0.1.4",
     "q": "~1.0.1",
     "home-controller": "~0.4.2",
-    "harmonyjs": "git://github.com/swissmanu/harmonyjs"
+    "harmonyjs": "git://github.com/swissmanu/harmonyjs",
+    "express": "~4.3.2"
   },
   "devDependencies": {
     "vows": "~0.7.0"

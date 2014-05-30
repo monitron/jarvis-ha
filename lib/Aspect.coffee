@@ -19,5 +19,5 @@ module.exports = class Aspect extends EventEmitter
   getDatum: (id) ->
     @_data[id]
 
-  doCommand: (commandId, args...) ->
+  executeCommand: (commandId, args...) ->
     @config.commands[commandId](@_node, args...)
