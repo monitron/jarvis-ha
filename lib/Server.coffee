@@ -56,7 +56,7 @@ module.exports = class Server
       insteon:
         gatewayType: "hub"
         gatewayHost: "192.168.1.17"
-        deviceIds: ["2bc0d3", "2bb7c6"]
+        deviceIds: ["2bc0d3", "2bb7c6", "26ce6c"]
       harmony:
         email: "somebody@somewhere.com"
         password: "correct horse battery staple"

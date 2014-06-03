@@ -1,6 +1,7 @@
 
-Adapter = require('../../Adapter')
+_ = require('underscore')
 Insteon = require('home-controller').Insteon
+Adapter = require('../../Adapter')
 InsteonDimmerNode = require('./InsteonDimmerNode')
 
 module.exports = class InsteonAdapter extends Adapter
@@ -29,21 +30,25 @@ module.exports = class InsteonAdapter extends Adapter
       @log "verbose", "Received Insteon message: #{raw}"
 
   enumerateDevices: ->
-    for deviceId in @config.deviceIds
-      @log "debug", "Attempting to enumerate device ID #{deviceId}"
-      @_hub.info(deviceId).done (deviceInfo) =>
-        if deviceInfo?
-          nodeClass = switch deviceInfo.deviceCategory.id
-            when 1 then InsteonDimmerNode
-          if nodeClass?
-            @log "debug", "Successfully enumerated device with ID #{deviceInfo.id}"
-            @addChild new nodeClass(deviceInfo.id, this)
-          else
-            @log "warn", "Device ID #{deviceInfo.id} has unknown category " +
-              "#{deviceInfo.deviceCategory.id}"
-        else
-          @log "warn", "Failed to query device with ID #{deviceInfo.id}"
+    for deviceId, i in @config.deviceIds
+      # Go slow so as not to flood the Insteon channel
+      setTimeout _.bind(@enumerateDevice, this, deviceId), 1000 * i
     @hasDiscovered = true
+
+  enumerateDevice: (deviceId) ->
+    @log "debug", "Attempting to enumerate device ID #{deviceId}"
+    @_hub.info(deviceId).done (deviceInfo) =>
+      if deviceInfo?
+        nodeClass = switch deviceInfo.deviceCategory.id
+          when 1 then InsteonDimmerNode
+        if nodeClass?
+          @log "debug", "Successfully enumerated device with ID #{deviceInfo.id}"
+          @addChild new nodeClass(deviceInfo.id, this)
+        else
+          @log "warn", "Device ID #{deviceInfo.id} has unknown category " +
+            "#{deviceInfo.deviceCategory.id}"
+      else
+        @log "warn", "Failed to query device with ID #{deviceInfo.id}"
 
   toggleLight: (deviceId, value) ->
     light = @_hub.light(deviceId)
