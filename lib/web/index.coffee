@@ -22,5 +22,7 @@ module.exports = class WebServer
         .catch (why) -> res.json 500, {success: false, message: why}
         .done()
 
+    app.use express.static(__dirname + '/public')
+
     server = app.listen @_config.port, =>
       winston.info "Web server listening on port #{server.address().port}"
