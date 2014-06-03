@@ -5,6 +5,7 @@ _ = require('underscore')
 module.exports = class Aspect extends EventEmitter
   constructor: (@_node, config) ->
     # Pass me an object with keys: attributes, commands, events
+    # All commands must return a promise
     @config = _.extend({attributes: {}, commands: {}, events: {}}, config)
     @_data = {}
 

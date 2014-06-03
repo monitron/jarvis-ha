@@ -1,3 +1,4 @@
+winston = require('winston')
 _ = require('underscore')
 
 module.exports = class Control
@@ -6,6 +7,7 @@ module.exports = class Control
     connections: {}
     memberships: []
 
+  # All commands must return a promise
   commands: {}
 
   constructor: (@_server, config) ->
@@ -23,9 +25,15 @@ module.exports = class Control
     _.find(@_memberships, (membership) -> _.isEqual(membership.path, path))
 
   executeCommand: (verb, params) ->
+    @log 'debug', "Executing command #{verb} with params: #{JSON.stringify(params)}"
     @commands[verb](this, params)
+
+  log: (level, message) ->
+    winston.log level, "[#{@_config.name} control] #{message}"
 
   toJSON: ->
     id: @id
     name: @_config.name
     type: @_config.type
+    commands: _.keys(@commands)
+    state: @getState()

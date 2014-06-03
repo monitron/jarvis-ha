@@ -11,10 +11,16 @@ module.exports = class WebServer
         path: path
         memberControls: @_server.getMemberControls(path)
 
+    app.get "/api/controls/:controlId", (req, res) =>
+      control = @_server.getControl(req.params.controlId)
+      res.json control
+
     app.get "/api/controls/:controlId/commands/:commandId", (req, res) =>
       control = @_server.getControl(req.params.controlId)
-      control.executeCommand req.params.commandId
-      res.send "I guess we did something XXX LOLZ"
+      control.executeCommand req.params.commandId, req.query
+        .then -> res.json success: true
+        .catch (why) -> res.json 500, {success: false, message: why}
+        .done()
 
     server = app.listen @_config.port, =>
       winston.info "Web server listening on port #{server.address().port}"

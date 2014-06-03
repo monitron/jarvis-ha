@@ -47,4 +47,8 @@ module.exports = class InsteonAdapter extends Adapter
 
   toggleLight: (deviceId, value) ->
     light = @_hub.light(deviceId)
-    if value then light.turnOn(100) else light.turnOff()
+    if value then light.turnOn(100) else light.turnOff() # Gives a promise
+
+  setLightLevel: (deviceId, value) ->
+    light = @_hub.light(deviceId)
+    if value == 0 then light.turnOff() else light.turnOn(value) # Gives a promise

@@ -1,6 +1,8 @@
 
 _ = require('underscore')
 winston = require('winston')
+
+controls = require('./controls')
 WebServer = require('./web')
 
 module.exports = class Server
@@ -21,8 +23,7 @@ module.exports = class Server
       adapter.start()
     # Now let's controls
     @controls = for controlConfig in @config.controls
-      controlClass = require("./controls/#{controlConfig.type}")
-      new controlClass(this, controlConfig)
+      new controls[controlConfig.type](this, controlConfig)
     # Start a web server
     @web = new WebServer(this, @config.webServer)
 
@@ -71,7 +72,19 @@ module.exports = class Server
           {path: "location/Basement/Main Room"}]
         connections:
           powerOnOff: "insteon/2bc0d3"
-          dimmer: "insteon/2bc0d3"
+          brightness: "insteon/2bc0d3"
+      },
+      {
+        id: "thermostat"
+        name: "Thermostat"
+        type: "thermostat"
+        memberships: [
+          {path: "category/Climate"}
+          {path: "location/Main Floor/Living Room"}]
+        connections:
+          temperatureSensor: "nest/02AA01AC021401UM"
+          humiditySensor: "nest/02AA01AC021401UM"
+          temperatureSetPoint: "nest/02AA01AC021401UM"
       }]
     webServer:
       port: 3000
