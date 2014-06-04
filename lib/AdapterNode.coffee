@@ -1,13 +1,14 @@
 _ = require('underscore')
+Backbone = require('backbone')
 Aspect = require('./Aspect')
 
-module.exports = class Node
+class AdapterNode extends Backbone.Model
   aspects: {}
 
-  constructor: (@id, @adapter, @config) ->
-    @_nodes = []
+  initialize: (attributes, options) ->
+    @adapter = options?.adapter or this
+    @children = (new AdapterNodes)
     @_valid = true
-    @config ||= {}
     @_aspects = {}
     # Instantiate preconfigured aspects
     _.each @aspects, (aspectConfig, aspectId) =>
@@ -15,15 +16,6 @@ module.exports = class Node
       aspect.on 'aspectEvent', (event) =>
         @log "debug", "Aspect #{aspectId} emitted event: #{event}"
       @_aspects[aspectId] = aspect
-
-  addChild: (node) ->
-    @_nodes.push node
-
-  getChild: (id) ->
-    _.findWhere(@_nodes, id: id)
-
-  getChildIds: ->
-    _.pluck(@_nodes, "id")
 
   isValid: ->
     @_valid
@@ -41,7 +33,13 @@ module.exports = class Node
     _.keys(@_aspects)
 
   processData: ->
-    @log "error", "Node class must override processData method"
+    @log "error", "AdapterNode subclass must override processData method"
 
   refreshData: ->
     @adapter.refreshData()
+
+
+class AdapterNodes extends Backbone.Collection
+  model: AdapterNode
+
+module.exports = [AdapterNode, AdapterNodes]

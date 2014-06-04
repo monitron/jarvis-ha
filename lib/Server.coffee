@@ -4,6 +4,7 @@ winston = require('winston')
 
 controls = require('./controls')
 WebServer = require('./web')
+[AdapterNode, AdapterNodes] = require('./AdapterNode')
 
 module.exports = class Server
   constructor: ->
@@ -13,12 +14,12 @@ module.exports = class Server
     winston.info "Jarvis Home Automation server"
     @config = @dummyConfig()
     # Gather adapters
-    @adapters = {}
-    for id, config of @config.adapters
-      adapterClass = require("./adapters/#{id}")
-      @adapters[id] = new adapterClass(config)
+    @adapters = new AdapterNodes()
+    for config in @config.adapters
+      adapterClass = require("./adapters/#{config.id}")
+      @adapters.add new adapterClass(config)
     # Start adapters
-    for id, adapter of @adapters
+    @adapters.each (adapter) =>
       winston.info "Starting #{adapter.name} adapter"
       adapter.start()
     # Now let's controls
@@ -29,10 +30,10 @@ module.exports = class Server
 
   getAdapterNode: (path) ->
     path = @normalizePath(path)
-    node = @adapters[path.shift()] # First element is adapter name
+    node = @adapters.get(path.shift()) # First path element is adapter id
     for element in path
       return undefined unless node?
-      node = node.getChild(element)
+      node = node.children.get(element)
     node
 
   getMemberControls: (path) ->

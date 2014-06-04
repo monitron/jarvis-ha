@@ -1,15 +1,11 @@
 
 winston = require('winston')
-Node = require('./Node')
+[AdapterNode] = require('./AdapterNode')
 _ = require('underscore')
 
-module.exports = class Adapter extends Node
+module.exports = class Adapter extends AdapterNode
   name: "Negligent"
-  configDefaults: {}
-
-  constructor: (config) ->
-    super 'root', this
-    @config = _.defaults(config, @configDefaults)
+  defaults: {}
 
   log: (level, message) ->
     winston.log level, "[#{@name} adapter] #{message}"

@@ -7,17 +7,16 @@ Q = require('q')
 
 module.exports = class NestAdapter extends Adapter
   name: "Nest"
-  configDefaults: {}
 
-  constructor: (config) ->
-    super config
+  initialize: ->
+    super
     @setValid false
     @hasDiscovered = false
 
   start: ->
     @log "debug", "Attempting Nest login"
     @_nest = nest
-    @_nest.login @config.login, @config.password, (err, data) =>
+    @_nest.login @get('login'), @get('password'), (err, data) =>
       if err
         @log "error", "Couldn't log in to Nest (#{err.message})"
       else
@@ -37,19 +36,19 @@ module.exports = class NestAdapter extends Adapter
     deferred.promise
 
   deliverData: ->
-    for id in @getChildIds()
-      @getChild(id).processData
-        currentHumidity:    @_statusData.device[id]["current_humidity"]
-        targetTemperature:  @_statusData.shared[id]["target_temperature"]
-        currentTemperature: @_statusData.shared[id]["current_temperature"]
-        targetType:         @_statusData.shared[id]["target_temperature_type"]
+    @children.each (child) =>
+      child.processData
+        currentHumidity:    @_statusData.device[child.id]["current_humidity"]
+        targetTemperature:  @_statusData.shared[child.id]["target_temperature"]
+        currentTemperature: @_statusData.shared[child.id]["current_temperature"]
+        targetType:         @_statusData.shared[child.id]["target_temperature_type"]
 
   discoverDevices: ->
     for deviceId, deviceStatus of @_statusData.device
       if _.has(deviceStatus, 'heater_source')
         # This appears to be a thermostat
         @log "debug", "Discovered apparent thermostat #{deviceId}"
-        @addChild new NestThermostatNode(deviceId, this)
+        @children.add new NestThermostatNode({id: deviceId}, {adapter: this})
       else
         @log "debug", "Ignoring apparently non-thermostat device #{deviceId}"
     @hasDiscovered = true

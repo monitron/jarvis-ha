@@ -1,7 +1,7 @@
 
-NestNode = require('./NestNode')
+[AdapterNode] = require('../../AdapterNode')
 
-module.exports = class NestThermostatNode extends NestNode
+module.exports = class NestThermostatNode extends AdapterNode
   aspects:
     temperatureSensor:
       events:
