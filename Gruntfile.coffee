@@ -36,7 +36,7 @@ module.exports = (grunt) ->
         files: ['lib/web/scripts/**/*.coffee']
         tasks: ['browserify']
       handlebars:
-        files: ['lib/web/templates/**/*.handlebars']
+        files: ['lib/web/templates/**/*.hbs']
         tasks: ['handlebars']
       options:
         livereload: true

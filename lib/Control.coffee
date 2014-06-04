@@ -37,3 +37,4 @@ module.exports = class Control
     type: @_config.type
     commands: _.keys(@commands)
     state: @getState()
+    memberships: @_memberships

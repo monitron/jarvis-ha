@@ -11,6 +11,9 @@ module.exports = class WebServer
         path: path
         memberControls: @_server.getMemberControls(path)
 
+    app.get "/api/controls", (req, res) =>
+      res.json @_server.controls
+
     app.get "/api/controls/:controlId", (req, res) =>
       control = @_server.getControl(req.params.controlId)
       res.json control
