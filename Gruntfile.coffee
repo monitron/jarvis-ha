@@ -5,8 +5,8 @@ module.exports = (grunt) ->
         files: [
           expand: true
           cwd: 'lib/web/styles'
-          src: ['**/*.scss']
-          dest: 'lib/web/public/styles'
+          src: ['main.less']
+          dest: 'lib/web/public'
           ext: '.css'
         ]
 
@@ -21,9 +21,9 @@ module.exports = (grunt) ->
       html:
         files: ['**/*.html']
       sass:
-        files: '<%= sass.compile.files[0].src %>'
+        files: ['lib/web/styles/**/*.less']
         tasks: ['sass']
-      coffee:
+      browserify:
         files: ['lib/web/scripts/**/*.coffee']
         tasks: ['browserify']
       options:
