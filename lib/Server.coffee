@@ -31,22 +31,12 @@ module.exports = class Server
     @web = new WebServer(this, @config.webServer)
 
   getAdapterNode: (path) ->
-    path = @normalizePath(_.clone(path))
+    path = _.clone(path)
     node = @adapters.get(path.shift()) # First path element is adapter id
     for element in path
       return undefined unless node?
       node = node.children.get(element)
     node
-
-  getMemberControls: (path) ->
-    path = @normalizePath(path)
-    pairs = @controls.map (control) ->
-      control: control
-      membership: control.getMembership(path)
-    _.select(pairs, (p) -> p.membership?)
-
-  normalizePath: (path) ->
-    if _.isString(path) then path.split("/") else path
 
   dummyConfig: ->
     adapters: [
@@ -74,8 +64,8 @@ module.exports = class Server
           {path: ["location", "Main Floor", "Living Room"]}
           {path: ["location", "Basement", "Main Room"]}]
         connections:
-          powerOnOff: "insteon/2bc0d3"
-          brightness: "insteon/2bc0d3"
+          powerOnOff: ["insteon", "2bc0d3"]
+          brightness: ["insteon", "2bc0d3"]
       },
       {
         id: "thermostat"

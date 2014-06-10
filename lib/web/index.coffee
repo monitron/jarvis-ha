@@ -6,10 +6,8 @@ winston = require('winston')
 module.exports = class WebServer
   constructor: (@_server, @_config) ->
     app.get /^\/api\/paths\/(.*)$/, (req, res) =>
-      path = @_server.normalizePath(unescape(req.params[0]))
-      res.send JSON.stringify
-        path: path
-        memberControls: @_server.getMemberControls(path)
+      path = @normalizePath(unescape(req.params[0]))
+      res.json @_server.controls.findMembersOfPath(path)
 
     app.get "/api/controls", (req, res) =>
       res.json @_server.controls
@@ -29,3 +27,6 @@ module.exports = class WebServer
 
     server = app.listen @_config.port, =>
       winston.info "Web server listening on port #{server.address().port}"
+
+  normalizePath: ->
+    if _.isString(path) then path.split("/") else path

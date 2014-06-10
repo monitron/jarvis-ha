@@ -41,4 +41,18 @@ class Controls extends Backbone.Collection
   model: Control
   url: '/api/controls'
 
+  findMembersOfPath: (path) ->
+    pairs = @map (control) ->
+      control: control
+      membership: control.getMembership(path)
+    _.select(pairs, (p) -> p.membership?)
+
+  getPathTree: ->
+    paths = _.pluck(_.flatten(@pluck('memberships')), 'path')
+    tree = {}
+    for path in paths
+      ptr = tree
+      ptr = (ptr[element] ||= {}) for element in path
+    tree
+
 module.exports = [Control, Controls]
