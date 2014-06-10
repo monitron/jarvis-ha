@@ -1,4 +1,3 @@
-winston = require('winston')
 _ = require('underscore')
 Backbone = require('backbone')
 
@@ -15,7 +14,7 @@ class Control extends Backbone.Model
   initialize: (attributes, options) ->
     @_server = options.server
     @_memberships = for membership in attributes.memberships
-      _.extend(membership, path: @_server.normalizePath(membership.path))
+      _.extend(membership, path: membership.path)
 
   getConnectionTarget: (connId) ->
     path = @get('connections')[connId]
@@ -30,7 +29,7 @@ class Control extends Backbone.Model
     @commands[verb](this, params)
 
   log: (level, message) ->
-    winston.log level, "[#{@get('name')} control] #{message}"
+    @_server.log level, "[#{@get('name')} control] #{message}"
 
   toJSON: ->
     _.extend super,

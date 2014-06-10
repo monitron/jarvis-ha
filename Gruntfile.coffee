@@ -16,6 +16,8 @@ module.exports = (grunt) ->
           'lib/web/public/bundle.js': ['lib/web/scripts/main.coffee']
         options:
           transform: ['coffeeify']
+          bundleOptions:
+            debug: true
 
     handlebars:
       compile:
@@ -33,7 +35,7 @@ module.exports = (grunt) ->
         files: ['lib/web/styles/**/*.less']
         tasks: ['less']
       browserify:
-        files: ['lib/web/scripts/**/*.coffee']
+        files: ['**/*.coffee']
         tasks: ['browserify']
       handlebars:
         files: ['lib/web/templates/**/*.hbs']

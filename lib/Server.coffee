@@ -31,7 +31,7 @@ module.exports = class Server
     @web = new WebServer(this, @config.webServer)
 
   getAdapterNode: (path) ->
-    path = @normalizePath(path)
+    path = @normalizePath(_.clone(path))
     node = @adapters.get(path.shift()) # First path element is adapter id
     for element in path
       return undefined unless node?
@@ -70,9 +70,9 @@ module.exports = class Server
         name: "Basement Entry Light"
         type: "dimmer"
         memberships: [
-          {path: "category/Lighting"}
-          {path: "location/Main Floor/Living Room"}
-          {path: "location/Basement/Main Room"}]
+          {path: ["category", "Lighting"]}
+          {path: ["location", "Main Floor", "Living Room"]}
+          {path: ["location", "Basement", "Main Room"]}]
         connections:
           powerOnOff: "insteon/2bc0d3"
           brightness: "insteon/2bc0d3"
@@ -82,12 +82,12 @@ module.exports = class Server
         name: "Thermostat"
         type: "thermostat"
         memberships: [
-          {path: "category/Climate"}
-          {path: "location/Main Floor/Living Room"}]
+          {path: ["category", "Climate"]}
+          {path: ["location", "Main Floor", "Living Room"]}]
         connections:
-          temperatureSensor: "nest/02AA01AC021401UM"
-          humiditySensor: "nest/02AA01AC021401UM"
-          temperatureSetPoint: "nest/02AA01AC021401UM"
+          temperatureSensor: ["nest", "02AA01AC021401UM"]
+          humiditySensor: ["nest", "02AA01AC021401UM"]
+          temperatureSetPoint: ["nest", "02AA01AC021401UM"]
       }]
     webServer:
       port: 3000
