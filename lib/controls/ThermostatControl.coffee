@@ -1,4 +1,4 @@
-Control = require('../Control')
+[Control] = require('../Control')
 
 module.exports = class ThermostatControl extends Control
   getState: ->

@@ -1,4 +1,4 @@
-Control = require('../Control')
+[Control] = require('../Control')
 
 module.exports = class DimmerControl extends Control
   commands:
@@ -12,7 +12,6 @@ module.exports = class DimmerControl extends Control
       target = control.getConnectionTarget('brightness')
       target.getAspect('brightness').executeCommand 'set',
         parseInt(params.value)
-
 
   getState: ->
     power = @getConnectionTarget('powerOnOff').getAspect('powerOnOff')

@@ -5,12 +5,12 @@ harmony = require('harmonyjs')
 module.exports = class HarmonyAdapter extends Adapter
   name: "Harmony"
 
-  constructor: (config) ->
-    super config
+  initialize: ->
+    super
     @setValid false
 
   start: ->
-    promise = harmony(@config.email, @config.password, @config.hubHost)
+    promise = harmony(@get('email'), @get('password'), @get('hubHost'))
     promise.done(
       (client) =>
         @log "debug", "Connected to Harmony"

@@ -15,11 +15,11 @@ module.exports = class WebServer
       res.json @_server.controls
 
     app.get "/api/controls/:controlId", (req, res) =>
-      control = @_server.getControl(req.params.controlId)
+      control = @_server.controls.get(req.params.controlId)
       res.json control
 
     app.get "/api/controls/:controlId/commands/:commandId", (req, res) =>
-      control = @_server.getControl(req.params.controlId)
+      control = @_server.controls.get(req.params.controlId)
       control.executeCommand req.params.commandId, req.query
         .then -> res.json success: true
         .catch (why) -> res.json 500, {success: false, message: why}

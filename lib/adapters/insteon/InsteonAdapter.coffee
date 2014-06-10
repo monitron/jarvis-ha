@@ -6,18 +6,18 @@ InsteonDimmerNode = require('./InsteonDimmerNode')
 
 module.exports = class InsteonAdapter extends Adapter
   name: "Insteon"
-  configDefaults:
+  defaults:
     gatewayPort: 9761
 
-  constructor: (config) ->
-    super config
-    @hasEnumerated = false
+  initialize: ->
+    super
     @setValid false
+    @hasEnumerated = false
 
   start: ->
     @_hub = new Insteon()
     @log "debug", "Attempting to connect to Insteon hub"
-    @_hub.connect @config.gatewayHost
+    @_hub.connect @get('gatewayHost')
     @_hub.on 'connect', =>
       @log "debug", "Connected to Insteon hub"
       @setValid true
@@ -30,7 +30,7 @@ module.exports = class InsteonAdapter extends Adapter
       @log "verbose", "Received Insteon message: #{raw}"
 
   enumerateDevices: ->
-    for deviceId, i in @config.deviceIds
+    for deviceId, i in @get('deviceIds')
       # Go slow so as not to flood the Insteon channel
       setTimeout _.bind(@enumerateDevice, this, deviceId), 1000 * i
     @hasDiscovered = true
@@ -43,7 +43,7 @@ module.exports = class InsteonAdapter extends Adapter
           when 1 then InsteonDimmerNode
         if nodeClass?
           @log "debug", "Successfully enumerated device with ID #{deviceInfo.id}"
-          @addChild new nodeClass(deviceInfo.id, this)
+          @children.add new nodeClass({id: deviceInfo.id}, {adapter: this})
         else
           @log "warn", "Device ID #{deviceInfo.id} has unknown category " +
             "#{deviceInfo.deviceCategory.id}"

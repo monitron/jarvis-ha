@@ -1,4 +1,4 @@
 
-Node = require('../../Node')
+[AdapterNode] = require('../../AdapterNode')
 
-module.exports = class InsteonNode extends Node
+module.exports = class InsteonNode extends AdapterNode

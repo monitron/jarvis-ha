@@ -1,6 +1,6 @@
 
 Backbone = require('backbone')
-Controls = require('./Controls.coffee')
+[Control, Controls] = require('../../Control.coffee')
 AppView = require('./AppView.coffee')
 
 module.exports = class App extends Backbone.Model

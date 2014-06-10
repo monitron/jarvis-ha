@@ -2,6 +2,7 @@
 _ = require('underscore')
 winston = require('winston')
 
+[Control, Controls] = require('./Control')
 controls = require('./controls')
 WebServer = require('./web')
 [AdapterNode, AdapterNodes] = require('./AdapterNode')
@@ -23,8 +24,9 @@ module.exports = class Server
       winston.info "Starting #{adapter.name} adapter"
       adapter.start()
     # Now let's controls
-    @controls = for controlConfig in @config.controls
-      new controls[controlConfig.type](this, controlConfig)
+    @controls = new Controls()
+    for controlConfig in @config.controls
+      @controls.add new controls[controlConfig.type](controlConfig, {server: this})
     # Start a web server
     @web = new WebServer(this, @config.webServer)
 
@@ -38,30 +40,30 @@ module.exports = class Server
 
   getMemberControls: (path) ->
     path = @normalizePath(path)
-    pairs = for control in @controls
+    pairs = @controls.map (control) ->
       control: control
       membership: control.getMembership(path)
     _.select(pairs, (p) -> p.membership?)
-
-  getControl: (id) ->
-    _.findWhere(@controls, id: id)
 
   normalizePath: (path) ->
     if _.isString(path) then path.split("/") else path
 
   dummyConfig: ->
-    adapters:
-      nest:
-        login: "somebody@somewhere.com"
-        password: "correct horse battery staple"
-      insteon:
-        gatewayType: "hub"
-        gatewayHost: "192.168.1.17"
-        deviceIds: ["2bc0d3", "2bb7c6", "26ce6c"]
-      harmony:
-        email: "somebody@somewhere.com"
-        password: "correct horse battery staple"
-        hubHost: "192.168.1.5"
+    adapters: [
+      id: "nest"
+      login: "some@guy.com"
+      password: "correct horse battery staple"
+    ,
+      id: "insteon"
+      gatewayType: "hub"
+      gatewayHost: "192.168.1.17"
+      deviceIds: ["2bc0d3", "2bb7c6", "26ce6c"]
+    ,
+      id: "harmony"
+      email: "some@guy.com"
+      password: "correct horse battery staple"
+      hubHost: "192.168.1.5"
+    ]
     controls: [
       {
         id: "basement-entry-light"
