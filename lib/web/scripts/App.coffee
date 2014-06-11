@@ -23,3 +23,9 @@ module.exports = class App extends Backbone.Model
       console.log two
     else
       console.log one
+
+  sendCommand: (controlId, commandId, params = {}) ->
+    # This will probably need a better home later.
+    $.ajax
+      url: "/api/controls/#{controlId}/commands/#{commandId}"
+      type: 'POST'

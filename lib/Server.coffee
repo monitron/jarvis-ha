@@ -12,7 +12,7 @@ module.exports = class Server
     winston.clear()
     winston.add winston.transports.Console, level: 'verbose'
     winston.cli()
-    winston.info "Jarvis Home Automation server"
+    @log 'info', 'Jarvis Home Automation server'
     @config = @dummyConfig()
     # Gather adapters
     @adapters = new AdapterNodes()
@@ -37,6 +37,9 @@ module.exports = class Server
       return undefined unless node?
       node = node.children.get(element)
     node
+
+  log: (level, message) ->
+    winston.log level, "[#{@name} adapter] #{message}"
 
   dummyConfig: ->
     adapters: [

@@ -16,7 +16,7 @@ module.exports = class WebServer
       control = @_server.controls.get(req.params.controlId)
       res.json control
 
-    app.get "/api/controls/:controlId/commands/:commandId", (req, res) =>
+    app.post "/api/controls/:controlId/commands/:commandId", (req, res) =>
       control = @_server.controls.get(req.params.controlId)
       control.executeCommand req.params.commandId, req.query
         .then -> res.json success: true

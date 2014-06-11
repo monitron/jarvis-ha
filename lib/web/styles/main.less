@@ -1,6 +1,17 @@
 
+@color1: #67b;
+
+@grey: #eee;
+@darkGrey: #ccc;
+@darkerGrey: #aaa;
+@darkestGrey: #888;
+
+@radius: 5px;
+
+@controlBodyHeight: 70px;
+
 .sidebar {
-  background: #67b;
+  background: @color1;
   color: white;
 }
 
@@ -39,6 +50,49 @@
     .name {
       font-size: 20px;
       font-weight: 300;
+    }
+
+    .body {
+      background: @grey;
+      border-radius: @radius;
+      height: @controlBodyHeight;
+      position: relative;
+
+      .button {
+        position: absolute;
+        text-transform: uppercase;
+        font-weight: bold;
+        color: @darkerGrey;
+        cursor: pointer;
+
+        &:hover {
+          background-color: @darkGrey;
+          color: @darkestGrey;
+        }
+      }
+
+      .fullHeight {
+        top: 0;
+        bottom: 0;
+        line-height: @controlBodyHeight;
+      }
+
+      .leftEdge, .rightEdge {
+        width: 20%;
+        text-align: center;
+      }
+      
+      .leftEdge {
+        left: 0;
+        border-right: 2px solid white;
+        border-radius: @radius 0 0 @radius;
+      }
+
+      .rightEdge {
+        right: 0;
+        border-left: 2px solid white;
+        border-radius: 0 @radius @radius 0;
+      }
     }
   }
 }
