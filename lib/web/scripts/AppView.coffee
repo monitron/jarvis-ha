@@ -1,4 +1,5 @@
 
+_ = require('underscore')
 Backbone = require('backbone')
 TreeView = require('./TreeView.coffee')
 PanelView = require('./PanelView.coffee')
@@ -10,7 +11,7 @@ module.exports = class AppView extends Backbone.View
 
   render: ->
     @$el.html Templates['app']()
-    @$('.sidebar').html @treeView.render().el
+    @$('.sidebar').append @treeView.render().el
     @renderPath()
 
   renderPath: ->
@@ -19,5 +20,5 @@ module.exports = class AppView extends Backbone.View
     path = @model.get('path')
     if path?
       members = @model.controls.findMembersOfPath(path)
-      @panelView = new PanelView(model: members)
+      @panelView = new PanelView(model: members, name: _.last(path))
       @$('.body').html @panelView.render().el

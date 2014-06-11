@@ -1,4 +1,32 @@
 
-body {
+.sidebar {
+  background: #67b;
+  color: white;
+}
 
+.controlTree {
+  ul {
+    padding-left: 0;
+    list-style-type: none;
+
+    ul ul {
+      padding-left: 15px;
+    }
+
+    a {
+      line-height: 25px;
+      color: inherit;
+    }
+  }
+  
+  > ul > li {
+    margin-top: 10px;
+
+    > a {
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: 12px;
+      opacity: .4;
+    }
+  }
 }
