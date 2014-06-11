@@ -22,7 +22,7 @@ module.exports = (grunt) ->
     handlebars:
       compile:
         files:
-          'lib/web/public/templates.js': 'lib/web/templates/*.hbs'
+          'lib/web/public/templates.js': 'lib/web/templates/**/*.hbs'
         options:
           namespace: 'Templates'
           processName: (path) ->
