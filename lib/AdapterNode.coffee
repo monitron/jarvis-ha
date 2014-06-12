@@ -3,14 +3,22 @@ Backbone = require('backbone')
 Aspect = require('./Aspect')
 
 class AdapterNode extends Backbone.Model
+  deepEvents: ['aspectData:change']
+
   aspects: {}
 
   initialize: (attributes, options) ->
     @adapter = options?.adapter or this
-    @children = (new AdapterNodes)
+    @children = new AdapterNodes()
     @_valid = true
-    @_aspects = {}
+    # Generate deepEvents as needed
+    _.each @deepEvents, (ev) =>
+      @listenTo this, ev, (args...) => @trigger 'deepEvent', [@id], ev, args
+    # Forward deepEvent messages from children
+    @listenTo @children, 'deepEvent', (path, args...) =>
+      @trigger 'deepEvent', [@id].concat(path), args...
     # Instantiate preconfigured aspects
+    @_aspects = {}
     _.each @aspects, (aspectConfig, aspectId) =>
       aspect = new Aspect(this, aspectConfig)
       aspect.on 'aspectEvent', (event) =>
@@ -41,5 +49,15 @@ class AdapterNode extends Backbone.Model
 
 class AdapterNodes extends Backbone.Collection
   model: AdapterNode
+
+  getPath: (path) ->
+    path = _.clone(path)
+    node = @get(path.shift())
+    if _.isEmpty(path) then node else node.children.getPath(path)
+
+  onEventAtPath: (path, event, callback) ->
+    @listenTo this, 'deepEvent', (evPath, evEvent, args) ->
+      if _.isEqual(evPath, path) and event == evEvent then callback(args)
+
 
 module.exports = [AdapterNode, AdapterNodes]

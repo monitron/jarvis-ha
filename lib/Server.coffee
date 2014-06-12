@@ -16,6 +16,8 @@ module.exports = class Server
     @config = @dummyConfig()
     # Gather adapters
     @adapters = new AdapterNodes()
+    @adapters.on 'deepEvent', (path, ev, args) =>
+      @log 'debug', "Saw adapter event: #{path.join('/')} emitted #{ev}"
     for config in @config.adapters
       adapterClass = require("./adapters/#{config.id}")
       @adapters.add new adapterClass(config)
@@ -29,14 +31,6 @@ module.exports = class Server
       @controls.add new controls[controlConfig.type](controlConfig, {server: this})
     # Start a web server
     @web = new WebServer(this, @config.webServer)
-
-  getAdapterNode: (path) ->
-    path = _.clone(path)
-    node = @adapters.get(path.shift()) # First path element is adapter id
-    for element in path
-      return undefined unless node?
-      node = node.children.get(element)
-    node
 
   log: (level, message) ->
     winston.log level, "[#{@name} adapter] #{message}"

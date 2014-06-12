@@ -15,11 +15,22 @@ class Control extends Backbone.Model
     @_server = options.server
     @_memberships = for membership in attributes.memberships
       _.extend(membership, path: membership.path)
+    if @_server?
+      # Notice when our connections' data changes
+      for path in @getUniqueConnectionPaths()
+        @_server.adapters.onEventAtPath path, 'aspectData:change', =>
+          @trigger 'change', this
 
   getConnectionTarget: (connId) ->
     path = @get('connections')[connId]
     return undefined unless path?
-    @_server.getAdapterNode(path)
+    @_server.adapters.getPath(path)
+
+  getUniqueConnectionPaths: ->
+    uniquePaths = []
+    for path in _.values(@get('connections'))
+      uniquePaths.push(path) unless _.find(uniquePaths, (p) -> _.isEqual(p, path))
+    uniquePaths
 
   getMembership: (path) ->
     _.find(@get('memberships'), (membership) -> _.isEqual(membership.path, path))

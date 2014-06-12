@@ -25,13 +25,23 @@ module.exports = class WebServer
       control = @_server.controls.get(req.params.controlId)
       control.executeCommand req.params.commandId, req.query
         .then -> res.json success: true
-        .catch (why) -> res.json 500, {success: false, message: why}
+        .catch (why) ->
+          winston.warn "Failed to execute command on #{req.params.controlId}"
+          res.json 500, {success: false, message: why}
         .done()
 
     app.use express.static(__dirname + '/public')
 
-    io.on 'connection', (socket) ->
+    io.on 'connection', (socket) =>
       winston.debug "A client socket connected"
+      notifyControlChange = (model) =>
+        winston.debug "Notifying client of change to control #{model.id}"
+        socket.emit 'control:change', model.toJSON()
+      @_server.controls.on 'change', notifyControlChange, socket
+
+      socket.on 'disconnect', =>
+        winston.debug "Client socket disconnected; unregistering notifications"
+        @_server.controls.off 'change', notifyControlChange, socket
 
     httpServer.listen @_config.port, =>
       winston.info "Web server listening on port #{httpServer.address().port}"

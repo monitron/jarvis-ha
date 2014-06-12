@@ -8,7 +8,6 @@ module.exports = class App extends Backbone.Model
   initialize: ->
     @log "Jarvis web client here"
     Backbone.$ = window.$
-    @socket = io()
     @router = new Router(app: this)
     @controls = new Controls()
     @currentPath = null
@@ -17,6 +16,15 @@ module.exports = class App extends Backbone.Model
       @view = new AppView(el: $('body'), model: this)
       @view.render()
       Backbone.history.start()
+      @setupSocket()
+
+  setupSocket: ->
+    @socket = io()
+    @socket.on 'control:change', (controlJSON) =>
+      control = @controls.get(controlJSON.id)
+      unless control?
+        @log 'warn', "Received update about unknown control #{controlJSON.id}"
+      control.set controlJSON
 
   log: (one, two) ->
     # XXX Implement levels
