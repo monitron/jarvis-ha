@@ -39,7 +39,6 @@ class Control extends Backbone.Model
 
 class Controls extends Backbone.Collection
   model: Control
-  url: '/api/controls'
 
   findMembersOfPath: (path) ->
     pairs = @map (control) ->

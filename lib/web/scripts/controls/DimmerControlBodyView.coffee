@@ -3,12 +3,11 @@ Backbone = require('backbone')
 
 module.exports = class DimmerControlBodyView extends Backbone.View
   events:
-    "click .button": "handleButtonPress"
+    "click .button": "sendButtonCommand"
 
   render: ->
     @$el.html Templates['controls/dimmer']()
     this
 
-  handleButtonPress: (event) ->
-    command = $(event.target).data('command')
-    window.app.sendCommand @model.id, command
+  sendButtonCommand: (event) ->
+    @model.sendCommand $(event.target).data('command')

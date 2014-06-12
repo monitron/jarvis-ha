@@ -1,6 +1,6 @@
 
 Backbone = require('backbone')
-[Control, Controls] = require('../../Control.coffee')
+[Control, Controls] = require('./Control.coffee')
 Router = require('./Router.coffee')
 AppView = require('./AppView.coffee')
 
@@ -23,9 +23,3 @@ module.exports = class App extends Backbone.Model
       console.log two
     else
       console.log one
-
-  sendCommand: (controlId, commandId, params = {}) ->
-    # This will probably need a better home later.
-    $.ajax
-      url: "/api/controls/#{controlId}/commands/#{commandId}"
-      type: 'POST'

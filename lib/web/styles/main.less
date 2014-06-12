@@ -47,17 +47,41 @@
   padding-left: 0;
 
   li {
+    &.busy {
+      .body {
+        opacity: .5;
+      }
+
+      .spinner {
+        display: block;
+      }
+    }
+    
     .name {
       font-size: 20px;
       font-weight: 300;
     }
 
-    .body {
+    .bezel {
       background: @grey;
       border-radius: @radius;
       height: @controlBodyHeight;
       position: relative;
+    }
 
+    .spinner {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      line-height: @controlBodyHeight;
+      text-align: center;
+      font-size: 40px;
+    }
+
+    .body {
       .button {
         position: absolute;
         text-transform: uppercase;

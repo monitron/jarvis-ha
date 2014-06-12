@@ -10,6 +10,8 @@ module.exports = class ControlView extends Backbone.View
     bodyViewClass = controlBodyViews[@model.control.get('type')]
     if bodyViewClass?
       @bodyView = new bodyViewClass(model: @model.control)
+    @listenTo @model.control, 'task:some', => @$el.addClass 'busy'
+    @listenTo @model.control, 'task:none', => @$el.removeClass 'busy'
 
   render: ->
     context =
