@@ -8,6 +8,7 @@ module.exports = class App extends Backbone.Model
   initialize: ->
     @log "Jarvis web client here"
     Backbone.$ = window.$
+    @socket = io()
     @router = new Router(app: this)
     @controls = new Controls()
     @currentPath = null

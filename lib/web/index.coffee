@@ -1,10 +1,15 @@
 
 express = require('express')
-app = express()
+http = require('http')
 winston = require('winston')
+socketio = require('socket.io')
 
 module.exports = class WebServer
   constructor: (@_server, @_config) ->
+    app = express()
+    httpServer = http.Server(app)
+    io = socketio(httpServer)
+
     app.get /^\/api\/paths\/(.*)$/, (req, res) =>
       path = @normalizePath(unescape(req.params[0]))
       res.json @_server.controls.findMembersOfPath(path)
@@ -25,8 +30,11 @@ module.exports = class WebServer
 
     app.use express.static(__dirname + '/public')
 
-    server = app.listen @_config.port, =>
-      winston.info "Web server listening on port #{server.address().port}"
+    io.on 'connection', (socket) ->
+      winston.debug "A client socket connected"
+
+    httpServer.listen @_config.port, =>
+      winston.info "Web server listening on port #{httpServer.address().port}"
 
   normalizePath: ->
     if _.isString(path) then path.split("/") else path
