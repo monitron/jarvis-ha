@@ -6,7 +6,11 @@ module.exports = class DimmerControlBodyView extends Backbone.View
     "click .button": "sendButtonCommand"
 
   render: ->
-    @$el.html Templates['controls/dimmer']()
+    controlState = @model.get('state')
+    context =
+      isOff: controlState.power == false # as in not undefined
+      isOn:  controlState.power == true
+    @$el.html Templates['controls/dimmer'](context)
     this
 
   sendButtonCommand: (event) ->
