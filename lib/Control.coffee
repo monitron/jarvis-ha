@@ -8,11 +8,14 @@ class Control extends Backbone.Model
     connections: {}
     memberships: []
 
+  defaultParameters: {}
+
   # All commands must return a promise
   commands: {}
 
   initialize: (attributes, options) ->
     @_server = options.server
+    @set 'parameters', _.defaults(@get('parameters'), @defaultParameters)
     @_memberships = for membership in attributes.memberships
       _.extend(membership, path: membership.path)
     if @_server?

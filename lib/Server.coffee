@@ -83,9 +83,20 @@ module.exports = class Server
           {path: ["category", "Climate"]}
           {path: ["location", "Main Floor", "Living Room"]}]
         connections:
+          temperatureSetPoint: ["nest", "02AA01AC021401UM"]
+      },
+      {
+        id: "living-room-climate"
+        name: "Living Room Climate"
+        type: "climateSensor"
+        memberships: [
+          {path: ["category", "Climate"]}
+          {path: ["location", "Main Floor", "Living Room"]}]
+        parameters:
+          temperatureUnits: 'f'
+        connections:
           temperatureSensor: ["nest", "02AA01AC021401UM"]
           humiditySensor: ["nest", "02AA01AC021401UM"]
-          temperatureSetPoint: ["nest", "02AA01AC021401UM"]
       }]
     webServer:
       port: 3000

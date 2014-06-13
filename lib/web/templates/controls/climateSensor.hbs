@@ -1,0 +1,12 @@
+<div class="fullHeight fullWidth display">
+  {{#if temperature}}
+    {{temperature}}&deg;
+
+    {{#if humidity}}&nbsp;&nbsp;&nbsp;&nbsp;{{/if}}
+  {{/if}}
+  
+  {{#if humidity}}
+    <i class="fa fa-tint"></i>
+    {{humidity}}%
+  {{/if}}
+</div>
