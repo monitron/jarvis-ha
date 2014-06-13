@@ -20,6 +20,7 @@ class Control extends baseControl
     promise = $.ajax
       url: "/api/controls/#{@id}/commands/#{commandId}"
       type: 'POST'
+      data: params
     @addTask promise
     promise
 

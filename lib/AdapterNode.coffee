@@ -7,6 +7,9 @@ class AdapterNode extends Backbone.Model
 
   aspects: {}
 
+  # Takes options:
+  #   adapter    - (required) a reference to the parent adapter
+  #   attributes - A map of aspect names to maps of attributes to set on them
   initialize: (attributes, options) ->
     @adapter = options?.adapter or this
     @children = new AdapterNodes()
@@ -20,6 +23,9 @@ class AdapterNode extends Backbone.Model
     # Instantiate preconfigured aspects
     @_aspects = {}
     _.each @aspects, (aspectConfig, aspectId) =>
+      # Copy in aspect attributes as passed in options
+      aspectConfig.attributes = _.clone(aspectConfig.attributes) or {}
+      _.extend(aspectConfig.attributes, options.attributes?[aspectId] or {})
       aspect = new Aspect(this, aspectConfig)
       aspect.on 'aspectEvent', (event) =>
         @log "debug", "Aspect #{aspectId} emitted event: #{event}"

@@ -48,7 +48,7 @@ module.exports = class InsteonAdapter extends Adapter
           @log "warn", "Device ID #{deviceInfo.id} has unknown category " +
             "#{deviceInfo.deviceCategory.id}"
       else
-        @log "warn", "Failed to query device with ID #{deviceInfo.id}"
+        @log "warn", "Failed to query device with ID #{deviceId}"
 
   toggleLight: (deviceId, value) ->
     light = @_hub.light(deviceId)

@@ -3,12 +3,17 @@ express = require('express')
 http = require('http')
 winston = require('winston')
 socketio = require('socket.io')
+bodyParser = require('body-parser')
 
 module.exports = class WebServer
   constructor: (@_server, @_config) ->
     app = express()
+
     httpServer = http.Server(app)
     io = socketio(httpServer)
+
+    app.use bodyParser.urlencoded()
+    app.use bodyParser.json()
 
     app.get /^\/api\/paths\/(.*)$/, (req, res) =>
       path = @normalizePath(unescape(req.params[0]))
@@ -23,7 +28,7 @@ module.exports = class WebServer
 
     app.post "/api/controls/:controlId/commands/:commandId", (req, res) =>
       control = @_server.controls.get(req.params.controlId)
-      control.executeCommand req.params.commandId, req.query
+      control.executeCommand req.params.commandId, req.body
         .then -> res.json success: true
         .catch (why) ->
           winston.warn "Failed to execute command on #{req.params.controlId}"

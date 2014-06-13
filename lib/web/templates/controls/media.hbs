@@ -1,0 +1,15 @@
+<div class="button fullHeight left edge {{#if isOff}}selected{{/if}}"
+     data-command="turnOff">Off</div>
+<div class="fullHeight allButEdge right dropdown {{#if isOn}}selected{{/if}}">
+  <div class="dropdown-toggle" data-toggle="dropdown">
+    {{#if source}}{{source}}{{else}}Choose Source{{/if}}
+    <i class="fa fa-caret-down"></i>
+  </div>
+  <ul class="dropdown-menu" role="menu">
+    {{#each choices}}
+    <li role="presentation">
+      <a role="menuitem" tabindex="-1" href="#" data-source="{{@key}}">{{this}}</a>
+    </li>
+    {{/each}}
+  </ul>
+</div>

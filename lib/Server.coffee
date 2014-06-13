@@ -65,6 +65,17 @@ module.exports = class Server
           brightness: ["insteon", "2bc0d3"]
       },
       {
+        id: "living-room-media"
+        name: "Living Room Media"
+        type: "media"
+        memberships: [
+          {path: ["category", "Entertainment"]}
+          {path: ["location", "Main Floor", "Living Room"]}]
+        connections:
+          powerOnOff: ["harmony", "hub"]
+          mediaSource: ["harmony", "hub"]
+      },
+      {
         id: "thermostat"
         name: "Thermostat"
         type: "thermostat"

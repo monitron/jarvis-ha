@@ -39,6 +39,9 @@ class Control extends Backbone.Model
     @log 'debug', "Executing command #{verb} with params: #{JSON.stringify(params)}"
     @commands[verb](this, params)
 
+  getState: ->
+    {} # This is boring and you should probably override it
+
   log: (level, message) ->
     @_server.log level, "[#{@get('name')} control] #{message}"
 
