@@ -50,6 +50,9 @@ module.exports = class Server
       email: "some@guy.com"
       password: "correct horse battery staple"
       hubHost: "192.168.1.5"
+    ,
+      id: "usnws"
+      stations: ['KGAI']
     ]
     controls: [
       {
@@ -84,6 +87,18 @@ module.exports = class Server
           {path: ["location", "Main Floor", "Living Room"]}]
         connections:
           temperatureSetPoint: ["nest", "02AA01AC021401UM"]
+      },
+      {
+        id: "weather"
+        name: "Weather"
+        type: "climateSensor"
+        memberships: [
+          {path: ["category", "Climate"]}]
+        parameters:
+          temperatureUnits: 'f'
+        connections:
+          temperatureSensor: ["usnws", "KGAI"]
+          humiditySensor: ["usnws", "KGAI"]
       },
       {
         id: "living-room-climate"
