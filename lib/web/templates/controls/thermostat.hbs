@@ -1,0 +1,24 @@
+<div class="fullHeight left halfWidth dropdown {{#if isOn}}selected{{/if}}">
+  <div class="dropdown-toggle" data-toggle="dropdown">
+    {{mode}}
+    <i class="fa fa-caret-down"></i>
+  </div>
+  <ul class="dropdown-menu" role="menu">
+    {{#each modeChoices}}
+    <li role="presentation">
+      <a role="menuitem" tabindex="-1" href="#" data-mode="{{@key}}">{{this}}</a>
+    </li>
+    {{/each}}
+  </ul>
+</div>
+<div class="fullHeight quarterWidth quarterFromRight display">
+  {{#if targetTemperature}}
+    {{targetTemperature}}&deg;
+  {{/if}}
+</div>
+<div class="topHalf quarterWidth right button incrButton">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<div class="bottomHalf quarterWidth right button decrButton">
+  <i class="fa fa-arrow-down"></i>
+</div>

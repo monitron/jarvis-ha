@@ -85,6 +85,8 @@ module.exports = class Server
         memberships: [
           {path: ["category", "Climate"]}
           {path: ["location", "Main Floor", "Living Room"]}]
+        parameters:
+          temperatureUnits: 'f'
         connections:
           temperatureSetPoint: ["nest", "02AA01AC021401UM"]
       },

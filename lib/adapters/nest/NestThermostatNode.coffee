@@ -11,10 +11,22 @@ module.exports = class NestThermostatNode extends AdapterNode
         changed: (prev, cur) -> prev.value != cur.value
     temperatureSetPoint:
       commands:
-        setTarget: (node, temp) -> node.adapter.setTemperature(node.id, temp)
+        setTarget: (node, temp) ->
+          node.adapter.setTemperature(node.id, temp).then ->
+            aspect = node.getAspect('temperatureSetPoint')
+            aspect.setData {target: temp, mode: aspect.getDatum('mode')}
+        setMode: (node, mode) ->
+          node.adapter.setTemperature(node.id, temp).then ->
+            aspect = node.getAspect('temperatureSetPoint')
+            aspect.setData {target: aspect.getDatum('target'), mode: mode}
       events:
         targetChanged: (prev, cur) -> prev.target != cur.target
-        modeChanged  : (prev, cur) -> prev.mode != cur.mode
+        modeChanged:   (prev, cur) -> prev.mode != cur.mode
+      attributes:
+        modeChoices:
+          cool: "Cool"
+          heat: "Heat"
+          off:  "Off"
 
   processData: (data) ->
     @getAspect("temperatureSensor").setData

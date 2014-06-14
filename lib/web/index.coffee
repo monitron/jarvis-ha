@@ -31,7 +31,7 @@ module.exports = class WebServer
       control.executeCommand req.params.commandId, req.body
         .then -> res.json success: true
         .catch (why) ->
-          winston.warn "Failed to execute command on #{req.params.controlId}"
+          winston.warn "Failed to execute command on #{req.params.controlId}: #{why}"
           res.json 500, {success: false, message: why}
         .done()
 

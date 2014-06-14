@@ -2,7 +2,7 @@
 
 module.exports = class DimmerControl extends Control
   commands:
-    turnOff: (control, params)->
+    turnOff: (control, params) ->
       target = control.getConnectionTarget('powerOnOff')
       target.getAspect('powerOnOff').executeCommand 'set', false
     turnOn: (control, params) ->

@@ -1,3 +1,3 @@
 
 module.exports =
-  tempToFahrenheit: (c) -> (c * (9/5)) + 32
+  tempToFahrenheit: (c) -> (c * (9.0/5)) + 32

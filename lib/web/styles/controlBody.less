@@ -55,6 +55,23 @@
     line-height: @controlBodyHeight;
   }
 
+  .topHalf {
+    top: 0;
+    height: (@controlBodyHeight / 2) + 2;
+    line-height: (@controlBodyHeight / 2) + 2;
+    border-bottom: 2px solid white;
+    border-bottom-right-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+  }
+
+  .bottomHalf {
+    bottom: 0;
+    height: (@controlBodyHeight / 2) - 2;
+    line-height: (@controlBodyHeight / 2) - 2;
+    border-top-right-radius: 0 !important;
+    border-top-left-radius: 0 !important;
+  }
+
   .quarterWidth {
     width: 25%;
   }
@@ -79,35 +96,26 @@
   }
   
   .left {
-    box-sizing: content-box;
     position: absolute;
     left: 0;
-    border-right: 2px solid white;
     border-radius: @radius 0 0 @radius;
   }
 
   .quarterFromLeft {
-    box-sizing: content-box;
     position: absolute;
     left: 25%;
-    border-right: 2px solid white;
-    border-left: 2px solid white;
   }
 
   .quarterFromRight {
-    box-sizing: content-box;
     position: absolute;
     right: 25%;
-    border-right: 2px solid white;
-    border-left: 2px solid white;
   }
 
   .right {
-    box-sizing: content-box;
     position: absolute;
     right: 0;
-    border-left: 2px solid white;
     border-radius: 0 @radius @radius 0;
+    border-right: none !important;
   }
 
   .fullWidth {
@@ -116,8 +124,7 @@
     right: 0;
   }
 
-  .allButEdge.left, .allButEdge.right {
-    border-left: none;
-    border-right: none;
+  > div > * {
+    border-right: 2px solid white;
   }
 }
