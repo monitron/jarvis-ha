@@ -25,7 +25,7 @@
     "unofficial-nest-api": "^0.1.4",
     "winston": "^0.7.3",
     "xml2js": "^0.4.4",
-    "openzwave": "git://github.com/bencpeters/node-openzwave#update-open-zwave"
+    "openzwave": "git://github.com/monitron/node-openzwave#fix-security"
   },
   "devDependencies": {
     "coffeeify": "^0.6.0",
