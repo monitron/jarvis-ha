@@ -9,7 +9,7 @@ module.exports = class ZWaveAdapter extends Adapter
     @setValid false
 
   start: ->
-    @_ozw = new OpenZWave(@get('device'))
+    @_ozw = new OpenZWave(@get('controllerDevice'))
     @_ozw.on 'driver ready', (homeid) =>
       @log 'debug', 'Z-Wave connected'
       @setValid true
