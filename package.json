@@ -24,7 +24,8 @@
     "underscore": "^1.6.0",
     "unofficial-nest-api": "^0.1.4",
     "winston": "^0.7.3",
-    "xml2js": "^0.4.4"
+    "xml2js": "^0.4.4",
+    "openzwave": "git://github.com/bencpeters/node-openzwave#update-open-zwave"
   },
   "devDependencies": {
     "coffeeify": "^0.6.0",

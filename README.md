@@ -13,7 +13,7 @@ How to run
 * ``npm install``
 * ``grunt``
 * ``coffee run.coffee``
-
+* Visit http://localhost:3000/
 
 How to start with an exploratory REPL
 -------------------------------------
