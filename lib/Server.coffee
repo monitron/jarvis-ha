@@ -53,6 +53,9 @@ module.exports = class Server
     ,
       id: "usnws"
       stations: ['KGAI']
+    ,
+      id: "zwave"
+      controllerDevice: '/dev/ttyUSB0'
     ]
     controls: [
       {
