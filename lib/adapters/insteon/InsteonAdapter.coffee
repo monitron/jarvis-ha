@@ -50,7 +50,9 @@ module.exports = class InsteonAdapter extends Adapter
           when 2 then InsteonSwitchNode
         if nodeClass?
           @log "debug", "Successfully enumerated device with ID #{deviceInfo.id}"
-          @children.add new nodeClass({id: deviceInfo.id}, {adapter: this})
+          node = new nodeClass({id: deviceInfo.id}, {adapter: this})
+          @children.add node
+          if deviceInfo.isLighting then @observeLight(node)
         else
           @log "warn", "Device ID #{deviceInfo.id} has unknown category " +
             "#{deviceInfo.deviceCategory.id}"
@@ -64,3 +66,11 @@ module.exports = class InsteonAdapter extends Adapter
   setLightLevel: (deviceId, value) ->
     light = @_hub.light(deviceId)
     if value == 0 then light.turnOff() else light.turnOn(value) # Gives a promise
+
+  observeLight: (node) ->
+    @log 'verbose', "Observing light events on #{node.id}"
+    light = @_hub.light(node.id)
+    light.on 'turnOn',      -> node.processData(power: true)
+    light.on 'turnOnFast',  -> node.processData(power: true)
+    light.on 'turnOff',     -> node.processData(power: false)
+    light.on 'turnOffFast', -> node.processData(power: false)
