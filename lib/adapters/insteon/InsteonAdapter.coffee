@@ -3,6 +3,7 @@ _ = require('underscore')
 Insteon = require('home-controller').Insteon
 Adapter = require('../../Adapter')
 InsteonDimmerNode = require('./InsteonDimmerNode')
+InsteonSwitchNode = require('./InsteonSwitchNode')
 
 module.exports = class InsteonAdapter extends Adapter
   name: "Insteon"
@@ -46,6 +47,7 @@ module.exports = class InsteonAdapter extends Adapter
       if deviceInfo?
         nodeClass = switch deviceInfo.deviceCategory.id
           when 1 then InsteonDimmerNode
+          when 2 then InsteonSwitchNode
         if nodeClass?
           @log "debug", "Successfully enumerated device with ID #{deviceInfo.id}"
           @children.add new nodeClass({id: deviceInfo.id}, {adapter: this})
