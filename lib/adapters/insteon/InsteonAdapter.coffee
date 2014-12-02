@@ -16,14 +16,19 @@ module.exports = class InsteonAdapter extends Adapter
 
   start: ->
     @_hub = new Insteon()
-    @log "debug", "Attempting to connect to Insteon hub"
-    @_hub.connect @get('gatewayHost')
+    switch @get('gatewayType')
+      when "hub"
+        @log "debug", "Connecting to Insteon Hub at #{@get('gatewayHost')}"
+        @_hub.connect @get('gatewayHost')
+      when "serial"
+        @log "debug", "Connecting to Insteon PLM on #{@get('serialPort')}"
+        @_hub.serial @get('serialPort')
     @_hub.on 'connect', =>
-      @log "debug", "Connected to Insteon hub"
+      @log "debug", "Connected to Insteon"
       @setValid true
       unless @hasEnumerated then @enumerateDevices()
     @_hub.on 'closed', =>
-      @log "warn", "Disconnected from Insteon hub"
+      @log "warn", "Disconnected from Insteon"
       @setValid false
     @_hub.on 'command', (message) =>
       raw = message.standard?.raw
