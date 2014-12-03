@@ -6,8 +6,8 @@ module.exports = class ClimateSensorControl extends Control
     temperaturePrecision: 1
     humidityPrecision: 0
 
-  getState: ->
+  _getState: ->
     temp = @getConnectionTarget('temperatureSensor')
     humid = @getConnectionTarget('humiditySensor')
-    temperature: temp?.getAspect('temperatureSensor').getDatum('value')
-    humidity: humid?.getAspect('humiditySensor').getDatum('value')
+    temperature: temp.getAspect('temperatureSensor').getDatum('value')
+    humidity: humid.getAspect('humiditySensor').getDatum('value')

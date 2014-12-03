@@ -13,7 +13,7 @@ module.exports = class DimmerControl extends Control
       target.getAspect('brightness').executeCommand 'set',
         parseInt(params.value)
 
-  getState: ->
+  _getState: ->
     power = @getConnectionTarget('powerOnOff').getAspect('powerOnOff')
     dimmer = @getConnectionTarget('brightness').getAspect('brightness')
     power: power.getDatum('state')

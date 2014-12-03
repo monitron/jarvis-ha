@@ -12,7 +12,7 @@ module.exports = class MediaControl extends Control
       target = control.getConnectionTarget('mediaSource')
       target.getAspect('mediaSource').executeCommand 'set', params.value
 
-  getState: ->
+  _getState: ->
     power = @getConnectionTarget('powerOnOff').getAspect('powerOnOff')
     source = @getConnectionTarget('mediaSource').getAspect('mediaSource')
     power: power.getDatum('state')

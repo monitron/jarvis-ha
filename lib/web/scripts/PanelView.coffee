@@ -7,8 +7,8 @@ module.exports = class PanelView extends Backbone.View
 
   initialize: (options) ->
     @name = options.name
-    @controlViews = for control in @model
-      new ControlView(model: control)
+    @controlViews = for cm in @model when cm.control.get('valid')
+      new ControlView(model: cm)
 
   render: ->
     @$el.html Templates['panel'](name: @name)

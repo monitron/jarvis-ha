@@ -24,6 +24,13 @@ class Control extends Backbone.Model
         @_server.adapters.onEventAtPath path, 'aspectData:change', =>
           @trigger 'change', this
 
+  isValid: ->
+    _.every @getUniqueConnectionPaths(), (path) =>
+      @log 'warn', "Checking path: #{path}"
+      p = @_server.adapters.getPath(path)
+      @log 'warn', p
+      p?
+
   getConnectionTarget: (connId) ->
     path = @get('connections')[connId]
     return undefined unless path?
@@ -43,14 +50,19 @@ class Control extends Backbone.Model
     @commands[verb](this, params)
 
   getState: ->
+    if @isValid() then @_getState() else null
+
+  _getState: ->
     {} # This is boring and you should probably override it
 
   log: (level, message) ->
     @_server.log level, "[#{@get('name')} control] #{message}"
 
   toJSON: ->
+    valid = @isValid()
     _.extend super,
       commands: _.keys(@commands)
+      valid: valid
       state: @getState()
 
 

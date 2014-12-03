@@ -15,7 +15,7 @@ module.exports = class ThermostatControl extends Control
       target.getAspect('temperatureSetPoint').executeCommand 'setTarget',
         parseFloat(params.value)
 
-  getState: ->
+  _getState: ->
     setPoint = @getConnectionTarget('temperatureSetPoint').
       getAspect('temperatureSetPoint')
     mode: setPoint.getDatum('mode')
