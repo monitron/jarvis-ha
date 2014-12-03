@@ -25,8 +25,11 @@ module.exports = class Server
       @adapters.add new adapterClass(config)
     # Start adapters
     @adapters.each (adapter) =>
-      winston.info "Starting #{adapter.name} adapter"
-      adapter.start()
+      if adapter.isEnabled()
+        @log 'info', "Starting #{adapter.name} adapter"
+        adapter.start()
+      else
+        @log 'info', "Not starting disabled #{adapter.name} adapter"
     # Now let's controls
     @controls = new Controls()
     for controlConfig in @config.controls

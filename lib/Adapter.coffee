@@ -10,6 +10,9 @@ module.exports = class Adapter extends AdapterNode
   log: (level, message) ->
     winston.log level, "[#{@name} adapter] #{message}"
 
+  isEnabled: ->
+    if @has('enabled') then @get('enabled') else true
+
   start: ->
     @log "error", "Adapter must override start method"
 
