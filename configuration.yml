@@ -34,6 +34,15 @@ controls:
     name: Living Room Media
     type: media
     memberships:
+      - path: [category, Entertainment]
+      - path: [location, Main Floor, Living Room]
+    connections:
+      powerOnOff: [harmony, hub]
+      mediaSource: [harmony, hub]
+  - id: thermostat
+    name: Thermostat
+    type: thermostat
+    memberships:
       - path: [category, Climate]
     parameters:
       temperatureUnits: f
