@@ -1,0 +1,64 @@
+adapters:
+  - id: nest
+    login: some@guy.com
+    password: correct horse battery staple
+  - id: insteon
+    gatewayType: hub
+    gatewayHost: 192.168.1.17
+    deviceIds:
+      - 27d35f
+      - 2bc0d3
+      - 2bb7c6
+      - 26ce6c
+  - id: harmony
+    email: some@guy.com
+    password: correct horse battery staple
+    hubHost: 192.168.1.5
+  - id: usnws
+    stations:
+      - KGAI
+  - id: zwave
+    controllerDevice: /dev/ttyUSB0
+controls:
+  - id: basement-entry-light
+    name: Basement Entry Light
+    type: switch
+    memberships:
+      - path: [category, Lighting]
+      - path: [location, Main Floor, Living Room]
+      - path: [location, Basement, Main Room]
+    connections:
+      powerOnOff: [insteon, 27d35f]
+      brightness: [insteon, 27d35f]
+  - id: living-room-media
+    name: Living Room Media
+    type: media
+    memberships:
+      - path: [category, Climate]
+    parameters:
+      temperatureUnits: f
+    connections:
+      temperatureSetPoint: [nest, 02AA01AC021401UM]
+  - id: weather
+    name: Weather
+    type: climateSensor
+    memberships:
+      - path: [category, Climate]
+    parameters:
+      temperatureUnits: f
+    connections:
+      temperatureSensor: [usnws, KGAI]
+      humiditySensor: [usnws, KGAI]
+  - id: living-room-climate
+    name: Living Room Climate
+    type: climateSensor
+    memberships:
+      - path: [category, Climate]
+      - path: [location, Main Floor, Living Room]
+    parameters:
+      temperatureUnits: f
+    connections:
+      temperatureSensor: [nest, 02AA01AC021401UM]
+      humiditySensor: [nest, 02AA01AC021401UM]
+webServer:
+  port: 3000
