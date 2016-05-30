@@ -12,6 +12,7 @@ module.exports = class InsteonAdapter extends Adapter
     super
     @setValid false
     @hasDiscovered = false
+    @_nodesByHexId = {}
 
   start: ->
     @_api = new InsteonAPI(key: @get('apiKey'))
@@ -25,24 +26,36 @@ module.exports = class InsteonAdapter extends Adapter
         @discoverDevices()
     @_api.on 'error', =>
       @log 'warn', 'An Insteon error occurred'
-    @_api.on 'command', (message) =>
-      raw = message.standard?.raw
-      @log "verbose", "Received Insteon message: #{raw}"
+    @_api.on 'command', (cmd) => @_handleCommandReceived(cmd)
 
   discoverDevices: ->
     @_api.device().then (devices) =>
+      @_devices = devices
       for device in devices
         nodeClass = switch device.devCat
           when 1 then InsteonDimmerNode
           when 2 then InsteonSwitchNode
         if nodeClass?
-          @log 'debug', "Device ID #{device.id} (#{device.name}) enumerated"
+          @log 'verbose', "Device ID #{device.id} (#{device.name}) enumerated"
           node = new nodeClass({id: device.id}, {adapter: this})
           @children.add node
+          @_nodesByHexId[device.insteonID] = node
         else
           @log 'warn', "Device ID #{device.id} has unknown category " +
             "#{device.devCat}"
       @hasDiscovered = true
+
+  requestLightStatus: (deviceId) ->
+    light = @_api.light(deviceId)
+    @log 'verbose', "Requesting status for light #{deviceId}"
+    light.command('get_status').then (response) =>
+      @log 'verbose', "Received status: #{JSON.stringify(response)}"
+      power = response.level == 0
+      node = @children.get(deviceId)
+      if node instanceof InsteonDimmerNode
+        node.processData {brightness: response.level}
+      else
+        node.processData {power: response.level != 0}
 
   toggleLight: (deviceId, value) ->
     light = @_api.light(deviceId)
@@ -52,10 +65,16 @@ module.exports = class InsteonAdapter extends Adapter
     light = @_api.light(deviceId)
     if value == 0 then light.turnOff() else light.turnOn(value) # Gives a promise
 
-  observeLight: (node) ->
-    @log 'verbose', "Observing light events on #{node.id}"
-    light = @_hub.light(node.id)
-    light.on 'turnOn',      -> node.processData(power: true)
-    light.on 'turnOnFast',  -> node.processData(power: true)
-    light.on 'turnOff',     -> node.processData(power: false)
-    light.on 'turnOffFast', -> node.processData(power: false)
+  _handleCommandReceived: (cmd) ->
+    @log 'verbose', "Received Insteon command for device #{cmd.device_insteon_id}"
+    node = @_nodesByHexId[cmd.device_insteon_id]
+    if node?
+      @log 'verbose', "Dispatching #{cmd.status} command to node #{node.id}"
+      switch cmd.status
+        when 'on',  'fast_on'  then node.processData(power: true)
+        when 'off', 'fast_off' then node.processData(power: false)
+        when 'unknown'         then @requestLightStatus(node.id)
+        else @log 'debug', "Received unknown status cmd: #{JSON.stringify(cmd)}"
+    else
+      @log 'debug', "Received message for unknown or unidentifiable Insteon " +
+        "device ID #{cmd.device_insteon_id}"

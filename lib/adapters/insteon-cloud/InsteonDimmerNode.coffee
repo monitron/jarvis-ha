@@ -19,4 +19,8 @@ module.exports = class InsteonDimmerNode extends InsteonNode
   processData: (data) ->
     if data.power?
       @getAspect('powerOnOff').setData state: data.power
-      @getAspect('brightness').setData state: if value then 100 else 0
+    if data.brightness?
+      @getAspect('brightness').setData state: data.brightness
+      # Power state can be inferred from brightness
+      if !data.power?
+        @getAspect('powerOnOff').setData state: data.brightness != 0
