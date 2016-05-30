@@ -27,7 +27,8 @@
     "winston": "^0.7.3",
     "xml2js": "^0.4.4",
     "openzwave-shared": "^1.2.0",
-    "js-yaml": "^3.2.3"
+    "js-yaml": "^3.2.3",
+    "insteon-api": "^1.0.0"
   },
   "devDependencies": {
     "coffeeify": "^0.6.0",
