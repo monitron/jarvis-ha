@@ -59,7 +59,7 @@ class AdapterNodes extends Backbone.Collection
   getPath: (path) ->
     path = _.clone(path)
     node = @get(path.shift())
-    if _.isEmpty(path) then node else node.children.getPath(path)
+    if _.isEmpty(path) then node else node?.children.getPath(path)
 
   onEventAtPath: (path, event, callback) ->
     @listenTo this, 'deepEvent', (evPath, evEvent, args) ->
