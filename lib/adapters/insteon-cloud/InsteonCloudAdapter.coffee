@@ -9,7 +9,11 @@ module.exports = class InsteonAdapter extends Adapter
   name: "Insteon"
   defaults:
     initialStatusCheck:   true # Check status on all devices upon connection?
-    batchCommandInterval: 2000 # How long to wait between repeated commands
+    batchCommandInterval: 2000 # How long to wait between repeated commands (ms)
+    proxyDevices:         {}   # Set "deviceId1": "deviceId2" to redirect all
+                               # status messages from the key device to the
+                               # value device. Also excludes the key device from
+                               # bulk status checks. Useful for controllers.
 
   initialize: ->
     super
@@ -28,8 +32,7 @@ module.exports = class InsteonAdapter extends Adapter
         @setValid true
       else
         @discoverDevices()
-    @_api.on 'error', =>
-      @log 'warn', 'An Insteon error occurred'
+    @_api.on 'error', => @log 'warn', 'An Insteon error occurred'
     @_api.on 'command', (cmd) => @_handleCommandReceived(cmd)
 
   discoverDevices: ->
@@ -52,9 +55,9 @@ module.exports = class InsteonAdapter extends Adapter
       if @get('initialStatusCheck') then @requestAllDevicesStatus()
 
   requestAllDevicesStatus: ->
-    ids = _.keys(@_nodesById)
+    ids = _.without(_.keys(@_nodesById), _.keys(@get('proxyDevices'))...)
     interval = @get('batchCommandInterval')
-    @log 'debug', "Requesting status of all #{ids.length} enumerated devices " +
+    @log 'debug', "Requesting status of #{ids.length} devices " +
       "over the course of #{(interval * ids.length) / 1000} seconds"
     for deviceId, i in ids
       setTimeout _.bind(@requestDeviceStatus, this, deviceId), interval * i
@@ -86,6 +89,13 @@ module.exports = class InsteonAdapter extends Adapter
   _handleCommandReceived: (cmd) ->
     @log 'verbose', "Received Insteon command for device #{cmd.device_insteon_id}"
     node = @_nodesByHexId[cmd.device_insteon_id]
+    proxyFor = @get('proxyDevices')[node.id]
+    if proxyFor?
+      node = @children.get(proxyFor)
+      if node?
+        @log 'verbose', "...proxied to #{node.id}"
+      else
+        @log 'warn', "Proxy target device #{proxyFor} does not exist!"
     if node?
       @log 'verbose', "Dispatching #{cmd.status} command to node #{node.id}"
       switch cmd.status
