@@ -7,12 +7,16 @@ InsteonSwitchNode = require('./InsteonSwitchNode')
 
 module.exports = class InsteonAdapter extends Adapter
   name: "Insteon"
+  defaults:
+    initialStatusCheck:   true # Check status on all devices upon connection?
+    batchCommandInterval: 2000 # How long to wait between repeated commands
 
   initialize: ->
     super
     @setValid false
     @hasDiscovered = false
     @_nodesByHexId = {}
+    @_nodesById = {}
 
   start: ->
     @_api = new InsteonAPI(key: @get('apiKey'))
@@ -40,10 +44,24 @@ module.exports = class InsteonAdapter extends Adapter
           node = new nodeClass({id: device.id}, {adapter: this})
           @children.add node
           @_nodesByHexId[device.insteonID] = node
+          @_nodesById[device.id] = node
         else
           @log 'warn', "Device ID #{device.id} has unknown category " +
             "#{device.devCat}"
       @hasDiscovered = true
+      if @get('initialStatusCheck') then @requestAllDevicesStatus()
+
+  requestAllDevicesStatus: ->
+    ids = _.keys(@_nodesById)
+    interval = @get('batchCommandInterval')
+    @log 'debug', "Requesting status of all #{ids.length} enumerated devices " +
+      "over the course of #{(interval * ids.length) / 1000} seconds"
+    for deviceId, i in ids
+      setTimeout _.bind(@requestDeviceStatus, this, deviceId), interval * i
+
+  requestDeviceStatus: (deviceId) ->
+    # Right now they're all lights...
+    @requestLightStatus deviceId
 
   requestLightStatus: (deviceId) ->
     light = @_api.light(deviceId)
