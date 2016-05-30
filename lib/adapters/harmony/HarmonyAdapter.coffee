@@ -1,7 +1,7 @@
 
 _ = require('underscore')
 Adapter = require('../../Adapter')
-harmony = require('harmonyjs')
+harmony = require('harmonyhubjs-client')
 HarmonyHubNode = require('./HarmonyHubNode')
 
 # TODO: Listen to unsolicited XMPP events

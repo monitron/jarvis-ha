@@ -6,6 +6,12 @@ Someday this may be a home automation package.
 Right now it is nothing at all.
 
 
+Requirements
+------------
+
+* Node.js 4.4.5 LTS
+* An installation of the ``openzwave`` library
+
 How to run
 ----------
 

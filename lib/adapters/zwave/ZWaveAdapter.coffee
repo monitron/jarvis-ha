@@ -1,4 +1,4 @@
-OpenZWave = require('openzwave')
+OpenZWave = require('openzwave-shared')
 Adapter = require('../../Adapter')
 
 module.exports = class ZWaveAdapter extends Adapter
