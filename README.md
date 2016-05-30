@@ -15,7 +15,7 @@ Requirements
 How to run
 ----------
 
-* Take a look at the dummy config in ``lib/Server.coffee``
+* Take a look at the sample config in ``configuration.yml``
 * ``npm install -g grunt coffee-script``
 * ``npm install``
 * ``grunt``
@@ -28,8 +28,3 @@ How to start with an exploratory REPL
 * ``coffee``
 * ``coffee> jarvis = require('./lib/jarvis-ha')``
 * ``coffee> server = new jarvis.Server()``
-
-Fun Times
----------
-
-coffee-script 1.7+ breaks vows 0.7.0 -- https://github.com/flatiron/vows/pull/297
