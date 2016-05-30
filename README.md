@@ -16,6 +16,7 @@ How to run
 ----------
 
 * Take a look at the dummy config in ``lib/Server.coffee``
+* ``npm install -g grunt coffee-script``
 * ``npm install``
 * ``grunt``
 * ``coffee run.coffee``

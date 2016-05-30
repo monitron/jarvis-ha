@@ -16,7 +16,7 @@ module.exports = (grunt) ->
           'lib/web/public/bundle.js': ['lib/web/scripts/main.coffee']
         options:
           transform: ['coffeeify']
-          bundleOptions:
+          browserifyOptions:
             debug: true
 
     handlebars:

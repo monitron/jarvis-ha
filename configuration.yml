@@ -11,8 +11,6 @@ adapters:
       - 2bb7c6
       - 26ce6c
   - id: harmony
-    email: some@guy.com
-    password: correct horse battery staple
     hubHost: 192.168.1.5
   - id: usnws
     stations:

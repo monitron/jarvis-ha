@@ -18,7 +18,7 @@ module.exports = class HarmonyAdapter extends Adapter
     @setValid false
 
   start: ->
-    promise = harmony(@get('email'), @get('password'), @get('hubHost'))
+    promise = harmony(@get('hubHost'))
     promise.catch (error) =>
       @log "error", "Failed to connect to Harmony (#{error})"
     promise.then (client) =>
