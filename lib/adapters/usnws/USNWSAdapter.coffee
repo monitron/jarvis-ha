@@ -22,8 +22,12 @@ module.exports = class USNWSAdapter extends Adapter
 
   fetchConditionsForStation: (station) ->
     @log 'verbose', "Fetching conditions for #{station}"
-    url = "http://w1.weather.gov/xml/current_obs/#{station}.xml"
-    request url, (err, res, body) =>
+    requestOptions =
+      url: "http://w1.weather.gov/xml/current_obs/#{station}.xml"
+      headers:
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0'
+
+    request requestOptions, (err, res, body) =>
       if err?
         @log 'warn', "Failed to fetch XML for #{station} (#{err})"
         return
