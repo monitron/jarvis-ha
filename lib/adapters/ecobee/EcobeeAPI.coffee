@@ -23,7 +23,12 @@ module.exports = class EcobeeAPI extends Backbone.Model
 
   listThermostats: ->
     deferred = Q.defer()
-    body = selection: {selectionType: 'registered', selectionMatch: null}
+    body = selection:
+      selectionType: 'registered'
+      selectionMatch: null
+      includeEquipmentStatus: true
+      includeSensors: true
+      includeRuntime: true
     @_apiCall('thermostat', 'GET', body)
       .then (body) =>
         thermostats = {}
