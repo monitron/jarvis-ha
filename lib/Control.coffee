@@ -1,6 +1,7 @@
+
+winston = require('winston')
 _ = require('underscore')
 Backbone = require('backbone')
-
 
 class Control extends Backbone.Model
   defaults: # name and type are required
@@ -55,7 +56,7 @@ class Control extends Backbone.Model
     {} # This is boring and you should probably override it
 
   log: (level, message) ->
-    @_server.log level, "[#{@get('name')} control] #{message}"
+    winston.log level, "[#{@get('name')} control] #{message}"
 
   toJSON: ->
     valid = @isValid()

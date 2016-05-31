@@ -31,25 +31,28 @@ module.exports = class WebServer
       control.executeCommand req.params.commandId, req.body
         .then -> res.json success: true
         .catch (why) ->
-          winston.warn "Failed to execute command on #{req.params.controlId}: #{why}"
+          @log 'warn', "Failed to execute command on #{req.params.controlId}: #{why}"
           res.json 500, {success: false, message: why}
         .done()
 
     app.use express.static(__dirname + '/public')
 
     io.on 'connection', (socket) =>
-      winston.debug "A client socket connected"
+      @log 'debug', 'A client socket connected'
       notifyControlChange = (model) =>
-        winston.debug "Notifying client of change to control #{model.id}"
+        @log 'verbose', "Notifying client of change to control #{model.id}"
         socket.emit 'control:change', model.toJSON()
       @_server.controls.on 'change', notifyControlChange, socket
 
       socket.on 'disconnect', =>
-        winston.debug "Client socket disconnected; unregistering notifications"
+        @log 'debug', 'Client socket disconnected; unregistering notifications'
         @_server.controls.off 'change', notifyControlChange, socket
 
     httpServer.listen @_config.port, =>
-      winston.info "Web server listening on port #{httpServer.address().port}"
+      @log 'info', "Listening on port #{httpServer.address().port}"
 
   normalizePath: ->
     if _.isString(path) then path.split("/") else path
+
+  log: (level, message) ->
+    winston.log level, "[WebServer] #{message}"
