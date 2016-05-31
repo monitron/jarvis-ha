@@ -12,6 +12,7 @@ class AdapterNode extends Backbone.Model
   #   attributes - A map of aspect names to maps of attributes to set on them
   initialize: (attributes, options) ->
     @adapter = options?.adapter or this
+    @server = options?.server
     @children = new AdapterNodes()
     @_valid = true
     # Generate deepEvents as needed

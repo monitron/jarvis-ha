@@ -18,3 +18,12 @@ module.exports = class Adapter extends AdapterNode
 
   refreshData: ->
     @log "error", "Adapter must override refreshData method"
+
+  setPersistentData: (key, value) ->
+    @server.persistence.setAdapterData(@name, key, value)
+
+  unsetPersistentData: (key) ->
+    @server.persistence.unsetAdapterData(@name, key)
+
+  getPersistentData: (key) ->
+    @server.persistence.getAdapterData(@name, key)

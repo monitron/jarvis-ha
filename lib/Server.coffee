@@ -7,6 +7,7 @@ yaml = require('js-yaml')
 [Control, Controls] = require('./Control')
 controls = require('./controls')
 WebServer = require('./web')
+Persistence = require('./persistence')
 [AdapterNode, AdapterNodes] = require('./AdapterNode')
 
 module.exports = class Server
@@ -16,13 +17,14 @@ module.exports = class Server
     winston.cli()
     @log 'info', 'Jarvis Home Automation server'
     @config = @readConfig()
+    @persistence = new Persistence()
     # Gather adapters
     @adapters = new AdapterNodes()
     @adapters.on 'deepEvent', (path, ev, args) =>
       @log 'debug', "Saw adapter event: #{path.join('/')} emitted #{ev}"
     for config in @config.adapters
       adapterClass = require("./adapters/#{config.id}")
-      @adapters.add new adapterClass(config)
+      @adapters.add new adapterClass(config, {server: this})
     # Start adapters
     @adapters.each (adapter) =>
       if adapter.isEnabled()
@@ -38,7 +40,7 @@ module.exports = class Server
     @web = new WebServer(this, @config.webServer)
 
   log: (level, message) ->
-    winston.log level, "[#{@name} adapter] #{message}"
+    winston.log level, "[Jarvis] #{message}"
 
   readConfig: ->
     text = fs.readFileSync(__dirname + '/../configuration.yml', 'utf8')
