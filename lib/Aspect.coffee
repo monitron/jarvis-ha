@@ -12,8 +12,9 @@ module.exports = class Aspect extends EventEmitter
   setData: (newData) ->
     for event, conditionalFn of @config.events
       if conditionalFn(@_data, newData) then @emit('aspectEvent', event)
+    oldData = @_data
     @_data = newData
-    @_node.trigger 'aspectData:change'
+    unless _.isEqual(oldData, @_data) then @_node.trigger 'aspectData:change'
 
   getData: ->
     @_data
