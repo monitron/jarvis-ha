@@ -7,6 +7,9 @@ EcobeeSensorNode = require('./EcobeeSensorNode')
 module.exports = class EcobeeAdapter extends Adapter
   name: "Ecobee"
 
+  defaults:
+    pollInterval: 300 # seconds between data refreshes; defaults to every 5min
+
   initialize: ->
     super
     @setValid false
@@ -15,7 +18,9 @@ module.exports = class EcobeeAdapter extends Adapter
     @getPersistentData('tokens').then (tokens) =>
       @log 'verbose', "Initial Tokens = #{JSON.stringify(tokens)}"
       @_api = new EcobeeAPI(key: @get('apiKey'), tokens: tokens)
-      @listenTo @_api, 'connected', => @pollThermostats()
+      @listenTo @_api, 'connected', =>
+        @pollThermostats()
+        setInterval (=> @pollThermostats()), @get('pollInterval') * 1000
       @listenTo @_api, 'change:tokens', (m, value) =>
         @log 'verbose', "New Tokens = #{JSON.stringify(value)}"
         @setPersistentData 'tokens', value
@@ -23,6 +28,7 @@ module.exports = class EcobeeAdapter extends Adapter
       @_api.connect()
 
   pollThermostats: ->
+    @log 'debug', 'Polling thermostats...'
     @_api.listThermostats()
       .then (thermostats) =>
         for id, thermostat of thermostats
