@@ -6,7 +6,7 @@ InsteonDimmerNode = require('./InsteonDimmerNode')
 InsteonSwitchNode = require('./InsteonSwitchNode')
 
 module.exports = class InsteonAdapter extends Adapter
-  name: "Insteon"
+  name: "Insteon Cloud"
   defaults:
     initialStatusCheck:   true # Check status on all devices upon connection?
     batchCommandInterval: 2000 # How long to wait between repeated commands (ms)
@@ -52,6 +52,7 @@ module.exports = class InsteonAdapter extends Adapter
           @log 'warn', "Device ID #{device.id} has unknown category " +
             "#{device.devCat}"
       @hasDiscovered = true
+      @setValid true
       if @get('initialStatusCheck') then @requestAllDevicesStatus()
 
   requestAllDevicesStatus: ->
