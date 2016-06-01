@@ -1,0 +1,17 @@
+<li class="parent">
+  <a href="#path/location">
+    <i class="fa fa-home"></i> Jarvis
+  </a>
+</li>
+{{#each subpaths}}
+<li class="parent">
+  <i class="fa fa-angle-right"></i>
+  <a href="{{url}}">{{name}}</a>
+</li>
+{{/each}}
+{{#if here}}
+<li class="here">
+  <i class="fa fa-angle-right"></i>
+  {{here}}
+</li>
+{{/if}}

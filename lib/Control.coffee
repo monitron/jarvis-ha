@@ -75,6 +75,12 @@ class Controls extends Backbone.Collection
       membership: control.getMembership(path)
     _.select(pairs, (p) -> p.membership?)
 
+  findSubpathsOfPath: (path) ->
+    tree = @getPathTree()
+    for element in path
+      tree = tree[element]
+    _.keys(tree)
+
   getPathTree: ->
     paths = _.pluck(_.flatten(@pluck('memberships')), 'path')
     tree = {}
