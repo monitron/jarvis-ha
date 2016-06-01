@@ -4,7 +4,7 @@ controlBodyViews = require('./controls/index.coffee')
 
 module.exports = class ControlView extends Backbone.View
   tagName: 'li'
-  className: 'col-md-6'
+  className: 'col-sm-6'
 
   initialize: ->
     bodyViewClass = controlBodyViews[@model.control.get('type')]
