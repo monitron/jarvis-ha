@@ -40,7 +40,7 @@ module.exports = class Server
     @web = new WebServer(this, @config.webServer)
 
   log: (level, message) ->
-    winston.log level, "[Jarvis] #{message}"
+    winston.log level, "#{message}"
 
   readConfig: ->
     text = fs.readFileSync(__dirname + '/../configuration.yml', 'utf8')

@@ -1,5 +1,4 @@
 
-winston = require('winston')
 _ = require('underscore')
 Backbone = require('backbone')
 
@@ -56,7 +55,8 @@ class Control extends Backbone.Model
     {} # This is boring and you should probably override it
 
   log: (level, message) ->
-    winston.log level, "[#{@get('name')} control] #{message}"
+    # Logs through the server because including winston breaks browserify
+    @_server.log level, "[#{@get('name')} control] #{message}"
 
   toJSON: ->
     valid = @isValid()
