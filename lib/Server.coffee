@@ -7,7 +7,7 @@ yaml = require('js-yaml')
 [Control, Controls] = require('./Control')
 controls = require('./controls')
 WebServer = require('./web')
-Persistence = require('./persistence')
+Persistence = require('./Persistence')
 [AdapterNode, AdapterNodes] = require('./AdapterNode')
 
 module.exports = class Server

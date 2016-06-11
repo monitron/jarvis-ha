@@ -1,5 +1,5 @@
 
-EcobeeAPI = require('./EcobeeApi')
+EcobeeAPI = require('./EcobeeAPI')
 Adapter = require('../../Adapter')
 EcobeeThermostatNode = require('./EcobeeThermostatNode')
 EcobeeSensorNode = require('./EcobeeSensorNode')
