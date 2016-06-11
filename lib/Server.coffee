@@ -14,6 +14,10 @@ module.exports = class Server
   constructor: ->
     winston.clear()
     winston.add winston.transports.Console, level: 'verbose'
+    winston.add winston.transports.File,
+      filename: 'jarvis.log'
+      level: 'verbose'
+      json: false
     winston.cli()
     @log 'info', 'Jarvis Home Automation server'
     @config = @readConfig()
