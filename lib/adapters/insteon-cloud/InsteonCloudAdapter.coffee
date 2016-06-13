@@ -32,7 +32,7 @@ module.exports = class InsteonAdapter extends Adapter
         @setValid true
       else
         @discoverDevices()
-    @_api.on 'error', => @log 'warn', 'An Insteon error occurred'
+    @_api.on 'error', (e) => @log 'warn', "An Insteon error occurred: #{e}"
     @_api.on 'command', (cmd) => @_handleCommandReceived(cmd)
 
   discoverDevices: ->

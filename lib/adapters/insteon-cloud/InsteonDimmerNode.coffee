@@ -13,7 +13,7 @@ module.exports = class InsteonDimmerNode extends InsteonNode
       commands:
         set: (node, value) ->
           node.adapter.setLightLevel(node.id, value).then ->
-            node.getAspect('powerOnOff').setData state: (value == 0)
+            node.getAspect('powerOnOff').setData state: (value != 0)
             node.getAspect('brightness').setData state: value
 
   processData: (data) ->
