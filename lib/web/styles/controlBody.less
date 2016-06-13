@@ -127,4 +127,25 @@
   > div > * {
     border-right: 2px solid white;
   }
+
+  .slider {
+    cursor: pointer;
+    
+    .fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      background: lighten(@color1, 20%);
+      pointer-events: none;
+    }
+
+    &:hover {
+      background: lighten(@color1, 30%);
+      
+      .fill {
+        background: lighten(@color1, 10%);
+      }
+    }
+  }
 }
