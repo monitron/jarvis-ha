@@ -5,3 +5,4 @@ module.exports =
   thermostat: require('./ThermostatControl')
   media: require('./MediaControl')
   climateSensor: require('./ClimateSensorControl')
+  fanSpeed: require('./FanSpeedControl')

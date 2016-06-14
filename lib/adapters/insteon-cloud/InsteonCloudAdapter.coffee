@@ -4,6 +4,7 @@ InsteonAPI = require('insteon-api')
 Adapter = require('../../Adapter')
 InsteonDimmerNode = require('./InsteonDimmerNode')
 InsteonSwitchNode = require('./InsteonSwitchNode')
+InsteonFanNode = require('./InsteonFanNode')
 
 module.exports = class InsteonAdapter extends Adapter
   name: "Insteon Cloud"
@@ -40,7 +41,10 @@ module.exports = class InsteonAdapter extends Adapter
       @_devices = devices
       for device in devices
         nodeClass = switch device.devCat
-          when 1 then InsteonDimmerNode
+          when 1
+            switch device.subCat
+              when 46 then InsteonFanNode
+              else InsteonDimmerNode
           when 2 then InsteonSwitchNode
         if nodeClass?
           @log 'verbose', "Device ID #{device.id} (#{device.name}) enumerated"
@@ -50,7 +54,7 @@ module.exports = class InsteonAdapter extends Adapter
           @_nodesById[device.id] = node
         else
           @log 'warn', "Device ID #{device.id} has unknown category " +
-            "#{device.devCat}"
+            "#{device.devCat} subcategory #{device.subCat}"
       @hasDiscovered = true
       @setValid true
       if @get('initialStatusCheck') then @requestAllDevicesStatus()
@@ -86,6 +90,12 @@ module.exports = class InsteonAdapter extends Adapter
   setLightLevel: (deviceId, value) ->
     light = @_api.light(deviceId)
     if value == 0 then light.turnOff() else light.turnOn(value) # Gives a promise
+
+  sendCommand: (deviceId, command, params = {}) ->
+    baseCommand =
+      device_id: deviceId
+      command:   command
+    @_api.command _.extend(baseCommand, params) # Returns a promise
 
   _handleCommandReceived: (cmd) ->
     @log 'verbose', "Received Insteon command for device #{cmd.device_insteon_id}"

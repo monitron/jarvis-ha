@@ -1,7 +1,7 @@
 
 InsteonNode = require('./InsteonNode')
 
-module.exports = class InsteonDimmerNode extends InsteonNode
+module.exports = class InsteonFanNode extends InsteonNode
   aspects:
     powerOnOff:
       commands:
@@ -15,6 +15,17 @@ module.exports = class InsteonDimmerNode extends InsteonNode
           node.adapter.setLightLevel(node.id, value).then ->
             node.getAspect('powerOnOff').setData state: (value != 0)
             node.getAspect('brightness').setData state: value
+    discreteSpeed:
+      commands:
+        set: (node, value) ->
+          node.adapter.sendCommand(node.id, 'fan', speed: value).then ->
+            node.getAspect('discreteSpeed').setData state: value
+      attributes:
+        choices: [
+          {id: 'off',  name: 'Off'}
+          {id: 'low',  name: 'Low'}
+          {id: 'med',  name: 'Med'}
+          {id: 'high', name: 'High'}]
 
   processData: (data) ->
     if data.power?
@@ -27,3 +38,5 @@ module.exports = class InsteonDimmerNode extends InsteonNode
       # Power state can be inferred from brightness
       if !data.power?
         @getAspect('powerOnOff').setData state: data.brightness != 0
+    if data.speed?
+      @getAspect('discreteSpeed').setData state: data.speed

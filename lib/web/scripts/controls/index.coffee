@@ -5,3 +5,4 @@ module.exports =
   media:         require('./MediaControlBodyView.coffee')
   climateSensor: require('./ClimateSensorBodyView.coffee')
   thermostat:    require('./ThermostatBodyView.coffee')
+  fanSpeed:      require('./FanSpeedBodyView.coffee')
