@@ -10,6 +10,8 @@ module.exports = class InsteonAdapter extends Adapter
   name: "Insteon Cloud"
   defaults:
     initialStatusCheck:   true # Check status on all devices upon connection?
+    statusCheckInterval:  900  # Time between automatic status refreshes
+                               # in seconds. Set null to disable.
     batchCommandInterval: 2000 # How long to wait between repeated commands (ms)
     proxyDevices:         {}   # Set "deviceId1": "deviceId2" to redirect all
                                # status messages from the key device to the
@@ -58,8 +60,14 @@ module.exports = class InsteonAdapter extends Adapter
       @hasDiscovered = true
       @setValid true
       if @get('initialStatusCheck') then @requestAllDevicesStatus()
+      scInterval = @get('statusCheckInterval')
+      if scInterval?
+        @log 'debug', "Will check all device status at #{scInterval}s interval"
+        @_statusCheck = setInterval(
+          _.bind(@requestAllDevicesStatus, this), scInterval * 1000)
 
   requestAllDevicesStatus: ->
+    # TODO don't request status on devices that won't reply (e.g. leak sensors)
     ids = _.without(_.keys(@_nodesById), _.keys(@get('proxyDevices'))...)
     interval = @get('batchCommandInterval')
     @log 'debug', "Requesting status of #{ids.length} devices " +
@@ -69,6 +77,7 @@ module.exports = class InsteonAdapter extends Adapter
 
   requestDeviceStatus: (deviceId) ->
     # Right now they're all lights...
+    # TODO notice when they don't respond
     @requestLightStatus deviceId
 
   requestLightStatus: (deviceId) ->
@@ -98,7 +107,7 @@ module.exports = class InsteonAdapter extends Adapter
     @_api.command _.extend(baseCommand, params) # Returns a promise
 
   _handleCommandReceived: (cmd) ->
-    @log 'verbose', "Received Insteon command for device #{cmd.device_insteon_id}"
+    @log 'verbose', "Received Insteon command: #{JSON.stringify(cmd)}"
     node = @_nodesByHexId[cmd.device_insteon_id]
     proxyFor = @get('proxyDevices')[node.id]
     if proxyFor?
