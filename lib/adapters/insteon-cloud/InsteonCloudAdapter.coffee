@@ -12,6 +12,9 @@ module.exports = class InsteonAdapter extends Adapter
     initialStatusCheck:   true # Check status on all devices upon connection?
     statusCheckInterval:  900  # Time between automatic status refreshes
                                # in seconds. Set null to disable.
+    streamCycleInterval:  600  # How long (s) after receiving a message to close
+                               # and reopen the stream to ensure it is working.
+                               # Set null to disable.
     batchCommandInterval: 2000 # How long to wait between repeated commands (ms)
     proxyDevices:         {}   # Set "deviceId1": "deviceId2" to redirect all
                                # status messages from the key device to the
@@ -35,10 +38,14 @@ module.exports = class InsteonAdapter extends Adapter
         @setValid true
       else
         @discoverDevices()
+      @_resetStreamCycle()
     @_api.on 'error', (e) => @log 'warn', "An Insteon error occurred: #{e}"
     @_api.on 'command', (cmd) => @_handleCommandReceived(cmd)
 
   discoverDevices: ->
+    @_api.house().then (houses) => @_house = houses[0]
+    #@_api.scene().then (scenes) =>
+    #  console.log JSON.stringify(scenes)
     @_api.device().then (devices) =>
       @_devices = devices
       for device in devices
@@ -108,6 +115,7 @@ module.exports = class InsteonAdapter extends Adapter
 
   _handleCommandReceived: (cmd) ->
     @log 'verbose', "Received Insteon command: #{JSON.stringify(cmd)}"
+    @_resetStreamCycle()
     node = @_nodesByHexId[cmd.device_insteon_id]
     proxyFor = @get('proxyDevices')[node.id]
     if proxyFor?
@@ -126,3 +134,16 @@ module.exports = class InsteonAdapter extends Adapter
     else
       @log 'debug', "Received message for unknown or unidentifiable Insteon " +
         "device ID #{cmd.device_insteon_id}"
+
+  _resetStreamCycle: ->
+    streamCycleInterval = @get('streamCycleInterval')
+    if streamCycleInterval?
+      if @_streamCycle? then clearTimeout(@_streamCycle)
+      @_streamCycle = setTimeout((=> @_cycleStream()),
+        @get('streamCycleInterval') * 1000)
+
+  _cycleStream: ->
+    @_resetStreamCycle()
+    @log 'verbose', "Stream has been inactive; cycling it"
+    _.values(@_api.monitoring)[0].stream.close()
+    @_api.monitor @_house
