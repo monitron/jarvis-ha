@@ -25,8 +25,6 @@ module.exports = class InsteonAdapter extends Adapter
     super
     @setValid false
     @hasDiscovered = false
-    @_nodesByHexId = {}
-    @_nodesById = {}
 
   start: ->
     @_api = new InsteonAPI(key: @get('apiKey'))
@@ -57,10 +55,9 @@ module.exports = class InsteonAdapter extends Adapter
           when 2 then InsteonSwitchNode
         if nodeClass?
           @log 'verbose', "Device ID #{device.id} (#{device.name}) enumerated"
-          node = new nodeClass({id: device.id}, {adapter: this})
+          node = new nodeClass({id: device.id, hardwareID: device.insteonID},
+            {adapter: this})
           @children.add node
-          @_nodesByHexId[device.insteonID] = node
-          @_nodesById[device.id] = node
         else
           @log 'warn', "Device ID #{device.id} has unknown category " +
             "#{device.devCat} subcategory #{device.subCat}"
@@ -75,29 +72,41 @@ module.exports = class InsteonAdapter extends Adapter
 
   requestAllDevicesStatus: ->
     # TODO don't request status on devices that won't reply (e.g. leak sensors)
-    ids = _.without(_.keys(@_nodesById), _.keys(@get('proxyDevices'))...)
+    proxies = _.keys(@get('proxyDevices'))
+    devices = @children.reject (child) => _.contains(proxies, child.id)
     interval = @get('batchCommandInterval')
-    @log 'debug', "Requesting status of #{ids.length} devices " +
-      "over the course of #{(interval * ids.length) / 1000} seconds"
-    for deviceId, i in ids
-      setTimeout _.bind(@requestDeviceStatus, this, deviceId), interval * i
+    @log 'debug', "Requesting status of #{devices.length} devices " +
+      "over the course of #{(interval * devices.length) / 1000} seconds"
+    for device, i in devices
+      setTimeout _.bind(@requestDeviceStatus, this, device), interval * i
 
-  requestDeviceStatus: (deviceId) ->
-    # Right now they're all lights...
+  requestDeviceStatus: (device) ->
     # TODO notice when they don't respond
-    @requestLightStatus deviceId
-
-  requestLightStatus: (deviceId) ->
-    light = @_api.light(deviceId)
-    @log 'verbose', "Requesting status for light #{deviceId}"
-    light.command('get_status').then (response) =>
-      @log 'verbose', "Received status: #{JSON.stringify(response)}"
-      power = response.level == 0
-      node = @children.get(deviceId)
-      if node instanceof InsteonDimmerNode
-        node.processData {brightness: response.level}
+    switch device.interfaceType
+      when 'light'
+        @requestLightStatus device
+      when 'fanlinc'
+        @requestLightStatus device
+        @requestFanStatus device
       else
-        node.processData {power: response.level != 0}
+        @log 'warn', "Unknown interface type for device #{device.id}"
+
+  requestFanStatus: (device) ->
+    @log 'verbose', "Requesting status for fan #{device.id}"
+    @sendCommand(device.id, 'get_fan_speed').then (response) =>
+      @log 'verbose', "Received fan status: #{JSON.stringify(response)}"
+      device.processData {speed: response.speed}
+
+  requestLightStatus: (device) ->
+    light = @_api.light(device.id)
+    @log 'verbose', "Requesting status for light #{device.id}"
+    light.command('get_status').then (response) =>
+      @log 'verbose', "Received light status: #{JSON.stringify(response)}"
+      power = response.level == 0
+      if device.hasAspect('brightness')
+        device.processData {brightness: response.level}
+      else
+        device.processData {power: response.level != 0}
 
   toggleLight: (deviceId, value) ->
     light = @_api.light(deviceId)
@@ -116,7 +125,7 @@ module.exports = class InsteonAdapter extends Adapter
   _handleCommandReceived: (cmd) ->
     @log 'verbose', "Received Insteon command: #{JSON.stringify(cmd)}"
     @_resetStreamCycle()
-    node = @_nodesByHexId[cmd.device_insteon_id]
+    node = @children.find(hardwareID: cmd.device_insteon_id)
     proxyFor = @get('proxyDevices')[node.id]
     if proxyFor?
       node = @children.get(proxyFor)
@@ -129,7 +138,7 @@ module.exports = class InsteonAdapter extends Adapter
       switch cmd.status
         when 'on',  'fast_on'  then node.processData(power: true)
         when 'off', 'fast_off' then node.processData(power: false)
-        when 'unknown'         then @requestLightStatus(node.id)
+        when 'unknown'         then @requestLightStatus(node)
         else @log 'debug', "Received unknown status cmd: #{JSON.stringify(cmd)}"
     else
       @log 'debug', "Received message for unknown or unidentifiable Insteon " +

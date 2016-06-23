@@ -44,6 +44,9 @@ class AdapterNode extends Backbone.Model
   getAspect: (id) ->
     @_aspects[id]
 
+  hasAspect: (id) ->
+    @getAspect(id)?
+
   getAspectIds: ->
     _.keys(@_aspects)
 

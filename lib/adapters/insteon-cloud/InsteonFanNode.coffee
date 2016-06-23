@@ -2,6 +2,8 @@
 InsteonNode = require('./InsteonNode')
 
 module.exports = class InsteonFanNode extends InsteonNode
+  interfaceType: 'fanlinc'
+
   aspects:
     powerOnOff:
       commands:

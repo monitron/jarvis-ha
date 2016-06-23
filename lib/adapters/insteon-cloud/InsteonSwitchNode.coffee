@@ -2,6 +2,8 @@
 InsteonNode = require('./InsteonNode')
 
 module.exports = class InsteonSwitchNode extends InsteonNode
+  interfaceType: 'light'
+
   aspects:
     powerOnOff:
       commands:
