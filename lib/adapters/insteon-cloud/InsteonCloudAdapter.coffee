@@ -9,6 +9,7 @@ INSTEON_DEVICE_CLASSES =
   fan:             require('./InsteonFanNode')
   lowVoltage:      require('./InsteonLowVoltageNode')
   openCloseSensor: require('./InsteonOpenCloseSensorNode')
+  garageDoor:      require('./InsteonGarageDoorNode')
 
 module.exports = class InsteonAdapter extends Adapter
   name: "Insteon Cloud"

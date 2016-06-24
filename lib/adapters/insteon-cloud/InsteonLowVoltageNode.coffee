@@ -1,5 +1,8 @@
 InsteonNode = require('./InsteonNode')
 
+# This is the basic IOLinc class; you probably want to specify a more spacific
+# one to get it working with your Controls.
+
 # IOLinc sensor must be in the default "On when closed" mode to work correctly.
 # Otherwise the push status code is inverted (but not the pull code), causing
 # general havoc.
