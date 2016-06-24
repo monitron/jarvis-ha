@@ -6,3 +6,4 @@ module.exports =
   climateSensor: require('./ClimateSensorBodyView.coffee')
   thermostat:    require('./ThermostatBodyView.coffee')
   fanSpeed:      require('./FanSpeedBodyView.coffee')
+  door:          require('./DoorBodyView.coffee')
