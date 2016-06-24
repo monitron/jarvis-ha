@@ -6,3 +6,4 @@ module.exports =
   media: require('./MediaControl')
   climateSensor: require('./ClimateSensorControl')
   fanSpeed: require('./FanSpeedControl')
+  door: require('./DoorControl')

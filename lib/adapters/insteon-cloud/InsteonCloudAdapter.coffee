@@ -5,6 +5,8 @@ Adapter = require('../../Adapter')
 InsteonDimmerNode = require('./InsteonDimmerNode')
 InsteonSwitchNode = require('./InsteonSwitchNode')
 InsteonFanNode = require('./InsteonFanNode')
+InsteonLowVoltageNode = require('./InsteonLowVoltageNode')
+InsteonOpenCloseSensorNode = require('./InsteonOpenCloseSensorNode')
 
 module.exports = class InsteonAdapter extends Adapter
   name: "Insteon Cloud"
@@ -52,7 +54,9 @@ module.exports = class InsteonAdapter extends Adapter
             switch device.subCat
               when 46 then InsteonFanNode
               else InsteonDimmerNode
-          when 2 then InsteonSwitchNode
+          when 2  then InsteonSwitchNode
+          when 7  then InsteonLowVoltageNode
+          when 16 then InsteonOpenCloseSensorNode
         if nodeClass?
           @log 'verbose', "Device ID #{device.id} (#{device.name}) enumerated"
           node = new nodeClass({id: device.id, hardwareID: device.insteonID},
@@ -73,7 +77,8 @@ module.exports = class InsteonAdapter extends Adapter
   requestAllDevicesStatus: ->
     # TODO don't request status on devices that won't reply (e.g. leak sensors)
     proxies = _.keys(@get('proxyDevices'))
-    devices = @children.reject (child) => _.contains(proxies, child.id)
+    devices = @children.reject (child) =>
+      _.contains(proxies, child.id) or !child.statusQueryable
     interval = @get('batchCommandInterval')
     @log 'debug', "Requesting status of #{devices.length} devices " +
       "over the course of #{(interval * devices.length) / 1000} seconds"
@@ -88,8 +93,18 @@ module.exports = class InsteonAdapter extends Adapter
       when 'fanlinc'
         @requestLightStatus device
         @requestFanStatus device
+      when 'iolinc'
+        @requestSensorStatus device
+      when 'openClose'
+        # Do nothing. These are battery powered sensors which can't be queried
       else
         @log 'warn', "Unknown interface type for device #{device.id}"
+
+  requestSensorStatus: (device) ->
+    @log 'verbose', "Requesting status for sensor #{device.id}"
+    @sendCommand(device.id, 'get_sensor_status').then (response) =>
+      @log 'verbose', "Received sensor status: #{JSON.stringify(response)}"
+      device.processData {sensor: response.level != 0}
 
   requestFanStatus: (device) ->
     @log 'verbose', "Requesting status for fan #{device.id}"
@@ -126,7 +141,7 @@ module.exports = class InsteonAdapter extends Adapter
     @log 'verbose', "Received Insteon command: #{JSON.stringify(cmd)}"
     @_resetStreamCycle()
     node = @children.find(hardwareID: cmd.device_insteon_id)
-    proxyFor = @get('proxyDevices')[node.id]
+    proxyFor = @get('proxyDevices')[node?.id]
     if proxyFor?
       node = @children.get(proxyFor)
       if node?
@@ -135,11 +150,23 @@ module.exports = class InsteonAdapter extends Adapter
         @log 'warn', "Proxy target device #{proxyFor} does not exist!"
     if node?
       @log 'verbose', "Dispatching #{cmd.status} command to node #{node.id}"
-      switch cmd.status
-        when 'on',  'fast_on'  then node.processData(power: true)
-        when 'off', 'fast_off' then node.processData(power: false)
-        when 'unknown'         then @requestLightStatus(node)
-        else @log 'debug', "Received unknown status cmd: #{JSON.stringify(cmd)}"
+      switch node.interfaceType # XXX There's a better way to dispatch these
+        when 'iolinc'
+          switch cmd.status
+            when 'on'  then node.processData(sensor: true)
+            when 'off' then node.processData(sensor: false)
+            else @log 'debug', "Unknown iolinc status: #{JSON.stringify(cmd)}"
+        when 'openClose'
+          switch cmd.status
+            when 'on'  then node.processData(open: true)
+            when 'off' then node.processData(open: false)
+            else @log 'debug', "Unknown open/close sensor status: #{JSON.stringify(cmd)}"
+        else
+          switch cmd.status
+            when 'on',  'fast_on'  then node.processData(power: true)
+            when 'off', 'fast_off' then node.processData(power: false)
+            when 'unknown'         then @requestLightStatus(node)
+            else @log 'debug', "Unknown status: #{JSON.stringify(cmd)}"
     else
       @log 'debug', "Received message for unknown or unidentifiable Insteon " +
         "device ID #{cmd.device_insteon_id}"
