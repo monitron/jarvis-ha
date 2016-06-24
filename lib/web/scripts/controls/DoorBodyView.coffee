@@ -8,6 +8,6 @@ module.exports = class DoorBodyView extends Backbone.View
     context =
       isKnown:  controlState.open?
       isOpen:   controlState.open
-      isClosed: !controlState.open
+      isClosed: controlState.open == false # excludes undefined
     @$el.html Templates['controls/door'](context)
     this
