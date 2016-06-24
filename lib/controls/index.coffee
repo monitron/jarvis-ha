@@ -7,3 +7,4 @@ module.exports =
   climateSensor: require('./ClimateSensorControl')
   fanSpeed: require('./FanSpeedControl')
   door: require('./DoorControl')
+  occupancySensor: require('./OccupancySensorControl')

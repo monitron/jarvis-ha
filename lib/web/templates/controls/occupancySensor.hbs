@@ -1,0 +1,11 @@
+<div class="fullHeight fullWidth display {{#if isOccupied}}interesting{{/if}}">
+  {{#if isKnown}}
+  {{#if isOccupied}}
+  <i class="fa fa-check-circle"></i> Occupied
+  {{else}}
+  <i class="fa fa-circle-thin"></i> Empty
+  {{/if}}
+  {{else}}
+  Unknown
+  {{/if}}
+</div>
