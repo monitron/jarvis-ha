@@ -9,8 +9,8 @@ module.exports = class VeraAdapter extends Adapter
   name: "Vera Home Controller"
 
   defaults:
-    pollInterval:    15 # Seconds between status checks
-    jobPollInterval: 2  # Seconds between status checks while a job is active
+    pollInterval:    5 # Seconds between status checks
+    jobPollInterval: 2 # Seconds between status checks while a job is active
 
   initialize: ->
     super
