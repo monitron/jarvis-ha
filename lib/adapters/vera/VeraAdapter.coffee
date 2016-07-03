@@ -100,7 +100,7 @@ module.exports = class VeraAdapter extends Adapter
       qs:  Object.assign(options, {id: reqType, 'output_format': 'json'})
     request requestOptions, (err, res, body) =>
       if err?
-        @log 'warn', "Request (#{reqType} failed: #{err}"
+        @log 'warn', "Request (#{reqType}) failed: #{err}"
         deferred.reject err
       else
         deferred.resolve JSON.parse(body)
