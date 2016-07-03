@@ -20,6 +20,10 @@ module.exports = class App extends Backbone.Model
 
   setupSocket: ->
     @socket = io()
+    @socket.on 'connect', => @log 'Socket connected'
+    @socket.on 'disconnect', => @log 'Socket disconnected!'
+    @socket.on 'reconnect', => @log 'Socket reconnected'
+    @socket.on 'reconnect_failed', => @log 'Socket gave up reconnecting!!'
     @socket.on 'control:change', (controlJSON) =>
       control = @controls.get(controlJSON.id)
       unless control?
