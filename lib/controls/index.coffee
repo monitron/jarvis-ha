@@ -8,3 +8,4 @@ module.exports =
   fanSpeed: require('./FanSpeedControl')
   door: require('./DoorControl')
   occupancySensor: require('./OccupancySensorControl')
+  netMetering: require('./NetMeteringControl')
