@@ -35,7 +35,7 @@ module.exports = class SolarCityAdapter extends Adapter
     options =
       StartTime: now.startOf('day').format(@timeFormat)
       EndTime:   now.endOf('day').format(@timeFormat)
-      Period:    'Day'
+      Period:    'Hour'
     @_request('consumption', options).then (res) =>
       @children.get('consumption-today').processData(
         res.TotalConsumptionInIntervalkWh)
@@ -50,7 +50,6 @@ module.exports = class SolarCityAdapter extends Adapter
       url: "https://mysolarcity.com/solarcity-api/powerguide/v1.0/" +
         "#{type}/#{@get('installation')}"
       qs: Object.assign({ID: @get('customer')}, options)
-    console.log requestOptions
     request requestOptions, (err, res, body) =>
       if err?
         @log 'warn', "Request (#{type}) failed: #{err}"
