@@ -21,7 +21,6 @@
     "insteon-api": "^1.0.0",
     "jquery": "^2.2.4",
     "js-yaml": "^3.2.3",
-    "openzwave-shared": "^1.2.0",
     "moment": "^2.13.0",
     "q": "^1.0.1",
     "request": "^2.36.0",

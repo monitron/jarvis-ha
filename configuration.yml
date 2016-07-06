@@ -15,8 +15,6 @@ adapters:
   - id: usnws
     stations:
       - KGAI
-  - id: zwave
-    controllerDevice: /dev/ttyUSB0
 controls:
   - id: basement-entry-light
     name: Basement Entry Light
