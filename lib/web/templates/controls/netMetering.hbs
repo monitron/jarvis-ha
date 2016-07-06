@@ -1,0 +1,16 @@
+<!-- Please excuse how gross this all is. It's going away soon. -->
+<div class="topHalf quarterWidth left" style="text-align: right; padding-right: 10px; color: #ea4">
+  {{generatedText}}
+  <i class="fa fa-plug"></i>
+</div>
+<div class="bottomHalf quarterWidth left" style="text-align: right; padding-right: 10px; color: #4a4">
+  {{usedText}}
+  <i class="fa fa-sun-o"></i>
+</div>
+<div class="topHalf halfWidth quarterFromLeft">
+  <div style="background: #ea4; position: absolute; left: 0; height: 100%; width: {{usedBar}}%"></div>
+</div>
+<div class="bottomHalf halfWidth quarterFromLeft">
+  <div style="background: #4a4; position: absolute; left: 0; height: 100%; width: {{generatedBar}}%"></div>
+</div>
+<div class="fullHeight quarterWidth right display">{{pctGenerated}}%</div>

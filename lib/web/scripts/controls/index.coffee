@@ -8,3 +8,4 @@ module.exports =
   fanSpeed:        require('./FanSpeedBodyView.coffee')
   door:            require('./DoorBodyView.coffee')
   occupancySensor: require('./OccupancySensorBodyView.coffee')
+  netMetering:     require('./NetMeteringBodyView.coffee')
