@@ -30,7 +30,7 @@ module.exports = class WebServer
       control = @_server.controls.get(req.params.controlId)
       control.executeCommand req.params.commandId, req.body
         .then -> res.json success: true
-        .catch (why) ->
+        .catch (why) =>
           @log 'warn', "Failed to execute command on #{req.params.controlId}: #{why}"
           res.json 500, {success: false, message: why}
         .done()
