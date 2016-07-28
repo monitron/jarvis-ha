@@ -30,6 +30,9 @@ class AdapterNode extends Backbone.Model
       aspect = new Aspect(this, aspectConfig)
       aspect.on 'aspectEvent', (event) =>
         @log "debug", "Aspect #{aspectId} emitted event: #{event}"
+      aspect.on 'dataChanged', (data) =>
+        @log "debug", "Aspect #{aspectId} data became: #{JSON.stringify(data)}"
+        @trigger 'aspectData:change'
       @_aspects[aspectId] = aspect
 
   isValid: ->
