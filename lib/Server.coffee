@@ -21,6 +21,7 @@ module.exports = class Server
     winston.cli()
     @log 'info', 'Jarvis Home Automation server'
     @config = @readConfig()
+    if @config.debug then require('longjohn')
     @persistence = new Persistence()
     # Gather adapters
     @adapters = new AdapterNodes()
