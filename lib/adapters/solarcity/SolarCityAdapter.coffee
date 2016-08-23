@@ -55,5 +55,9 @@ module.exports = class SolarCityAdapter extends Adapter
         @log 'warn', "Request (#{type}) failed: #{err}"
         deferred.reject err
       else
-        deferred.resolve JSON.parse(body)
+        try
+          deferred.resolve JSON.parse(body)
+        catch err
+          @log 'warn', "Request (#{type}) resulted in JSON parse error: #{err}"
+          deferred.reject err
     deferred.promise
