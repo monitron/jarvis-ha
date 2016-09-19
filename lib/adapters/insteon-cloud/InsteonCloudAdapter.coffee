@@ -47,7 +47,7 @@ module.exports = class InsteonAdapter extends Adapter
       else
         @discoverDevices()
       @_resetStreamCycle()
-    @_api.on 'error', (e) => @log 'warn', "An Insteon error occurred: #{e}"
+    @_api.on 'error', (e) => @log 'warn', "An Insteon error occurred: #{JSON.stringify(e)}"
     @_api.on 'command', (cmd) => @_handleCommandReceived(cmd)
 
   discoverDevices: ->
