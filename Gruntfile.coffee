@@ -35,13 +35,11 @@ module.exports = (grunt) ->
         files: ['lib/web/styles/**/*.less']
         tasks: ['less']
       browserify:
-        files: ['**/*.coffee', '**/*.js']
+        files: ['**/*.coffee', 'lib/web/scripts/**/*.js']
         tasks: ['browserify']
       handlebars:
         files: ['lib/web/templates/**/*.hbs']
         tasks: ['handlebars']
-      options:
-        livereload: true
 
   grunt.loadNpmTasks 'grunt-contrib-less'
   grunt.loadNpmTasks 'grunt-browserify'

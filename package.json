@@ -43,7 +43,7 @@
     "grunt-browserify": "^5.0.0",
     "grunt-contrib-handlebars": "^0.8.0",
     "grunt-contrib-less": "^0.11.1",
-    "grunt-contrib-watch": "^0.5.3",
+    "grunt-contrib-watch": "^1.0.0",
     "vows": "^0.7.0"
   },
   "babel": {
