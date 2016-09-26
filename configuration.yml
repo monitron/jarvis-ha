@@ -16,6 +16,7 @@ adapters:
     stations:
       - KGAI
 capabilities:
+  - id: shortcuts
   - id: controlBrowser
 controls:
   - id: basement-entry-light
