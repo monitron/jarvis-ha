@@ -15,18 +15,27 @@
     overflow: hidden;
     
     .capability {
+      .clickable;
       width: 80px;
       float: left;
       text-align: center;
-      margin: @touchscreen-normal-margin;
+      padding: @touchscreen-normal-margin;
+      height: 100%;
+
+      &.selected {
+        background: #ddd;
+        color: black;
+      }
 
       i {
+        margin-top: 2px;
         font-size: 32px;
       }
 
       .name {
-        font-size: 12px;
-        line-height: 24px;
+        font-size: 14px;
+        line-height: 18px;
+        margin-top: 3px;
       }
     }
   }
