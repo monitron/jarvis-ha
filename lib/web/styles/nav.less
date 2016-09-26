@@ -1,0 +1,33 @@
+
+@touchscreen-nav-height: 65px;
+
+
+.display-touchscreen #nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: @touchscreen-nav-height;
+  background: #444;
+  color: white;
+
+  .capabilities {
+    overflow: hidden;
+    
+    .capability {
+      width: 80px;
+      float: left;
+      text-align: center;
+      margin: @touchscreen-normal-margin;
+
+      i {
+        font-size: 32px;
+      }
+
+      .name {
+        font-size: 12px;
+        line-height: 24px;
+      }
+    }
+  }
+}
