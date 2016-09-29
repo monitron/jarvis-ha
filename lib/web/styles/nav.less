@@ -1,41 +1,55 @@
 
-@touchscreen-nav-height: 65px;
+@ts-nav-height: 65px;
 
 
-.display-touchscreen #nav {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: @touchscreen-nav-height;
-  background: #444;
-  color: white;
+.display-touchscreen {
+  #body {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: @ts-nav-height;
+  }
+  
+  #nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: @ts-nav-height;
+    background: #ddd;
+    color: black;
 
-  .capabilities {
-    overflow: hidden;
-    
-    .capability {
-      .clickable;
-      width: 80px;
-      float: left;
-      text-align: center;
-      padding: @touchscreen-normal-margin;
-      height: 100%;
+    .capabilities {
+      overflow: hidden;
+      
+      .capability {
+        .clickable;
+        width: 80px;
+        float: left;
+        text-align: center;
+        padding: @ts-normal-margin;
+        height: 100%;
 
-      &.selected {
-        background: #ddd;
-        color: black;
-      }
+        &.selected {
+          background: @dark-blue;
+          color: white;
+        }
 
-      i {
-        margin-top: 2px;
-        font-size: 32px;
-      }
+        a {
+          display: block;
+        }
 
-      .name {
-        font-size: 14px;
-        line-height: 18px;
-        margin-top: 3px;
+        i {
+          margin-top: 2px;
+          font-size: 32px;
+        }
+
+        .name {
+          font-size: 14px;
+          line-height: 18px;
+          margin-top: 3px;
+        }
       }
     }
   }

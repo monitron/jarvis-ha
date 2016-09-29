@@ -1,0 +1,72 @@
+
+@ts-browser-header-height: 50px;
+@ts-browser-control-height: 120px;
+@ts-browser-control-header-height: 30px;
+
+.control-browser {
+  .full-size;
+
+  .control-container {
+    float: left;
+  }
+
+  > .header {
+    background: #444;
+    color: white;
+  }
+}
+
+.display-touchscreen .control-browser {
+  > .header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: @ts-browser-header-height;
+
+    .name {
+      font-size: 24px;
+      line-height: @ts-browser-header-height;
+      margin-left: @ts-wide-margin;
+    }
+  }
+
+  > .body {
+    position: absolute;
+    top: @ts-browser-header-height;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+  }
+
+  .control-container {
+    position: relative;
+    width: 50%;
+    height: @ts-browser-control-height;
+    border-bottom: 1px solid #eee;
+    border-right: 1px solid #eee;
+
+    .contents {
+      position: absolute;
+      top: @ts-wide-margin;
+      left: @ts-wide-margin;
+      bottom: @ts-wide-margin;
+      right: @ts-wide-margin;
+      
+      .name {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      .control-body {
+        position: absolute;
+        top: @ts-browser-control-header-height;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+    }
+  }
+}
