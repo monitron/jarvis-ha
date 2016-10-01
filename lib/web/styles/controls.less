@@ -18,7 +18,7 @@
     left: 0;
     bottom: 0;
     right: @ctrl-track-height;
-    pointer-events: none;
+/*    pointer-events: none;*/
   }
   
   .detent {
@@ -47,14 +47,12 @@
       bottom: 0;
       left: @ctrl-track-height / 2;
       right: @ctrl-track-height / 2;
-      pointer-events: none;
+/*      pointer-events: none;*/
     }
   }
 
   .handle {
-    position: absolute;
-    top: -@ctrl-handle-extension;
-    left: @ctrl-track-height / -2;
+    margin-top: -@ctrl-handle-extension;
     width: @ctrl-handle-diameter;
     height: @ctrl-handle-diameter;
     border-radius: @ctrl-handle-diameter / 2;
@@ -68,7 +66,6 @@
       font-weight: bold;
       text-align: center;
       line-height: @ctrl-handle-diameter;
-      pointer-events: none;
     }
   }
 
@@ -83,6 +80,5 @@
     margin-top: @ctrl-inset;
     margin-left: @ctrl-inset;
     padding-right: @ctrl-track-height / 2;
-    pointer-events: none;
   }
 }
