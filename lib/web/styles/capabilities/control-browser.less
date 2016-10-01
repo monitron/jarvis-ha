@@ -1,6 +1,6 @@
 
 @ts-browser-header-height: 50px;
-@ts-browser-control-height: 120px;
+@ts-browser-control-height: 115px;
 @ts-browser-control-header-height: 30px;
 
 .control-browser {
@@ -11,6 +11,18 @@
 
     &.active {
       background: @lightest-blue;
+    }
+
+    &.busy .contents .icons .busy {
+      display: block;
+    }
+
+    .contents {
+      .icons {
+        .busy {
+          display: none;
+        }
+      }
     }
   }
 
@@ -62,6 +74,12 @@
         position: absolute;
         top: 0;
         left: 0;
+      }
+
+      .icons {
+        position: absolute;
+        top: 0;
+        right: 0;
       }
 
       .control-body {

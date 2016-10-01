@@ -19,6 +19,9 @@ class Control extends baseControl
   isActive: ->
     @get('active')
 
+  isBusy: ->
+    !_.isEmpty(@_tasks)
+
   sendCommand: (commandId, params = {}) ->
     promise = $.ajax
       url: "/api/controls/#{@id}/commands/#{commandId}"

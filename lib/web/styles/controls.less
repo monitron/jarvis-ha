@@ -7,6 +7,10 @@
 @ctrl-handle-diameter: @ctrl-track-height + (2 * @ctrl-handle-extension);
 
 .control {
+  &.busy {
+    opacity: .5;
+  }
+  
   .label {
     font-size: 12px;
     text-transform: uppercase;
