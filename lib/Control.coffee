@@ -54,6 +54,11 @@ class Control extends Backbone.Model
   _getState: ->
     {} # This is boring and you should probably override it
 
+  isActive: ->
+    false # Override this. In the UI, controls get highlighted when they
+          # are "on" or "triggered" (a sensor) or "unlocked" (a lock) or
+          # otherwise in a state where they should be noticed
+
   log: (level, message) ->
     # Logs through the server because including winston breaks browserify
     @_server.log level, "[#{@get('name')} control] #{message}"
@@ -64,6 +69,7 @@ class Control extends Backbone.Model
       commands: _.keys(@commands)
       valid: valid
       state: @getState()
+      active: @isActive()
 
 
 class Controls extends Backbone.Collection

@@ -18,7 +18,6 @@
     left: 0;
     bottom: 0;
     right: @ctrl-track-height;
-/*    pointer-events: none;*/
   }
   
   .detent {
@@ -39,7 +38,7 @@
     margin: @ctrl-vertical-margin 0;
     height: @ctrl-track-height;
     border-radius: @ctrl-track-height / 2;
-    background: @light-blue;
+    background: @blue;
 
     .track-contents {
       position: absolute;
@@ -47,7 +46,6 @@
       bottom: 0;
       left: @ctrl-track-height / 2;
       right: @ctrl-track-height / 2;
-/*      pointer-events: none;*/
     }
   }
 
@@ -57,7 +55,7 @@
     height: @ctrl-handle-diameter;
     border-radius: @ctrl-handle-diameter / 2;
     background: white;
-    box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.4);
     pointer-events: all;
 
     .label {
@@ -76,7 +74,7 @@
     left: @ctrl-track-height / -2;
     height: @ctrl-trail-height;
     border-radius: (@ctrl-trail-height / 2) 0 0 (@ctrl-trail-height / 2);
-    background: @dark-blue;
+    background: white;
     margin-top: @ctrl-inset;
     margin-left: @ctrl-inset;
     padding-right: @ctrl-track-height / 2;
