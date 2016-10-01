@@ -1,8 +1,8 @@
 
 module.exports =
-  switch:          require('./SwitchControlBodyView.coffee')
+  switch:          require('./SwitchControlBodyView.js')
   dimmer:          require('./DimmerControlBodyView.js')
-  media:           require('./MediaControlBodyView.coffee')
+  media:           require('./MediaControlBodyView.js')
   climateSensor:   require('./ClimateSensorBodyView.coffee')
   thermostat:      require('./ThermostatBodyView.coffee')
   fanSpeed:        require('./FanSpeedBodyView.js')

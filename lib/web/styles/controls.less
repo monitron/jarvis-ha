@@ -10,6 +10,12 @@
   &.busy {
     opacity: .5;
   }
+
+  .fa {
+    font-size: 130%;
+    position: relative;
+    top: 1px;
+  }
   
   .label {
     font-size: 12px;
@@ -30,6 +36,10 @@
     width: @ctrl-track-height;
     color: white;
     text-align: center;
+
+    &.reversed {
+      color: @blue;
+    }
     
     .label {
       line-height: @ctrl-track-height;
