@@ -55,6 +55,9 @@ class Control extends Backbone.Model
     {} # This is boring and you should probably override it
 
   isActive: ->
+    if @isValid() then @_isActive() else null
+
+  _isActive: ->
     false # Override this. In the UI, controls get highlighted when they
           # are "on" or "triggered" (a sensor) or "unlocked" (a lock) or
           # otherwise in a state where they should be noticed
