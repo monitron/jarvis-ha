@@ -1,0 +1,49 @@
+
+@ts-modal-inset: 20px;
+@ts-modal-header-height: 50px;
+
+.display-touchscreen .modal {
+  position: absolute;
+  top: @ts-modal-inset;
+  left: @ts-modal-inset;
+  right: @ts-modal-inset;
+  bottom: @ts-modal-inset;
+  background: white;
+  box-shadow: 0 0 100px rgba(0, 0, 0, 0.9);
+
+  .header {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: @ts-modal-header-height;
+    line-height: @ts-modal-header-height;
+
+    .title {
+      .unselectable;
+      position: absolute;
+      top: 0;
+      left: @ts-wide-margin;
+      font-size: 25px;
+      font-weight: 300;
+    }
+    
+    .close {
+      .clickable;
+      position: absolute;
+      top: 0;
+      right: @ts-wide-margin;
+      padding: 0 @ts-wide-margin;
+      font-size: 120%;
+      color: @dark-blue;
+    }
+  }
+
+  .body {
+    position: absolute;
+    top: @ts-modal-header-height + @ts-wide-margin;
+    left: @ts-wide-margin;
+    right: @ts-wide-margin;
+    bottom: @ts-wide-margin;
+  }
+}

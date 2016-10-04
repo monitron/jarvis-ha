@@ -1,0 +1,53 @@
+
+@ts-location-picker-floors-width: 25%;
+
+.display-touchscreen {
+  .location-picker {
+    .floors {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: @ts-location-picker-floors-width;
+      background: @lightest-blue;
+      overflow-y: auto;
+    }
+
+    .floor {
+      .clickable;
+      line-height: 40px;
+      font-size: 22px;
+      padding: @ts-wide-margin;
+      
+      &.selected {
+        background: @darker-blue;
+        color: white;
+      }
+    }
+
+    .rooms {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: @ts-location-picker-floors-width;
+      margin-left: @ts-wide-margin;
+      overflow-y: auto;
+    }
+
+    .room {
+      .clickable;
+      width: 50%;
+      float: left;
+      line-height: 40px;
+      font-size: 22px;
+      font-weight: bold;
+      padding: @ts-wide-margin;
+      color: @darker-blue;
+
+      &.selected {
+        color: @blue;
+      }
+    }
+  }
+}

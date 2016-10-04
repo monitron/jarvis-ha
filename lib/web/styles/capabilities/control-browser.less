@@ -1,5 +1,5 @@
 
-@ts-browser-header-height: 50px;
+@ts-browser-header-height: 60px;
 @ts-browser-control-height: 115px;
 @ts-browser-control-header-height: 30px;
 
@@ -39,11 +39,26 @@
     left: 0;
     right: 0;
     height: @ts-browser-header-height;
+    line-height: @ts-browser-header-height;
 
     .name {
+      float: left;
       font-size: 24px;
-      line-height: @ts-browser-header-height;
+      padding-left: @ts-wide-margin;
+    }
+
+    .button {
+      .clickable;
+      float: left;
       margin-left: @ts-wide-margin;
+      margin-top: @ts-wide-margin;
+      line-height: @ts-browser-header-height - (@ts-wide-margin * 2);
+      width: @ts-browser-header-height - (@ts-wide-margin * 2);
+      height: @ts-browser-header-height - (@ts-wide-margin * 2);
+      border-radius: 30px;
+      background: @dark-blue;
+      text-align: center;
+      color: white;
     }
   }
 
