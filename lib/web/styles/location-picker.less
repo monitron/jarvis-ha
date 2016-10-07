@@ -1,0 +1,134 @@
+
+@ts-location-picker-floors-width: 30%;
+@dt-location-picker-floors-width: 25%;
+
+.location-picker {
+  .floors {
+    background: @lightest-blue;
+  }
+
+  .floor {
+    .clickable;
+    
+    &.selected {
+      background: @darker-blue;
+      color: white;
+    }
+
+    &:not(.selected):hover {
+      background: @lighter-blue;
+    }
+  }
+
+  .room {
+    .clickable;
+    color: @darker-blue;
+    font-weight: bold;
+
+    &.selected {
+      color: @blue;
+    }
+
+    &:hover {
+      background: @lightest-blue;
+    }
+  }
+}
+
+.display-phone .location-picker {
+  .full-size;
+  overflow-y: auto;
+  
+  .floors {
+    overflow: hidden;
+  }
+
+  .floor {
+    width: 50%;
+    float: left;
+    font-size: 20px;
+    line-height: 50px;
+    padding: 0 @ph-wide-margin;
+  }
+
+  .rooms {
+    margin-top: @ph-wide-margin;
+  }
+
+  .room {
+    line-height: 50px;
+    font-size: 20px;
+    margin: 0 @ph-wide-margin;
+  }
+}
+
+.display-touchscreen .location-picker {
+  .floors {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: @ts-location-picker-floors-width;
+    overflow-y: auto;
+  }
+
+  .floor {
+    line-height: 40px;
+    font-size: 22px;
+    padding: @ts-wide-margin;
+  }
+
+  .rooms {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: @ts-location-picker-floors-width;
+    margin-left: @ts-wide-margin;
+    overflow-y: auto;
+  }
+
+  .room {
+    width: 50%;
+    float: left;
+    line-height: 40px;
+    font-size: 22px;
+    padding: @ts-wide-margin;
+  }
+}
+
+.display-desktop .location-picker {
+  .floors {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: @dt-location-picker-floors-width;
+    overflow-y: auto;
+  }
+
+  .floor {
+    line-height: 25px;
+    font-size: 20px;
+    padding: @dt-normal-margin @dt-wide-margin;
+  }
+
+  .rooms {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: @dt-location-picker-floors-width;
+    margin-left: @dt-wide-margin;
+    overflow-y: auto;
+  }
+
+  .room {
+    width: 25%;
+    min-width: 170px;
+    float: left;
+    line-height: 25px;
+    font-size: 20px;
+    padding: @dt-normal-margin;
+  }
+}

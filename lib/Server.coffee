@@ -9,6 +9,8 @@ controls = require('./controls')
 WebServer = require('./web')
 Persistence = require('./Persistence')
 [AdapterNode, AdapterNodes] = require('./AdapterNode')
+[Capability, Capabilities] = require('./Capability')
+capabilities = require('./capabilities')
 
 module.exports = class Server
   constructor: ->
@@ -41,6 +43,17 @@ module.exports = class Server
     @controls = new Controls()
     for controlConfig in @config.controls
       @controls.add new controls[controlConfig.type](controlConfig, {server: this})
+    # Build capabilities
+    @capabilities = new Capabilities()
+    for capConfig in @config.capabilities
+      @capabilities.add new capabilities[capConfig.id](capConfig, {server: this})
+    # Start capabilities
+    @capabilities.each (cap) =>
+      if cap.isEnabled()
+        @log 'info', "Starting #{cap.name} capability"
+        cap.start()
+      else
+        @log 'info', "Not starting disabled #{cap.name} capability"
     # Start a web server
     @web = new WebServer(this, @config.webServer)
 

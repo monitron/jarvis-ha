@@ -16,6 +16,12 @@ class Control extends baseControl
       @_tasks = _.without(@_tasks, promise)
       if _.isEmpty(@_tasks) then @trigger 'task:none'
 
+  isActive: ->
+    @get('active')
+
+  isBusy: ->
+    !_.isEmpty(@_tasks)
+
   sendCommand: (commandId, params = {}) ->
     promise = $.ajax
       url: "/api/controls/#{@id}/commands/#{commandId}"

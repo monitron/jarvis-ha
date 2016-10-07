@@ -9,6 +9,9 @@ module.exports = class SwitchControl extends Control
       target = control.getConnectionTarget('powerOnOff')
       target.getAspect('powerOnOff').executeCommand 'set', true
 
+  _isActive: ->
+    @getConnectionTarget('powerOnOff').getAspect('powerOnOff').getDatum('state')
+
   _getState: ->
     power = @getConnectionTarget('powerOnOff').getAspect('powerOnOff')
     power: power.getDatum('state')

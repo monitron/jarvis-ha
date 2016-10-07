@@ -22,6 +22,9 @@ module.exports = class WebServer
     app.get "/api/controls", (req, res) =>
       res.json @_server.controls
 
+    app.get "/api/capabilities", (req, res) =>
+      res.json @_server.capabilities
+
     app.get "/api/controls/:controlId", (req, res) =>
       control = @_server.controls.get(req.params.controlId)
       res.json control

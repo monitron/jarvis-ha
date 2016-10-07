@@ -1,0 +1,19 @@
+<div class="track dragdealer">
+  <div class="track-contents">
+    {{#if quantitative}}
+    <div class="trail"></div>
+    {{/if}}
+  </div>
+  <div class="detents">
+    {{#each detents}}
+    <div class="detent" style="left: {{position}}%"
+         data-position="{{position}}">
+      <div class="label">
+        {{#if icon}}<i class="fa fa-{{icon}}"></i>{{else}}{{label}}{{/if}}</div>
+    </div>
+    {{/each}}
+  </div>
+  <div class="handle">
+    <div class="label"></div>
+  </div>
+</div>

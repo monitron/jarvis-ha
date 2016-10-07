@@ -1,0 +1,174 @@
+
+@ts-nav-height: 65px;
+@ph-nav-height: 60px;
+@dt-nav-width: 300px;
+
+/* Merge phone and touchscreen similarities, if we keep them */
+
+.display-desktop {
+  #body {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: @dt-nav-width;
+  }
+
+  #nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: @dt-nav-width;
+    background: #eee;
+    border-right: 1px solid #ddd;
+    z-index: 1;
+    color: black;
+
+    .capabilities {
+      .full-size;
+      padding: @dt-wide-margin;
+
+      .capability {
+        overflow: hidden;
+        padding: 0 @dt-wide-margin;
+        color: @dark-blue;
+
+        &:not(.selected) {
+          .clickable;
+
+          &:hover {
+            background: fadeout(@dark-blue, 85%);
+          }
+        }
+
+        &.selected {
+          background: @dark-blue;
+
+          i, .name {
+            color: white;
+          }
+        }
+
+        i {
+          float: left;
+          font-size: 24px;
+          line-height: 46px;
+        }
+
+        .name {
+          margin-left: 40px;
+          line-height: 50px;
+          font-size: 20px;
+          font-weight: 300;
+        }
+      }
+    }
+  }
+}
+
+.display-phone {
+  #body {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: @ph-nav-height;
+  }
+  
+  #nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: @ph-nav-height;
+    background: black;
+    color: @blue;
+
+    .capabilities {
+      overflow: hidden;
+      
+      .capability {
+        .clickable;
+        width: 65px;
+        float: left;
+        text-align: center;
+        padding: @ph-normal-margin @ph-normal-margin 0 @ph-normal-margin;
+        height: @ph-nav-height;
+
+        &.selected {
+          color: white;
+          background: @darkest-blue;
+        }
+
+        a {
+          display: block;
+        }
+
+        i {
+          margin-top: 2px;
+          font-size: 30px;
+        }
+
+        .name {
+          font-size: 12px;
+          line-height: 18px;
+          margin-top: 3px;
+        }
+      }
+    }
+  }
+}
+
+.display-touchscreen {
+  #body {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: @ts-nav-height;
+  }
+  
+  #nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: @ts-nav-height;
+    background: black;
+    color: @blue;
+
+    .capabilities {
+      overflow: hidden;
+      
+      .capability {
+        .clickable;
+        width: 80px;
+        float: left;
+        text-align: center;
+        padding: @ts-normal-margin;
+        height: 100%;
+
+        &.selected {
+          color: white;
+          background: @darkest-blue;
+        }
+
+        a {
+          display: block;
+        }
+
+        i {
+          margin-top: 2px;
+          font-size: 32px;
+        }
+
+        .name {
+          font-size: 14px;
+          line-height: 18px;
+          margin-top: 3px;
+        }
+      }
+    }
+  }
+}

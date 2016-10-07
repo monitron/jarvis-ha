@@ -1,0 +1,15 @@
+<div class="header">
+  <div class="button pick-location-button">
+    <i class="fa fa-map"></i>
+  </div>
+  {{#if hasHome}}
+  <div class="button go-home-button{{#if isAtHome}} disabled{{/if}}">
+    <i class="fa fa-map-marker"></i>
+  </div>
+  {{/if}}
+  <div class="name">{{name}}</div>
+</div>
+
+<div class="body">
+  <div class="controls"></div>
+</div>
