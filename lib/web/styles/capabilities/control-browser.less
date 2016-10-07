@@ -1,7 +1,7 @@
 
 @ts-browser-header-height: 60px;
-
 @ph-browser-header-height: 60px;
+@dt-browser-header-height: 60px;
 
 .control-browser {
   .full-size;
@@ -41,6 +41,10 @@
       background: @dark-blue;
       text-align: center;
       color: white;
+
+      &:hover {
+        background: @blue;
+      }
     }
   }
 
@@ -54,7 +58,6 @@
 
   .control-container {
     position: relative;
-    height: 115px;
     border-bottom: 1px solid #ddd;
     border-right: 1px solid #ddd;
 
@@ -79,6 +82,56 @@
         bottom: 0;
         left: 0;
         right: 0;
+      }
+    }
+  }
+}
+
+.display-desktop .control-browser {
+  > .header {
+    height: @dt-browser-header-height;
+    line-height: @dt-browser-header-height;
+
+    .name {
+      float: left;
+      font-size: 24px;
+      padding-left: @dt-wide-margin;
+    }
+    
+    .button {
+      margin-left: @dt-wide-margin;
+      margin-top: @dt-normal-margin;
+      line-height: @dt-browser-header-height - (@dt-normal-margin * 2);
+      width: @dt-browser-header-height - (@dt-normal-margin * 2);
+      height: @dt-browser-header-height - (@dt-normal-margin * 2);
+    }
+  }
+
+  > .body {
+    top: @dt-browser-header-height;
+    max-width: 1000px;
+    margin: @dt-wider-margin auto 0 auto;
+
+    .controls {
+      overflow: hidden;
+      border-top: 1px solid #ddd;
+      border-left: 1px solid #ddd;
+      margin: 0 @dt-wider-margin;
+    }
+  }
+  
+  .control-container {
+    width: 50%;
+    height: 130px;
+
+    .contents {
+      top: @dt-wide-margin;
+      left: @dt-wide-margin;
+      bottom: @dt-wide-margin;
+      right: @dt-wide-margin;
+
+      .name {
+        font-size: 17px;
       }
     }
   }
@@ -110,6 +163,7 @@
 
   .control-container {
     width: 100%;
+    height: 115px;
     
     .contents {
       top: @ph-wide-margin;
@@ -150,6 +204,7 @@
 
   .control-container {
     width: 50%;
+    height: 115px;
 
     .contents {
       top: @ts-wide-margin;

@@ -1,8 +1,71 @@
 
 @ts-nav-height: 65px;
 @ph-nav-height: 60px;
+@dt-nav-width: 300px;
 
 /* Merge phone and touchscreen similarities, if we keep them */
+
+.display-desktop {
+  #body {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: @dt-nav-width;
+  }
+
+  #nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: @dt-nav-width;
+    background: #eee;
+    border-right: 1px solid #ddd;
+    z-index: 1;
+    color: black;
+
+    .capabilities {
+      .full-size;
+      padding: @dt-wide-margin;
+
+      .capability {
+        overflow: hidden;
+        padding: 0 @dt-wide-margin;
+        color: @dark-blue;
+
+        &:not(.selected) {
+          .clickable;
+
+          &:hover {
+            background: fadeout(@dark-blue, 85%);
+          }
+        }
+
+        &.selected {
+          background: @dark-blue;
+
+          i, .name {
+            color: white;
+          }
+        }
+
+        i {
+          float: left;
+          font-size: 24px;
+          line-height: 46px;
+        }
+
+        .name {
+          margin-left: 40px;
+          line-height: 50px;
+          font-size: 20px;
+          font-weight: 300;
+        }
+      }
+    }
+  }
+}
 
 .display-phone {
   #body {
