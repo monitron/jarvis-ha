@@ -1,7 +1,7 @@
 
 @ts-browser-header-height: 60px;
-@ts-browser-control-height: 115px;
-@ts-browser-control-header-height: 30px;
+
+@ph-browser-header-height: 60px;
 
 .control-browser {
   .full-size;
@@ -27,35 +27,17 @@
   }
 
   > .header {
-    background: #444;
-    color: white;
-  }
-}
-
-.display-touchscreen .control-browser {
-  > .header {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: @ts-browser-header-height;
-    line-height: @ts-browser-header-height;
-
-    .name {
-      float: left;
-      font-size: 24px;
-      padding-left: @ts-wide-margin;
-    }
+    background: #444;
+    color: white;
 
     .button {
       .clickable;
       float: left;
-      margin-left: @ts-wide-margin;
-      margin-top: @ts-wide-margin;
-      line-height: @ts-browser-header-height - (@ts-wide-margin * 2);
-      width: @ts-browser-header-height - (@ts-wide-margin * 2);
-      height: @ts-browser-header-height - (@ts-wide-margin * 2);
-      border-radius: 30px;
+      border-radius: 50%;
       background: @dark-blue;
       text-align: center;
       color: white;
@@ -64,7 +46,6 @@
 
   > .body {
     position: absolute;
-    top: @ts-browser-header-height;
     left: 0;
     right: 0;
     bottom: 0;
@@ -73,17 +54,12 @@
 
   .control-container {
     position: relative;
-    width: 50%;
-    height: @ts-browser-control-height;
-    border-bottom: 1px solid #eee;
-    border-right: 1px solid #eee;
+    height: 115px;
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
 
     .contents {
       position: absolute;
-      top: @ts-wide-margin;
-      left: @ts-wide-margin;
-      bottom: @ts-wide-margin;
-      right: @ts-wide-margin;
       
       .name {
         position: absolute;
@@ -99,11 +75,87 @@
 
       .control-body {
         position: absolute;
-        top: @ts-browser-control-header-height;
+        top: 30px;
         bottom: 0;
         left: 0;
         right: 0;
       }
+    }
+  }
+}
+
+.display-phone .control-browser {
+  > .header {
+    height: @ph-browser-header-height;
+    line-height: @ph-browser-header-height;
+
+    .name {
+      float: left;
+      font-size: 24px;
+      padding-left: @ph-wide-margin;
+    }
+    
+    .button {
+      margin-left: @ph-wide-margin;
+      margin-top: @ph-wide-margin;
+      line-height: @ph-browser-header-height - (@ph-wide-margin * 2);
+      width: @ph-browser-header-height - (@ph-wide-margin * 2);
+      height: @ph-browser-header-height - (@ph-wide-margin * 2);
+    }
+  }
+
+  > .body {
+    top: @ph-browser-header-height;
+  }
+
+  .control-container {
+    width: 100%;
+    
+    .contents {
+      top: @ph-wide-margin;
+      left: @ph-wide-margin;
+      bottom: @ph-wide-margin;
+      right: @ph-wide-margin;
+
+      .name {
+        font-size: 17px;
+      }
+    }
+  }
+}
+
+.display-touchscreen .control-browser {
+  > .header {
+    height: @ts-browser-header-height;
+    line-height: @ts-browser-header-height;
+
+    .name {
+      float: left;
+      font-size: 24px;
+      padding-left: @ts-wide-margin;
+    }
+
+    .button {
+      margin-left: @ts-wide-margin;
+      margin-top: @ts-wide-margin;
+      line-height: @ts-browser-header-height - (@ts-wide-margin * 2);
+      width: @ts-browser-header-height - (@ts-wide-margin * 2);
+      height: @ts-browser-header-height - (@ts-wide-margin * 2);
+    }
+  }
+
+  > .body {
+    top: @ts-browser-header-height;
+  }
+
+  .control-container {
+    width: 50%;
+
+    .contents {
+      top: @ts-wide-margin;
+      left: @ts-wide-margin;
+      bottom: @ts-wide-margin;
+      right: @ts-wide-margin;
     }
   }
 }

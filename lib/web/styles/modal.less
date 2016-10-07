@@ -2,6 +2,45 @@
 @ts-modal-inset: 20px;
 @ts-modal-header-height: 50px;
 
+@ph-modal-inset: 0px;
+@ph-modal-header-height: 50px;
+
+.modal {
+  position: absolute;
+  background: white;
+  box-shadow: 0 0 100px rgba(0, 0, 0, 0.9);
+
+  .header {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+
+    .title {
+      .unselectable;
+      position: absolute;
+      top: 0;
+      font-size: 25px;
+      font-weight: 300;
+    }
+    
+    .close {
+      .clickable;
+      position: absolute;
+      top: 0;
+      font-size: 120%;
+      color: @dark-blue;
+    }
+  }
+
+  .body {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
 .display-touchscreen .modal {
   position: absolute;
   top: @ts-modal-inset;
@@ -40,10 +79,59 @@
   }
 
   .body {
-    position: absolute;
+    top: @ts-modal-header-height;
+  }
+}
+
+.display-touchscreen .modal {
+  top: @ts-modal-inset;
+  left: @ts-modal-inset;
+  right: @ts-modal-inset;
+  bottom: @ts-modal-inset;
+
+  .header {
+    height: @ts-modal-header-height;
+    line-height: @ts-modal-header-height;
+
+    .title {
+      left: @ts-wide-margin;
+    }
+    
+    .close {
+      right: @ts-wide-margin;
+      padding: 0 @ts-wide-margin;
+    }
+  }
+
+  .body {
     top: @ts-modal-header-height + @ts-wide-margin;
     left: @ts-wide-margin;
     right: @ts-wide-margin;
     bottom: @ts-wide-margin;
+  }
+}
+
+.display-phone .modal {
+  top: @ph-modal-inset;
+  left: @ph-modal-inset;
+  right: @ph-modal-inset;
+  bottom: @ph-modal-inset;
+
+  .header {
+    height: @ph-modal-header-height;
+    line-height: @ph-modal-header-height;
+
+    .title {
+      left: @ph-wide-margin;
+    }
+
+    .close {
+      right: @ph-wide-margin;
+      padding: 0 @ph-wide-margin;
+    }
+  }
+
+  .body {
+    top: @ph-modal-header-height;
   }
 }
