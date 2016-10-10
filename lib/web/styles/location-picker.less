@@ -111,6 +111,9 @@
     line-height: 25px;
     font-size: 20px;
     padding: @dt-normal-margin @dt-wide-margin;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   .rooms {
@@ -125,10 +128,13 @@
 
   .room {
     width: 25%;
-    min-width: 170px;
+    min-width: 200px;
     float: left;
     line-height: 25px;
     font-size: 20px;
     padding: @dt-normal-margin;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 }
