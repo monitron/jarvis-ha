@@ -11,87 +11,104 @@
     opacity: .3;
   }
 
-  i {
-    font-size: 130%;
+  .slider {
     position: relative;
-    top: 1px;
-    pointer-events: none;
-  }
-  
-  .label {
-    font-size: 12px;
-    text-transform: uppercase;
-  }
-
-  .detents {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: @ctrl-track-height;
-  }
-  
-  .detent {
-    position: absolute;
-    top: 0;
-    width: @ctrl-track-height;
-    color: white;
-    text-align: center;
-
-    &.reversed {
-      color: @blue;
+    
+    .bounds {
+      position: absolute;
+      left: 0;
+      top: -@ctrl-handle-extension;
+      width: 100%;
+      height: @ctrl-handle-diameter;
+    }
+    
+    i {
+      font-size: 130%;
+      position: relative;
+      top: 1px;
+      pointer-events: none;
     }
     
     .label {
-      line-height: @ctrl-track-height;
+      .unselectable;
+      font-size: 12px;
+      text-transform: uppercase;
+      pointer-events: none;
     }
-  }
-  
-  .track {
-    position: relative;
-    width: 100%;
-    margin: @ctrl-vertical-margin 0;
-    height: @ctrl-track-height;
-    border-radius: @ctrl-track-height / 2;
-    background: @blue;
 
-    .track-contents {
+    .detents {
       position: absolute;
       top: 0;
+      left: 0;
       bottom: 0;
-      left: @ctrl-track-height / 2;
-      right: @ctrl-track-height / 2;
+      right: @ctrl-track-height;
     }
-  }
-
-  .handle {
-    margin-top: -@ctrl-handle-extension;
-    width: @ctrl-handle-diameter;
-    height: @ctrl-handle-diameter;
-    border-radius: @ctrl-handle-diameter / 2;
-    background: white;
-    box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.4);
-    pointer-events: all;
-
-    .label {
-      .unselectable;
-      color: black;
-      font-weight: bold;
+    
+    .detent {
+      position: absolute;
+      top: 0;
+      width: @ctrl-track-height;
+      color: white;
       text-align: center;
-      line-height: @ctrl-handle-diameter;
-    }
-  }
 
-  .trail {
-    position: absolute;
-    box-sizing: content-box;
-    top: 0;
-    left: @ctrl-track-height / -2;
-    height: @ctrl-trail-height;
-    border-radius: (@ctrl-trail-height / 2) 0 0 (@ctrl-trail-height / 2);
-    background: white;
-    margin-top: @ctrl-inset;
-    margin-left: @ctrl-inset;
-    padding-right: @ctrl-track-height / 2;
+      &.reversed {
+        color: @blue;
+      }
+      
+      .label {
+        line-height: @ctrl-track-height;
+      }
+    }
+    
+    .track {
+      position: relative;
+      width: 100%;
+      margin: @ctrl-vertical-margin 0;
+      height: @ctrl-track-height;
+      border-radius: @ctrl-track-height / 2;
+      background: @blue;
+      pointer-events: none;
+
+      .track-contents {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: @ctrl-track-height / 2;
+        right: @ctrl-track-height / 2;
+      }
+    }
+
+    .handle {
+      position: absolute;
+      top: -@ctrl-handle-extension;
+      left: 0;
+      width: @ctrl-handle-diameter;
+      height: @ctrl-handle-diameter;
+      border-radius: @ctrl-handle-diameter / 2;
+      background: white;
+      box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.4);
+
+      .label {
+        .unselectable;
+        color: black;
+        font-weight: bold;
+        text-align: center;
+        line-height: @ctrl-handle-diameter;
+      }
+    }
+
+    .trail {
+      position: absolute;
+      box-sizing: content-box;
+      top: 0;
+      left: @ctrl-track-height / -2;
+      height: @ctrl-trail-height;
+      border-radius: (@ctrl-trail-height / 2) 0 0 (@ctrl-trail-height / 2);
+      background: white;
+      margin-top: @ctrl-inset;
+      margin-left: @ctrl-inset;
+      padding-right: @ctrl-track-height / 2;
+      pointer-events: none;
+    }
   }
 }
