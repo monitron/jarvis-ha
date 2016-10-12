@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   id="svg2"
+   viewBox="0 0 512 512.00001"
+   height="512"
+   width="512">
+  <defs
+     id="defs4" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(0,-540.36216)"
+     id="layer1">
+    <g
+       transform="matrix(0.92371135,0,0,0.92371135,1538.6392,637.14924)"
+       id="g4165">
+      <circle
+         style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:27.29999924;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="path4153"
+         cx="-1388.5714"
+         cy="172.3622"
+         r="277.14285" />
+      <path
+         id="circle4155"
+         style="fill:#c83737;fill-opacity:1;stroke:none;stroke-width:27.29999924;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m -1040.7884,-542.93384 a 246.35342,246.35342 0 0 1 -106.4905,202.80129 l -139.8629,-202.80129 z"
+         transform="matrix(0.8660254,-0.5,0.5,0.8660254,0,0)" />
+      <path
+         transform="matrix(-0.8660254,-0.5,-0.5,0.8660254,0,0)"
+         d="M 1364.2879,845.63757 A 246.35342,246.35342 0 0 1 1257.7974,1048.4389 L 1117.9344,845.63757 Z"
+         style="fill:#c83737;fill-opacity:1;stroke:none;stroke-width:27.29999924;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="path4159" />
+      <circle
+         style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:27.29999924;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="circle4163"
+         cx="-1388.5714"
+         cy="172.3622"
+         r="97.142853" />
+      <circle
+         r="71.428566"
+         cy="172.3622"
+         cx="-1388.5714"
+         id="circle4161"
+         style="fill:#c83737;fill-opacity:1;stroke:none;stroke-width:27.29999924;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+  </g>
+</svg>
