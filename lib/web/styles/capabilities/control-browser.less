@@ -13,6 +13,10 @@
 @ph-scene-icon-width: 40px;
 @ts-scene-icon-width: 40px;
 
+@dt-scene-width: 200px;
+@ts-scene-width: 185px;
+@ph-scene-width: 100%;
+
 .control-browser {
   .full-size;
 
@@ -187,7 +191,7 @@
   }
 
   .scene {
-    width: 200px;
+    width: @dt-scene-width;
     height: @dt-scene-height;
     line-height: @dt-scene-height;
     margin-right: @dt-wide-margin;
@@ -247,7 +251,7 @@
   }
 
   .scene {
-    width: 100%;
+    width: @ph-scene-width;
     height: @ph-scene-height;
     line-height: @ph-scene-height;
 
@@ -302,7 +306,7 @@
   }
 
   .scene {
-    width: 200px;
+    width: @ts-scene-width;
     height: @ts-scene-height;
     line-height: @ts-scene-height;
     margin-right: @ts-wide-margin;
