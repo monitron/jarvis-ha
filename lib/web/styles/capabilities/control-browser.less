@@ -3,28 +3,18 @@
 @ph-browser-header-height: 60px;
 @dt-browser-header-height: 60px;
 
+@dt-browser-max-width: 1000px;
+
+@dt-scene-height: 50px;
+@ph-scene-height: 55px;
+@ts-scene-height: 55px;
+
+@dt-scene-icon-width: 30px;
+@ph-scene-icon-width: 40px;
+@ts-scene-icon-width: 40px;
+
 .control-browser {
   .full-size;
-
-  .control-container {
-    float: left;
-
-    &.active {
-      background: @lightest-blue;
-    }
-
-    &.busy .contents .icons .busy {
-      display: block;
-    }
-
-    .contents {
-      .icons {
-        .busy {
-          display: none;
-        }
-      }
-    }
-  }
 
   > .header {
     position: absolute;
@@ -54,12 +44,30 @@
     right: 0;
     bottom: 0;
     overflow-y: auto;
+
+    .scenes {
+      background-color: @darker-blue;
+      color: @lightest-blue;
+    }
+
+    .scenes-list {
+      overflow: hidden;
+    }
   }
 
   .control-container {
     position: relative;
+    float: left;
     border-bottom: 1px solid #ddd;
     border-right: 1px solid #ddd;
+
+    &.active {
+      background: @lightest-blue;
+    }
+
+    &.busy .contents .icons .busy {
+      display: block;
+    }
 
     .contents {
       position: absolute;
@@ -75,6 +83,10 @@
         position: absolute;
         top: 0;
         right: 0;
+
+        .busy {
+          display: none;
+        }
       }
 
       .control-body {
@@ -84,6 +96,34 @@
         left: 0;
         right: 0;
       }
+    }
+  }
+
+  .scene {
+    .clickable;
+    position: relative;
+    float: left;
+
+    &:hover {
+      color: white;
+    }
+
+    .icon {
+      position: absolute;
+      top: 0;
+      left: 0;
+      font-size: 24px;
+      text-align: center;
+    }
+
+    .label {
+      position: absolute;
+      top: 0;
+      right: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 18px;
     }
   }
 }
@@ -96,11 +136,11 @@
     .name {
       float: left;
       font-size: 24px;
-      padding-left: @dt-wide-margin;
+      padding-left: @dt-normal-margin;
     }
     
     .button {
-      margin-left: @dt-wide-margin;
+      margin-left: @dt-normal-margin;
       margin-top: @dt-normal-margin;
       line-height: @dt-browser-header-height - (@dt-normal-margin * 2);
       width: @dt-browser-header-height - (@dt-normal-margin * 2);
@@ -110,14 +150,23 @@
 
   > .body {
     top: @dt-browser-header-height;
-    max-width: 1000px;
-    margin: @dt-wider-margin auto 0 auto;
+
+    .scenes-list {
+      max-width: @dt-browser-max-width;
+      margin: 0 auto;
+      padding: 0 @dt-wider-margin;
+    }
 
     .controls {
-      overflow: hidden;
+      max-width: @dt-browser-max-width;
+      margin: 0 auto;
+    }
+
+    .controls-list {
       border-top: 1px solid #ddd;
       border-left: 1px solid #ddd;
-      margin: 0 @dt-wider-margin;
+      overflow: hidden;
+      margin: @dt-wider-margin @dt-wider-margin 0 @dt-wider-margin;
     }
   }
   
@@ -134,6 +183,21 @@
       .name {
         font-size: 17px;
       }
+    }
+  }
+
+  .scene {
+    width: 200px;
+    height: @dt-scene-height;
+    line-height: @dt-scene-height;
+    margin-right: @dt-wide-margin;
+
+    .icon {
+      width: @dt-scene-icon-width;
+    }
+
+    .label {
+      left: @dt-scene-icon-width + @dt-normal-margin;
     }
   }
 }
@@ -160,6 +224,10 @@
 
   > .body {
     top: @ph-browser-header-height;
+
+    .scenes-list {
+      margin: 0 @ph-wide-margin;
+    }
   }
 
   .control-container {
@@ -175,6 +243,20 @@
       .name {
         font-size: 17px;
       }
+    }
+  }
+
+  .scene {
+    width: 100%;
+    height: @ph-scene-height;
+    line-height: @ph-scene-height;
+
+    .icon {
+      width: @ph-scene-icon-width;
+    }
+
+    .label {
+      left: @ph-scene-icon-width + @ph-wide-margin;
     }
   }
 }
@@ -201,6 +283,10 @@
 
   > .body {
     top: @ts-browser-header-height;
+
+    .scenes-list {
+      margin: 0 @ts-wide-margin;
+    }
   }
 
   .control-container {
@@ -212,6 +298,21 @@
       left: @ts-wide-margin;
       bottom: @ts-wide-margin;
       right: @ts-wide-margin;
+    }
+  }
+
+  .scene {
+    width: 200px;
+    height: @ts-scene-height;
+    line-height: @ts-scene-height;
+    margin-right: @ts-wide-margin;
+
+    .icon {
+      width: @ts-scene-icon-width;
+    }
+
+    .label {
+      left: @ts-scene-icon-width + @ts-normal-margin;
     }
   }
 }

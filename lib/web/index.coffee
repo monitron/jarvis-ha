@@ -25,6 +25,18 @@ module.exports = class WebServer
     app.get "/api/capabilities", (req, res) =>
       res.json @_server.capabilities
 
+    app.get "/api/scenes", (req, res) =>
+      res.json @_server.scenes
+
+    app.post "/api/scenes/:sceneId/activate", (req, res) =>
+      scene = @_server.scenes.get(req.params.sceneId)
+      scene.activate()
+        .then -> res.json success: true
+        .catch (why) =>
+          @log 'warn', "Failed to activate scene #{req.params.sceneId}: #{JSON.stringify(why)}"
+          res.json 500, {success: false, message: why}
+        .done()
+
     app.get "/api/controls/:controlId", (req, res) =>
       control = @_server.controls.get(req.params.controlId)
       res.json control

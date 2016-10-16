@@ -11,6 +11,7 @@ Persistence = require('./Persistence')
 [AdapterNode, AdapterNodes] = require('./AdapterNode')
 [Capability, Capabilities] = require('./Capability')
 capabilities = require('./capabilities')
+[Scene, Scenes] = require('./Scene')
 
 module.exports = class Server
   constructor: ->
@@ -41,11 +42,11 @@ module.exports = class Server
         @log 'info', "Not starting disabled #{adapter.name} adapter"
     # Now let's controls
     @controls = new Controls()
-    for controlConfig in @config.controls
+    for controlConfig in (@config.controls or [])
       @controls.add new controls[controlConfig.type](controlConfig, {server: this})
     # Build capabilities
     @capabilities = new Capabilities()
-    for capConfig in @config.capabilities
+    for capConfig in (@config.capabilities or [])
       @capabilities.add new capabilities[capConfig.id](capConfig, {server: this})
     # Start capabilities
     @capabilities.each (cap) =>
@@ -54,6 +55,8 @@ module.exports = class Server
         cap.start()
       else
         @log 'info', "Not starting disabled #{cap.name} capability"
+    # Build scenes
+    @scenes = new Scenes(@config.scenes or [], server: this)
     # Start a web server
     @web = new WebServer(this, @config.webServer)
 
