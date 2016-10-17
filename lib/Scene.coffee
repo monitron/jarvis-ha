@@ -6,21 +6,25 @@ Q = require('q')
 class Scene extends Backbone.Model
   initialize: ->
     @_server = @collection.server
-    @_valid = true
-    # XXX Notice if a command is missing or invalid
 
   activate: ->
-    promises = for command in @get('commands')
-      @_server.controls.get(command.control).executeCommand(
-        command.verb, command.parameters)
-    Q.all(promises)
+    if @isValid()
+      promises = for command in @get('commands')
+        @_server.controls.get(command.control).executeCommand(
+          command.verb, command.parameters)
+      Q.all(promises)
+    else
+      deferred = Q.defer()
+      deferred.reject('One or more controls are missing or invalid')
+      deferred.promise
 
   # This is a copy/paste from Control; it ought to be a mixin
   getMembership: (path) ->
     _.find(@get('memberships'), (membership) -> _.isEqual(membership.path, path))
 
   isValid: ->
-    @_valid
+    _.all(@get('commands'), (command) =>
+      @_server.controls.get(command.control)?.isValid())
 
   log: (level, message) ->
     @_server.log level, "[#{@id} scene] #{message}"
