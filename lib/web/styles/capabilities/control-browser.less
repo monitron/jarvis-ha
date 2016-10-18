@@ -69,8 +69,12 @@
       background: @lightest-blue;
     }
 
-    &.busy .contents .icons .busy {
-      display: block;
+    &.busy {
+      cursor: wait;
+      
+      .contents .icons .busy {
+        display: block;
+      }
     }
 
     .contents {
@@ -112,12 +116,30 @@
       color: white;
     }
 
-    .icon {
+    &.busy {
+      cursor: wait;
+      opacity: .5;
+      pointer-events: none;
+      
+      .busy {
+        display: block;
+      }
+
+      .icon {
+        display: none;
+      }
+    }
+
+    .icon, .busy {
       position: absolute;
       top: 0;
       left: 0;
       font-size: 24px;
       text-align: center;
+    }
+
+    .busy {
+      display: none;
     }
 
     .label {
