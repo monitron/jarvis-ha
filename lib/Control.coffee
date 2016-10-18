@@ -4,6 +4,7 @@ Backbone = require('backbone')
 
 class Control extends Backbone.Model
   defaults: # name and type are required
+    context: 'main'
     parameters: {}
     connections: {}
     memberships: []

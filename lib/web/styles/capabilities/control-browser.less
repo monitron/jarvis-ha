@@ -3,6 +3,8 @@
 @ph-browser-header-height: 60px;
 @dt-browser-header-height: 60px;
 
+@ph-browser-sensors-height: 25px;
+
 @dt-browser-max-width: 1000px;
 
 @dt-scene-height: 50px;
@@ -152,6 +154,20 @@
       font-size: 18px;
     }
   }
+
+  .sensors {
+    font-weight: 300;
+
+    .icon {
+      opacity: .6;
+      width: 22px;
+      text-align: center;
+    }
+
+    .control {
+      float: left;
+    }
+  }
 }
 
 .display-desktop .control-browser {
@@ -226,9 +242,31 @@
       left: @dt-scene-icon-width + @dt-normal-margin;
     }
   }
+
+  .sensors {
+    float: right;
+    
+    .control {
+      margin: 0 @dt-normal-margin 0 @dt-thin-margin;
+
+      .icon {
+        margin-left: @dt-thin-margin;
+      }
+    }
+  }
 }
 
 .display-phone .control-browser {
+  &.with-sensors {
+    > .header {
+      height: @ph-browser-header-height + @ph-browser-sensors-height;
+    }
+
+    > .body {
+      top: @ph-browser-header-height + @ph-browser-sensors-height;
+    }
+  }
+
   > .header {
     height: @ph-browser-header-height;
     line-height: @ph-browser-header-height;
@@ -285,6 +323,21 @@
       left: @ph-scene-icon-width + @ph-wide-margin;
     }
   }
+
+  .sensors {
+    position: absolute;
+    top: 45px;
+    left: 60px;
+    line-height: @ph-browser-sensors-height;
+    
+    .control {
+      margin-right: @ph-wide-margin;
+    }
+
+    .measurement {
+      margin-right: @ph-thin-margin;
+    }
+  }
 }
 
 .display-touchscreen .control-browser {
@@ -339,6 +392,18 @@
 
     .label {
       left: @ts-scene-icon-width + @ts-normal-margin;
+    }
+  }
+  
+  .sensors {
+    float: right;
+    
+    .control {
+      margin-right: @ts-wide-margin;
+
+      .icon {
+        margin-left: @ts-thin-margin;
+      }
     }
   }
 }

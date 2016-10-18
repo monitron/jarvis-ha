@@ -1,11 +1,14 @@
-<div class="fullHeight fullWidth display {{#if isOccupied}}interesting{{/if}}">
+<span class="measurement">
   {{#if isKnown}}
   {{#if isOccupied}}
-  <i class="fa fa-check-circle"></i> Occupied
+  <span class="icon"><i class="fa fa-user"></i></span>
+  <span class="value">Occupied</span>
   {{else}}
-  <i class="fa fa-circle-thin"></i> Empty
+  <span class="icon"><i class="fa fa-ban"></i></span>
+  <span class="value">Unoccupied</span>
   {{/if}}
   {{else}}
-  Unknown
+  <span class="icon"><i class="fa fa-question-circle-o"></i></span>
+  <span class="value">Occupancy Unknown</span>
   {{/if}}
-</div>
+</span>
