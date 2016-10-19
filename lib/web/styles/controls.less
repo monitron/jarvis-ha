@@ -5,6 +5,7 @@
 @ctrl-trail-height: @ctrl-track-height - (@ctrl-inset * 2);
 @ctrl-handle-extension: 5px;
 @ctrl-handle-diameter: @ctrl-track-height + (2 * @ctrl-handle-extension);
+@ctrl-element-gutter: 10px;
 
 .control {
   &.busy {
@@ -95,6 +96,10 @@
         text-align: center;
         line-height: @ctrl-handle-diameter;
       }
+
+      &.invalid {
+        display: none;
+      }
     }
 
     .trail {
@@ -110,5 +115,37 @@
       padding-right: @ctrl-track-height / 2;
       pointer-events: none;
     }
+  }
+
+  .display {
+    .unselectable;
+    font-size: 20px;
+    margin: @ctrl-vertical-margin 0;
+    line-height: @ctrl-track-height - 2; /* subtraction for border */
+    height: @ctrl-track-height;
+    text-align: center;
+    border-radius: @ctrl-track-height / 2;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+}
+
+.door-control {
+  .lock {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 33%;
+  }
+
+  .text {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+  }
+
+  &.with-lock .text {
+    width: 67%;
+    padding-left: @ctrl-element-gutter;
   }
 }

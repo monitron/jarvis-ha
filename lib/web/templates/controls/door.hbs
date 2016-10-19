@@ -1,16 +1,2 @@
-<div class="fullHeight display
-            {{#if hasLock}}halfWidth left{{else}}fullWidth{{/if}}
-            {{#if isUnsafe}}unsafe{{/if}} {{#if isSafe}}safe{{/if}}">
-  {{text}}
-</div>
-
-{{#if hasLock}}
-<div class="button fullHeight quarterFromRight quarterWidth
-            {{#if isUnlocked}}selected{{/if}}" data-command="unlock">
-  <i class="fa fa-unlock"></i>
-</div>
-<div class="button fullHeight right quarterWidth
-            {{#if isLocked}}selected{{/if}}" data-command="lock">
-  <i class="fa fa-lock"></i>
-</div>
-{{/if}}
+{{#if hasLock}}<div class="lock slider"></div>{{/if}}
+<div class="text"><div class="display"></div></div>
