@@ -1,3 +1,9 @@
+{{#if conditionName}}
+<span class="measurement">
+  <span class="icon"><i class="wi {{conditionIcon}}"></i></span>
+  <span class="value">{{conditionName}}</span>
+</span>
+{{/if}}
 {{#if temperature}}
 <span class="measurement">
   <span class="icon"><i class="wi wi-thermometer"></i></span>
