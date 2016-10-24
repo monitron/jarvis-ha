@@ -4,7 +4,7 @@ module.exports =
 
   weatherConditionToIcon: (cond, day) ->
     map = #         [neutral, day, night]
-      clear:        ['wi-night-clear', 'wi-day-sunny', 'wi-night-clear']
+      clear:        ['wi-day-sunny', 'wi-day-sunny', 'wi-night-clear']
       lightSnow:    ['wi-snow', 'wi-day-snow', 'wi-night-alt-snow']
       rain:         ['wi-rain', 'wi-day-rain', 'wi-night-alt-rain']
       sleet:        ['wi-sleet', 'wi-day-sleet', 'wi-night-alt-sleet']
@@ -17,7 +17,6 @@ module.exports =
       partlyCloudy: ['wi-cloud', 'wi-day-cloudy', 'wi-night-alt-cloudy']
       partlySunny:  ['wi-cloud', 'wi-day-cloudy', 'wi-night-alt-cloudy']
       mostlySunny:  ['wi-day-sunny', 'wi-day-sunny', 'wi-night-clear']
-      sunny:        ['wi-day-sunny', 'wi-day-sunny', 'wi-night-clear']
     condSet = map[cond]
     if condSet?
       if day?

@@ -33,7 +33,7 @@ module.exports = class WeatherUndergroundAdapter extends Adapter
 
   fetchStation: (station) ->
     @log 'verbose', "Fetching station #{station}"
-    @request(['conditions'], station)
+    @request(['conditions', 'astronomy'], station)
       .then (data) => @children.get(station).processData data
 
   request: (features, location) ->
