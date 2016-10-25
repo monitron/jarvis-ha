@@ -58,10 +58,15 @@ module.exports = class WebServer
         @log 'verbose', "Notifying client of change to control #{model.id}"
         socket.emit 'control:change', model.toJSON()
       @_server.controls.on 'change', notifyControlChange, socket
+      notifyCapabilityChange = (model) =>
+        @log 'verbose', "Notifying client of change to capability #{model.id}"
+        socket.emit 'capability:change', model.toJSON()
+      @_server.capabilities.on 'change', notifyCapabilityChange, socket
 
       socket.on 'disconnect', =>
         @log 'debug', 'Client socket disconnected; unregistering notifications'
         @_server.controls.off 'change', notifyControlChange, socket
+        @_server.capabilities.off 'change', notifyCapabilityChange, socket
 
     httpServer.listen @_config.port, =>
       @log 'info', "Listening on port #{httpServer.address().port}"

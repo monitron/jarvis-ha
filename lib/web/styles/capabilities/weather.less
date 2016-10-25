@@ -1,0 +1,86 @@
+
+.weather-capability {
+  .full-size;
+  overflow: hidden;
+
+  .background {
+    .full-size;
+    filter: blur(5px);
+    transform: scale(1.1);
+    z-index: -1;
+    background: @blue;
+    
+    .camera {
+      .full-size;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: 50% 50%;
+    }
+  }
+  
+  .title {
+    font-weight: 300;
+    font-size: 28px;
+  }
+
+  > .body {
+    .full-size;
+  }
+  
+  .current {
+    color: white;
+    text-shadow: 0 0 50px black, 0 0 5px black, 0 0 2px black;
+    
+    .body {
+      .condition {
+        font-size: 28px;
+        line-height: 40px;
+        
+        .icon {
+          float: left;
+          margin-right: 10px;
+          font-size: 60px;
+          line-height: 90px;
+        }
+      }
+
+      .temperature {
+        float: left;
+        margin-right: 20px;
+      }
+      
+      .temperature, .humidity {
+        .label {
+          font-weight: 300;
+        }
+        
+        font-size: 20px;
+        line-height: 30px;
+      }
+    }
+  }
+}
+
+.display-desktop .weather-capability > .body {
+  padding: 50px;
+
+  .current .body {
+    margin: @dt-wide-margin 0;
+  }
+}
+
+.display-phone .weather-capability > .body {
+  padding: 20px;
+
+  .current .body {
+    margin: @ph-wide-margin 0;
+  }
+}
+
+.display-touchscreen .weather-capability > .body {
+  padding: 35px;
+
+  .current .body {
+    margin: @ts-wide-margin 0;
+  }
+}

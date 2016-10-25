@@ -1,0 +1,23 @@
+<div class="background">
+  {{#if camera}}
+  <div class="camera" style="background-image: url({{camera}});"></div>
+  {{/if}}
+</div>
+<div class="body">
+  <div class="current">
+    <div class="title">Current Conditions</div>
+    <div class="body">
+      <div class="condition">
+        <div class="icon"><i class="wi {{conditionIcon}}"></i></div>
+        <div class="name">{{conditionName}}</div>
+      </div>
+      <div class="temperature">
+        <span class="value">{{temperature}}&deg;</span>
+      </div>
+      <div class="humidity">
+        <span class="value">{{humidity}}%</span>
+        <span class="label">humidity</span>
+      </div>
+    </div>
+  </div>
+</div>
