@@ -7,7 +7,7 @@ module.exports = class FanSpeedControl extends Control
       target.getAspect('discreteSpeed').executeCommand 'set', params.value
 
   isActive: ->
-    speed = @getConnectionTarget('discreteSpeed').getAspect('discreteSpeed').
+    speed = @getConnectionTarget('discreteSpeed')?.getAspect('discreteSpeed').
       getDatum('state')
     speed? and speed != 'off'
 
