@@ -19,6 +19,9 @@ module.exports = class WebServer
       path = @normalizePath(unescape(req.params[0]))
       res.json @_server.controls.findMembersOfPath(path)
 
+    app.get "/api/stations/:stationId", (req, res) =>
+      res.json @_server.config.stations?[req.params.stationId] or {}
+
     app.get "/api/controls", (req, res) =>
       res.json @_server.controls
 
