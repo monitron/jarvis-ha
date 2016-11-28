@@ -14,21 +14,23 @@ INSTEON_DEVICE_CLASSES =
 module.exports = class InsteonAdapter extends Adapter
   name: "Insteon Cloud"
   defaults:
-    initialStatusCheck:   true # Check status on all devices upon connection?
-    statusCheckInterval:  900  # Time between automatic status refreshes
-                               # in seconds. Set null to disable.
-    streamCycleInterval:  600  # How long (s) after receiving a message to close
-                               # and reopen the stream to ensure it is working.
-                               # Set null to disable.
-    batchCommandInterval: 2000 # How long to wait between repeated commands (ms)
-    devices:              {}   # Provide options for individual devices by ID.
-                               # - forwardTo: redirects all status messages from
-                               #   the device to a specified device. Useful for
-                               #   controllers. Also excludes the forwarded
-                               #   device from bulk status checks.
-                               # - class: Specify the device class for an IOLinc
-                               #   device, which determines its behavior and the
-                               #   aspects it exposes.
+    initialStatusCheck:   true  # Check status on all devices upon connection?
+    statusCheckInterval:  900   # Time between automatic status refreshes
+                                # in seconds. Set null to disable.
+    streamCycleInterval:  600   # How long (sec) after receiving a message to
+                                # close and reopen the stream to ensure it is
+                                # working. Set null to disable.
+    reconnectInterval:    86400 # How long (sec) between reauthorizations to
+                                # avoid expiration of credentials.
+    batchCommandInterval: 2000  # How long to wait between commands (ms)
+    devices:              {}    # Provide options for individual devices by ID.
+                                # - forwardTo: redirects all status messages
+                                #   from the device to a specified device.
+                                #   Useful for controllers. Also excludes the
+                                #   forwarded device from bulk status checks.
+                                # - classify: Specify the device class for an
+                                #   IOLinc device, which determines its behavior
+                                #   and the aspects it exposes.
 
   initialize: ->
     super
@@ -39,7 +41,7 @@ module.exports = class InsteonAdapter extends Adapter
   start: ->
     @_api = new InsteonAPI(key: @get('apiKey'))
     @log "debug", "Authenticating to Insteon API with username #{@get('username')}"
-    @_api.connect username: @get('username'), password: @get('password')
+    @connect()
     @_api.on 'connect', =>
       @log 'debug', 'Authenticated to Insteon API'
       if @hasDiscovered
@@ -49,6 +51,10 @@ module.exports = class InsteonAdapter extends Adapter
       @_resetStreamCycle()
     @_api.on 'error', (e) => @log 'warn', "An Insteon error occurred: #{JSON.stringify(e)}"
     @_api.on 'command', (cmd) => @_handleCommandReceived(cmd)
+
+  connect: ->
+    _.values(@_api.monitoring)?[0]?.stream?.close()
+    @_api.connect username: @get('username'), password: @get('password')
 
   discoverDevices: ->
     @_api.house().then (houses) => @_house = houses[0]
@@ -96,6 +102,11 @@ module.exports = class InsteonAdapter extends Adapter
         @log 'debug', "Will check all device status at #{scInterval}s interval"
         @_statusCheck = setInterval(
           _.bind(@requestAllDevicesStatus, this), scInterval * 1000)
+      reconnectInterval = @get('reconnectInterval')
+      if reconnectInterval?
+        @log 'debug', "Will reconnect at #{reconnectInterval}s interval"
+        @_statusCheck = setInterval(_.bind(@connect, this),
+          reconnectInterval * 1000)
 
   requestAllDevicesStatus: ->
     # TODO don't request status on devices that won't reply (e.g. leak sensors)
