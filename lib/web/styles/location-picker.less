@@ -1,6 +1,9 @@
 
 @ts-location-picker-floors-width: 30%;
 @dt-location-picker-floors-width: 25%;
+@ts-location-picker-line-height: 40px;
+@dt-location-picker-line-height: 25px;
+@ph-location-picker-line-height: 50px;
 
 .location-picker {
   .floors {
@@ -18,6 +21,10 @@
     &:not(.selected):hover {
       background: @lighter-blue;
     }
+
+    .name {
+      margin-left: 20px;
+    }
   }
 
   .room {
@@ -32,6 +39,18 @@
     &:hover {
       background: @lightest-blue;
     }
+
+    .name {
+      margin-left: 20px;
+    }
+  }
+
+  .active-indicator { /* Used in floors and rooms */
+    float: left;
+    width: 10px;
+    height: 10px;
+    background: @blue;
+    border-radius: 5px;
   }
 }
 
@@ -46,8 +65,8 @@
   .floor {
     width: 50%;
     float: left;
-    font-size: 20px;
-    line-height: 50px;
+    font-size: 18px;
+    line-height: @ph-location-picker-line-height;
     padding: 0 @ph-wide-margin;
   }
 
@@ -56,9 +75,13 @@
   }
 
   .room {
-    line-height: 50px;
+    line-height: @ph-location-picker-line-height;
     font-size: 20px;
     margin: 0 @ph-wide-margin;
+  }
+
+  .active-indicator {
+    margin-top: (@ph-location-picker-line-height / 2) - 5px;
   }
 }
 
@@ -73,7 +96,7 @@
   }
 
   .floor {
-    line-height: 40px;
+    line-height: @ts-location-picker-line-height;
     font-size: 22px;
     padding: @ts-wide-margin;
   }
@@ -91,9 +114,13 @@
   .room {
     width: 50%;
     float: left;
-    line-height: 40px;
+    line-height: @ts-location-picker-line-height;
     font-size: 22px;
     padding: @ts-wide-margin;
+  }
+
+  .active-indicator {
+    margin-top: (@ts-location-picker-line-height / 2) - 5px;
   }
 }
 
@@ -108,7 +135,7 @@
   }
 
   .floor {
-    line-height: 25px;
+    line-height: @dt-location-picker-line-height;
     font-size: 20px;
     padding: @dt-normal-margin @dt-wide-margin;
     text-overflow: ellipsis;
@@ -130,11 +157,15 @@
     width: 25%;
     min-width: 200px;
     float: left;
-    line-height: 25px;
+    line-height: @dt-location-picker-line-height;
     font-size: 20px;
     padding: @dt-normal-margin;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+  }
+
+  .active-indicator {
+    margin-top: (@dt-location-picker-line-height / 2) - 5px;
   }
 }

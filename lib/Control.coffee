@@ -99,4 +99,10 @@ class Controls extends Backbone.Collection
       ptr = (ptr[element] ||= {}) for element in path
     tree
 
+  pathContainsActiveControls: (path) ->
+    @any (control) =>
+      x = _.any(_.pluck(control.get('memberships'), 'path'), (mp) ->
+        _.isEqual(path, mp.slice(0, path.length))) and control.isActive()
+
+
 module.exports = [Control, Controls]

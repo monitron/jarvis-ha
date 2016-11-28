@@ -1,5 +1,6 @@
 {{#each rooms}}
 <div class="room{{#if selected}} selected{{/if}}" data-room="{{name}}">
-  {{name}}
+  {{#if active}}<div class="active-indicator"></div>{{/if}}
+  <div class="name">{{name}}</div>
 </div>
 {{/each}}

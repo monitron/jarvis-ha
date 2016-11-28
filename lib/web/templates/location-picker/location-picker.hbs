@@ -1,7 +1,10 @@
 <div class="floors">
   {{#each floors}}
   <div class="floor{{#if selected}} selected{{/if}}"
-       data-floor="{{name}}">{{name}}</div>
+       data-floor="{{name}}">
+    {{#if active}}<div class="active-indicator"></div>{{/if}}
+    <div class="name">{{name}}</div>
+  </div>
   {{/each}}
 </div>
 <div class="rooms">
