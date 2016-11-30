@@ -195,12 +195,16 @@ module.exports = class InsteonAdapter extends Adapter
             when 'on'  then node.processData(open: true)
             when 'off' then node.processData(open: false)
             else @log 'debug', "Unknown open/close sensor status: #{JSON.stringify(cmd)}"
+        when 'light'
+          switch cmd.status
+            when 'off', 'fast_off'          then node.processData(power: false)
+            when 'on', 'fast_on', 'unknown' then @requestLightStatus(node)
+            else @log 'debug', "Unknown light status: #{JSON.stringify(cmd)}"
         else
+          @log 'debug', "Unknown interface type #{node.interfaceType} for status: #{JSON.stringify(cmd)}"
           switch cmd.status
             when 'on',  'fast_on'  then node.processData(power: true)
-            when 'off', 'fast_off' then node.processData(power: false)
-            when 'unknown'         then @requestLightStatus(node)
-            else @log 'debug', "Unknown status: #{JSON.stringify(cmd)}"
+            when 'unknown'         then
     else
       @log 'debug', "Received message for unknown or unidentifiable Insteon " +
         "device ID #{cmd.device_insteon_id}"
