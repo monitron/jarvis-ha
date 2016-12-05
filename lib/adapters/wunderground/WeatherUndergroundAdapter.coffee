@@ -45,5 +45,9 @@ module.exports = class WeatherUndergroundAdapter extends Adapter
         @log 'warn', "Failed to fetch #{url} (#{err})"
         deferred.reject err
       else
-        deferred.resolve JSON.parse(body)
+        try
+          deferred.resolve JSON.parse(body)
+        catch err
+          @log 'warn', "Request (#{url}) resulted in JSON parse error: #{err}"
+          deferred.reject err
     deferred.promise
