@@ -5,35 +5,35 @@ module.exports = class WeatherCapability extends Capability
   name: "Weather"
 
   defaults:
+    sources: []
     temperatureUnits: 'c'
     temperaturePrecision: 0
     humidityPrecision: 0
 
   start: ->
-    conditions = @conditionsSourceNode()
-    if conditions?
-      # Notice when source data changes
-      @_server.adapters.onEventAtPath @get('conditionsSource'),
+    # Notice when source data changes
+    for source in @get('sources')
+      @_server.adapters.onEventAtPath source.path,
         'aspectData:change', => @trigger 'change', this
-    else
-      @log 'error', 'conditionsSource not specified or missing'
     @setValid true # XXX Notice if source adapter becomes invalid
 
-  conditionsSourceNode: ->
-    return undefined unless @has('conditionsSource')
-    @_server.adapters.getPath(@get('conditionsSource'))
+  getSourceAspect: (aspect) ->
+    source = _.find(@get('sources'), (s) -> _.contains(s.aspects, aspect))
+    return undefined unless source?
+    @_server.adapters.getPath(source.path)?.getAspect(aspect)
 
   summarizeConditions: ->
     data = {}
-    node = @conditionsSourceNode()
-    if node.hasAspect('temperatureSensor')
-      data.temperature = node.getAspect('temperatureSensor').getDatum('value')
-    if node.hasAspect('humiditySensor')
-      data.humidity = node.getAspect('humiditySensor').getDatum('value')
-    if node.hasAspect('weatherConditionSensor')
-      data.condition = node.getAspect('weatherConditionSensor').getDatum('value')
-    if node.hasAspect('dayNightSensor')
-      data.isDay = node.getAspect('dayNightSensor').getDatum('value')
+    aspect = @getSourceAspect('temperatureSensor')
+    if aspect? then data.temperature = aspect.getDatum('value')
+    aspect = @getSourceAspect('humiditySensor')
+    if aspect? then data.humidity = aspect.getDatum('value')
+    aspect = @getSourceAspect('weatherConditionSensor')
+    if aspect? then data.condition = aspect.getDatum('value')
+    aspect = @getSourceAspect('dayNightSensor')
+    if aspect? then data.isDay = aspect.getDatum('value')
+    aspect = @getSourceAspect('stillCamera')
+    if aspect? then data.imageLocation = aspect.getDatum('imageLocation')
     data
 
   toJSON: ->
