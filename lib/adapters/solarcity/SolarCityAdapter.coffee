@@ -23,10 +23,10 @@ module.exports = class SolarCityAdapter extends Adapter
     pollInterval: 300 # Seconds between data reloads
 
   start: ->
-    @children.add new SolarCityMeterNode({id: 'consumption-today'},
-      {adapter: this})
-    @children.add new SolarCityMeterNode({id: 'production-today'},
-      {adapter: this})
+    for variable in ['consumption', 'production']
+      for period in ['today', 'this-month', 'this-year']
+        @children.add new SolarCityMeterNode({id: "#{variable}-#{period}"},
+          {adapter: this})
     setInterval((=> @poll()), @get('pollInterval') * 1000)
     @poll()
 
@@ -36,12 +36,25 @@ module.exports = class SolarCityAdapter extends Adapter
       StartTime: now.startOf('day').format(@timeFormat)
       EndTime:   now.endOf('day').format(@timeFormat)
       Period:    'Hour'
+    @_pollInterval options, 'today'
+    options =
+      StartTime: now.startOf('month').format(@timeFormat)
+      EndTime:   now.endOf('month').format(@timeFormat)
+      Period:    'Day'
+    @_pollInterval options, 'this-month'
+    options =
+      StartTime: now.startOf('year').format(@timeFormat)
+      EndTime:   now.endOf('year').format(@timeFormat)
+      Period:    'Month'
+    @_pollInterval options, 'this-year'
+
+  _pollInterval: (options, interval) ->
     @_request('consumption', options).then (res) =>
-      @children.get('consumption-today').processData(
+      @children.get("consumption-#{interval}").processData(
         res.TotalConsumptionInIntervalkWh)
     options = Object.assign({IsByDevice: true}, options)
     @_request('measurements', options).then (res) =>
-      @children.get('production-today').processData(
+      @children.get("production-#{interval}").processData(
         res.TotalEnergyInIntervalkWh)
 
   _request: (type, options) ->
