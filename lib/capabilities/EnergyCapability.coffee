@@ -6,7 +6,6 @@ module.exports = class EnergyCapability extends Capability
 
   defaults:
     meters: {} # {meter: {sources: {period: [path], ...}, ...}, ...}
-    energyPrecision: 1
     idlePeriod: 'day'
 
   start: ->
