@@ -1,0 +1,100 @@
+
+.energy-capability {
+  .full-size;
+  overflow-y: auto;
+}
+
+.energy-meter-values {
+  .period-name {
+    font-weight: 300;
+    font-size: 28px;
+  }
+
+  .meter-graphs {
+    .unstyled-list;
+
+    li {
+      position: relative;
+      height: 30px;
+      line-height: 30px;
+
+      .meter-icon {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 7%;
+      }
+
+      .meter-name {
+        position: absolute;
+        left: 7%;
+        top: 0;
+        width: 23%;
+      }
+
+      .meter-bar-track {
+        position: absolute;
+        left: 30%;
+        top: 0;
+        bottom: 0;
+        width: 45%;
+      }
+
+      .meter-bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        background: @blue;
+      }
+
+      .meter-value {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 25%;
+        text-align: right;
+      }
+    }
+  }
+}
+
+.display-desktop .energy-meter-values {
+  width: 50%;
+  float: left;
+  padding: @dt-wider-margin;
+  
+  .period-name {
+    margin-bottom: @dt-wide-margin;
+  }
+
+  .meter-graphs li {
+    margin-bottom: @dt-normal-margin;
+  }
+}
+
+.display-touchscreen .energy-meter-values {
+  width: 50%;
+  float: left;
+  padding: @ts-wider-margin;
+  
+  .period-name {
+    margin-bottom: @ts-wide-margin;
+  }
+
+  .meter-graphs li {
+    margin-bottom: @ts-normal-margin;
+  }
+}
+
+.display-phone .energy-meter-values {
+  padding: @ph-wide-margin;
+  
+  .period-name {
+    margin-bottom: @ph-wide-margin;
+  }
+
+  .meter-graphs li {
+    margin-bottom: @ph-normal-margin;
+  }
+}

@@ -1,0 +1,16 @@
+<div class="period-name">{{name}}</div>
+<ul class="meter-graphs">
+  {{#each meters}}
+  <li>
+    <div class="meter-icon"><i class="fa fa-{{meterIcon}}"></i></div>
+    <div class="meter-name">{{meterName}}</div>
+    <div class="meter-bar-track">
+      <div class="meter-bar" style="width: {{proportionalValue}}%;"></div>
+    </div>
+    <div class="meter-value">
+      {{formattedValue}}
+      <span class="units"> kWh</span>
+    </div>
+  </li>
+  {{/each}}
+</ul>
