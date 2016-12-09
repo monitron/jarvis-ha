@@ -37,7 +37,7 @@
         left: 30%;
         top: 0;
         bottom: 0;
-        width: 45%;
+        right: 25%;
       }
 
       .meter-bar {
@@ -54,6 +54,57 @@
         right: 0;
         width: 25%;
         text-align: right;
+      }
+    }
+  }
+}
+
+.display-touchscreen .energy-idle {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  font-size: 45px;
+  text-align: center;
+
+  .energy-meter-values {
+    width: 100%;
+    padding: 0;
+    float: none;
+
+    .period-name {
+      font-size: inherit;
+      font-size: 80%;
+    }
+
+    .meter-graphs li {
+      height: 60px;
+      line-height: 60px;
+      margin: 20px 0;
+
+      .meter-icon {
+        width: 17%;
+      }
+      
+      .meter-name {
+        display: none;
+      }
+
+      .meter-bar-track {
+        left: 17%;
+        right: 23%;
+      }
+
+      .meter-value {
+        opacity: .5;
+        font-weight: 300;
+        font-size: 80%;
+        width: 23%;
+        
+        .units {
+          display: none;
+        }
       }
     }
   }
