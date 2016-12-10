@@ -35,8 +35,8 @@
       .meter-bar-track {
         position: absolute;
         left: 30%;
-        top: 0;
-        bottom: 0;
+        top: 5px;
+        bottom: 5px;
         right: 25%;
       }
 
@@ -86,7 +86,7 @@
     .meter-graphs li {
       height: 60px;
       line-height: 60px;
-      margin: 20px 0;
+      margin: 10px 0;
 
       .meter-icon {
         width: 17%;
@@ -99,11 +99,15 @@
       .meter-bar-track {
         left: 17%;
         right: 23%;
+        top: 15px;
+        bottom: 15px;
+      }
+
+      .meter-bar {
+        background: linear-gradient(to right, @darkest-blue, @blue 265px);
       }
 
       .meter-value {
-        opacity: .5;
-        font-weight: 300;
         font-size: 80%;
         width: 23%;
         
