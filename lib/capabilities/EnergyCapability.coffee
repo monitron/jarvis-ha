@@ -10,7 +10,7 @@ module.exports = class EnergyCapability extends Capability
 
   start: ->
     # Listen to all our sources
-    for meterName, meterDetails in @get('meters')
+    for meterName, meterDetails of @get('meters')
       for period, path of meterDetails.sources
         @_server.adapters.onEventAtPath path,
           'aspectData:change', => @trigger 'change', this
