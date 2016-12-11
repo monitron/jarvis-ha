@@ -22,9 +22,18 @@ module.exports = class EnergyCapability extends Capability
       for period, path of meterDetails.sources
         aspect = @_server.adapters.getPath(path)?.getAspect('energySensor')
         if aspect?
-          (data[period] ||= {})[meterName] = aspect.getDatum('value')
+          ((data[period] ||= {}).meters ||= {})[meterName] =
+            aspect.getDatum('value')
+
+    for period, periodData of data
+      offsets = {}
+      for offsetId, offset of @get('offsets')
+        prod = periodData.meters[offset.productionMeter]
+        cons = periodData.meters[offset.consumptionMeter]
+        if prod? and cons? then offsets[offsetId] = prod / cons
+      periodData.offsets = offsets
     data
 
   toJSON: ->
     _.extend super,
-      meterSummary: @summarizeMeters()
+      summary: @summarizeMeters()
