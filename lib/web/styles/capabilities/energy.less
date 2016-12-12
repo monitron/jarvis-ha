@@ -68,6 +68,7 @@
     text-align: center;
     color: @dark-green;
     font-size: 18px;
+    line-height: 24px;
 
     .offset-value {
       font-weight: bold;
@@ -96,6 +97,7 @@
     .period-name {
       font-size: inherit;
       font-size: 80%;
+      margin-bottom: 20px;
     }
 
     .meter-graphs li {
@@ -135,6 +137,8 @@
     .offsets {
       color: inherit;
       font-size: inherit;
+      line-height: inherit;
+      margin-top: @ts-wider-margin;
     }
   }
 }
@@ -153,6 +157,10 @@
   .meter-graphs li {
     margin-bottom: @dt-thin-margin;
   }
+
+  .offsets {
+    margin-top: @dt-normal-margin;
+  }
 }
 
 .display-touchscreen .energy-meter-values {
@@ -167,11 +175,15 @@
   .meter-graphs li {
     margin-bottom: @ts-thin-margin;
   }
+
+  .offsets {
+    margin-top: @ts-wide-margin;
+  }
 }
 
 .display-phone .energy-meter-values {
   padding: @ph-wide-margin;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #ddd;
   
   .period-name {
     margin-bottom: @ph-wide-margin;
@@ -179,5 +191,9 @@
 
   .meter-graphs li {
     margin-bottom: @ph-normal-margin;
+  }
+
+  .offsets {
+    margin-top: @ph-wide-margin;
   }
 }
