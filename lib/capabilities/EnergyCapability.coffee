@@ -34,6 +34,5 @@ module.exports = class EnergyCapability extends Capability
       periodData.offsets = offsets
     data
 
-  toJSON: ->
-    _.extend super,
-      summary: @summarizeMeters()
+  _getState: ->
+    meters: @summarizeMeters()

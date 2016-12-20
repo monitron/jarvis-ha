@@ -36,6 +36,5 @@ module.exports = class WeatherCapability extends Capability
     if aspect? then data.imageLocation = aspect.getDatum('imageLocation')
     data
 
-  toJSON: ->
-    _.extend super,
-      conditions: @summarizeConditions()
+  _getState: ->
+    conditions: @summarizeConditions()
