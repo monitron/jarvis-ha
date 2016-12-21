@@ -39,9 +39,13 @@ module.exports = class InsteonAdapter extends Adapter
     @_forward = {}
 
   start: ->
-    @_api = new InsteonAPI(key: @get('apiKey'))
-    @log "debug", "Authenticating to Insteon API with username #{@get('username')}"
     @connect()
+
+  connect: ->
+    _.values(@_api?.monitoring)?[0]?.stream?.close()
+    @log "debug", "Authenticating to Insteon API with username #{@get('username')}"
+    @_api = new InsteonAPI(key: @get('apiKey'))
+    @_api.connect username: @get('username'), password: @get('password')
     @_api.on 'connect', =>
       @log 'debug', 'Authenticated to Insteon API'
       if @hasDiscovered
@@ -51,10 +55,6 @@ module.exports = class InsteonAdapter extends Adapter
       @_resetStreamCycle()
     @_api.on 'error', (e) => @log 'warn', "An Insteon error occurred: #{JSON.stringify(e)}"
     @_api.on 'command', (cmd) => @_handleCommandReceived(cmd)
-
-  connect: ->
-    _.values(@_api.monitoring)?[0]?.stream?.close()
-    @_api.connect username: @get('username'), password: @get('password')
 
   discoverDevices: ->
     @_api.house().then (houses) => @_house = houses[0]
