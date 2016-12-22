@@ -1,7 +1,7 @@
 
-[AdapterNode] = require('../../AdapterNode')
+EcobeeNode = require('./EcobeeNode')
 
-module.exports = class EcobeeSensorNode extends AdapterNode
+module.exports = class EcobeeSensorNode extends EcobeeNode
   aspects:
     temperatureSensor: {}
     humiditySensor: {}
@@ -12,7 +12,7 @@ module.exports = class EcobeeSensorNode extends AdapterNode
       switch capability.type
         when 'temperature'
           @getAspect('temperatureSensor').setData
-            value: ((Number(capability.value) / 10.0) - 32) * (5 / 9.0)
+            value: @_convertTemp(capability.value)
         when 'humidity'
           @getAspect('humiditySensor').setData
             value: Number(capability.value)

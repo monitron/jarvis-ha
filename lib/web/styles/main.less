@@ -9,6 +9,7 @@
 @import "capabilities/control-browser.less";
 @import "capabilities/weather.less";
 @import "capabilities/energy.less";
+@import "capabilities/comfort.less";
 
 ::-webkit-scrollbar {
   display: none;
@@ -24,8 +25,11 @@ a {
 }
 
 body {
-  font-family: Raleway, Helvetica, Arial, sans-serif;
   margin: 0;
+}
+
+body, svg text {
+  font-family: Raleway, Helvetica, Arial, sans-serif;
 }
 
 .app.display-desktop.with-modal #primary {

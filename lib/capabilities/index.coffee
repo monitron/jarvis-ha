@@ -4,3 +4,4 @@ module.exports =
   shortcuts: require('./ShortcutsCapability')
   weather: require('./WeatherCapability')
   energy: require('./EnergyCapability')
+  comfort: require('./ComfortCapability')

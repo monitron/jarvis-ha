@@ -35,7 +35,9 @@ module.exports = class EcobeeAdapter extends Adapter
           node = @children.get(id)
           unless node?
             @log 'verbose', "Creating thermostat ID #{id}"
-            @children.add new EcobeeThermostatNode({id: id}, {adapter: this})
+            tnode = @children.add(
+              new EcobeeThermostatNode({id: id}, {adapter: this}))
+            tnode.processData thermostat
           for sensor in thermostat.remoteSensors
             snode = @children.get(sensor.id)
             unless snode?
