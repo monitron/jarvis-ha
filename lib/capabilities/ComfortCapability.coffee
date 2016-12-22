@@ -6,6 +6,9 @@ module.exports = class ComfortCapability extends Capability
 
   defaults:
     zones: {}
+    temperaturePrecision: 1
+    temperatureUnits: 'c'
+    humidityPrecision: 0
 
   start: ->
     # Listen to sensors and thermostats

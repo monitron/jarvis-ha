@@ -1,10 +1,89 @@
+.comfort-capability {
+  .full-size;
+  
+  .thermostat {
+    text-align: center;
+    background: @blue;
+    color: white;
+
+    .current-temperature {
+      font-size: 40px;
+      line-height: 60px;
+    }
+
+    .current-humidity {
+      font-size: 30px;
+      line-height: 40px;
+    }
+  }
+}
+
 .comfort-sensor-disparity {
-  width: 300px;
-  height: 400px;
+  max-width: 400px;
+  overflow-y: auto;
 
   svg {
+    text {
+      font-size: 16px;
+    }
+    
     .bar {
       fill: @blue;
     }
+
+    .y.axis {
+      path, line {
+        display: none;
+      }
+
+      text {
+        font-weight: bold;
+      }
+    }
+
+    .values {
+      text-anchor: end;
+    }
+
+    .x.axis {
+      text, path {
+        display: none;
+      }
+
+      line {
+        stroke: #ddd;
+      }
+    }
+
+    .x.zero {
+      stroke: black;
+    }
+  }
+}
+
+.display-touchscreen .comfort-capability {
+  .thermostat {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 50%;
+    padding: @ts-wider-margin;
+  }
+
+  .temperature-disparity {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 50%;
+  }
+}
+
+.display-phone .comfort-capability {
+  overflow-y: auto;
+  
+  .thermostat {
+    padding: @ph-wide-margin;
   }
 }
