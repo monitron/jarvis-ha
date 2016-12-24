@@ -32,12 +32,12 @@ module.exports = class EcobeeAdapter extends Adapter
     @_api.listThermostats()
       .then (thermostats) =>
         for id, thermostat of thermostats
-          node = @children.get(id)
-          unless node?
+          tnode = @children.get(id)
+          unless tnode?
             @log 'verbose', "Creating thermostat ID #{id}"
             tnode = @children.add(
               new EcobeeThermostatNode({id: id}, {adapter: this}))
-            tnode.processData thermostat
+          tnode.processData thermostat
           for sensor in thermostat.remoteSensors
             snode = @children.get(sensor.id)
             unless snode?
