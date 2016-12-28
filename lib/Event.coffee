@@ -1,5 +1,6 @@
 
 Backbone = require('backbone')
+uuid = require('uuid/v4')
 
 # Event:
 #  capability: capability id
@@ -10,6 +11,9 @@ Backbone = require('backbone')
 # description: a longer string, or null
 
 class Event extends Backbone.Model
+  initialize: ->
+    unless @has('id') then @set 'id', uuid()
+
   isOngoing: ->
     !@has('end')
 
