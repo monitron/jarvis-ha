@@ -5,3 +5,4 @@ module.exports =
   weather: require('./WeatherCapability')
   energy: require('./EnergyCapability')
   comfort: require('./ComfortCapability')
+  security: require('./security/SecurityCapability')
