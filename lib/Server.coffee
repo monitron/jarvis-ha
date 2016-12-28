@@ -12,6 +12,7 @@ Persistence = require('./Persistence')
 [Capability, Capabilities] = require('./Capability')
 capabilities = require('./capabilities')
 [Scene, Scenes] = require('./Scene')
+[Event, Events] = require('./Event')
 
 module.exports = class Server
   constructor: ->
@@ -26,6 +27,7 @@ module.exports = class Server
     @config = @readConfig()
     if @config.debug then require('longjohn')
     @persistence = new Persistence()
+    @events = new Events()
     # Gather adapters
     @adapters = new AdapterNodes()
     @adapters.on 'deepEvent', (path, ev, args) =>
