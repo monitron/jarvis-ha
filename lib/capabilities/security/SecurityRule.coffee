@@ -25,6 +25,7 @@ class SecurityRule extends Backbone.Model
       @_server.adapters.onEventAtPath path, 'aspectData:change',
         (args...) => @trigger('connection:change', args...)
 
+    @listenTo this, 'mode:change', @cancelDelayTimeout
     @listenTo this, 'mode:change connection:change', @evaluate
 
   # Override me with a method that tests whether the rule is currently
@@ -43,21 +44,28 @@ class SecurityRule extends Backbone.Model
     if !@isValid()
       @log 'warn', 'Unable to evaluate - rule not currently valid'
       return
-
     mode = @currentModeParameters()
     state = @state()
     if !state?
       @log 'debug', "State cannot be determined"
+      @cancelDelayTimeout()
       # XXX Do something real
     else if state and mode.eventImportance?
       if @ongoingEvent?
         if @ongoingEvent.get('importance') != mode.eventImportance
           # The ongoing event is of the wrong importance; replace it
           @endOngoingEvent()
-          @createOngoingEvent(mode.eventImportance)
-      else # There is no event, and there should be
-        @createOngoingEvent(mode.eventImportance)
+          @createOngoingEvent()
+      else # There is no event, and there should be (now or soon)
+        if mode.eventDelay?
+          if !@delayTimeout? # If delay has already begun, leave it be
+            @delayTimeout = setTimeout((=> @createOngoingEvent()),
+              mode.eventDelay * 1000)
+            @log 'debug', "Event will fire in #{mode.eventDelay}s."
+        else
+          @createOngoingEvent()
     else
+      @cancelDelayTimeout()
       if @ongoingEvent?
         @endOngoingEvent() # This event is no longer appropriate
 
@@ -75,9 +83,16 @@ class SecurityRule extends Backbone.Model
       uniquePaths.push(path) unless _.find(uniquePaths, (p) -> _.isEqual(p, path))
     uniquePaths
 
+  cancelDelayTimeout: ->
+    if @delayTimeout?
+      @log 'debug', 'Delay timeout cancelled.'
+      clearTimeout(@delayTimeout)
+    delete @delayTimeout
+
   createOngoingEvent: (importance) ->
+    @cancelDelayTimeout()
     @ongoingEvent = @_parent.createEvent
-      importance: importance
+      importance: @currentModeParameters().eventImportance
       title: @buildMessage('presentTitle')
 
   endOngoingEvent: ->
