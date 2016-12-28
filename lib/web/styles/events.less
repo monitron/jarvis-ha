@@ -1,0 +1,41 @@
+
+.events {
+  .event {
+    border-bottom: 1px solid #eee;
+
+    &.medium-importance {
+      background: @yellow;
+    }
+
+    &.high-importance {
+      background: @red;
+      color: white;
+    }
+    
+    .capability {
+      opacity: .4;
+    }
+  }
+}
+
+.display-touchscreen .events {
+  .event {
+    padding: @ts-wide-margin;
+
+    .title {
+      font-size: 24px;
+      padding-top: @ts-normal-margin;
+    }
+  }
+}
+
+.display-phone .events {
+  .event {
+    padding: @ph-wide-margin;
+
+    .title {
+      font-size: 24px;
+      padding-top: @ph-normal-margin;
+    }
+  }
+}

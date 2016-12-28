@@ -1,4 +1,5 @@
 
+_ = require('underscore')
 Backbone = require('backbone')
 uuid = require('uuid/v4')
 
@@ -23,6 +24,8 @@ class Event extends Backbone.Model
 class Events extends Backbone.Collection
   model: Event
 
+  importances: ['high', 'medium', 'low'] # in decreasing order
+
   ongoing: ->
     @filter (event) -> event.isOngoing()
 
@@ -30,6 +33,11 @@ class Events extends Backbone.Collection
     events = @where(capability: capability)
     if ongoingOnly then events = _.filter(events, (e) -> e.isOngoing())
     events
+
+  greatestImportance: ->
+    for imp in @importances
+      if @findWhere(importance: imp) then return imp
+    undefined
 
 
 module.exports = [Event, Events]

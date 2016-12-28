@@ -84,10 +84,12 @@
     left: 0;
     right: 0;
     height: @ph-nav-height;
+    overflow: hidden;
     background: black;
     color: @blue;
 
     .capabilities {
+      float: left;
       overflow: hidden;
       
       .capability {
@@ -119,6 +121,16 @@
         }
       }
     }
+    
+    .notifications {
+      float: right;
+      line-height: @ph-nav-height;
+
+      .badge {
+        font-size: 22px;
+        padding: 0 @ph-wide-margin;
+      }
+    }
   }
 }
 
@@ -142,6 +154,7 @@
 
     .capabilities {
       overflow: hidden;
+      float: left;
       
       .capability {
         .clickable;
@@ -172,10 +185,37 @@
         }
       }
     }
+    
+    .notifications {
+      float: right;
+      line-height: @ts-nav-height;
+
+      .badge {
+        font-size: 22px;
+        padding: 0 @ts-wider-margin;
+      }
+    }
+  }
+}
+
+#nav .notifications .badge {
+  color: @darker-blue;
+  
+  &.low-importance {
+    color: @blue;
+  }
+
+  &.medium-importance {
+    color: @yellow;
+  }
+
+  &.high-importance {
+    color: @red;
   }
 }
 
 .debug-icon { /* This is purely temporary */
+  display: none;
   position: absolute;
   right: 0;
   bottom: 0;
