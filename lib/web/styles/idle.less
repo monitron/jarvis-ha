@@ -1,3 +1,5 @@
+@idle-clock-height: 100px;
+
 .app.is-idle .idle-content {
   display: block;
 }
@@ -9,10 +11,11 @@
   z-index: 2;
   display: none;
 
-  .clock {
+  > .clock {
     position: absolute;
     bottom: @ts-wider-margin;
     left: @ts-wider-margin;
+    height: @idle-clock-height;
     font-size: 24px;
     line-height: 150%;
 
@@ -30,7 +33,27 @@
     }
   }
 
-  .capability {
+  > .notifications {
+    position: absolute;
+    left: @ts-wider-margin;
+    top: @ts-wider-margin;
+    bottom: (@ts-wider-margin * 2) + @idle-clock-height;
+    width: 40%;
+
+    .event {
+      padding: 0 0 @ts-wide-margin 0;
+      
+      &.medium-importance {
+        color: @yellow;
+      }
+
+      &.high-importance {
+        color: @red;
+      }
+    }
+  }
+
+  > .capability {
     position: absolute;
     top: @ts-wider-margin;
     right: @ts-wider-margin;

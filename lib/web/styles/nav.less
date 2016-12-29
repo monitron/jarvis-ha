@@ -2,6 +2,7 @@
 @ts-nav-height: 65px;
 @ph-nav-height: 60px;
 @dt-nav-width: 300px;
+@dt-nav-header-height: 60px;
 
 /* Merge phone and touchscreen similarities, if we keep them */
 
@@ -25,8 +26,61 @@
     z-index: 1;
     color: black;
 
+    .header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: @dt-nav-header-height;
+      line-height: @dt-nav-header-height;
+      padding: 0 @dt-wide-margin;
+
+      h1 {
+        float: left;
+        margin: 0;
+        padding: 0;
+        opacity: .25;
+        font-weight: 300;
+        font-size: 30px;
+      }
+
+      .notifications {
+        float: right;
+
+        .badge {
+          display: inline-block;
+          line-height: 30px;
+          color: #aaa;
+          background: #ddd;
+          padding: 0 @dt-normal-margin;
+          border-radius: 30px;
+          
+          &.low-importance {
+            color: white;
+            background: @blue;
+          }
+
+          &.medium-importance {
+            color: black;
+            background: @yellow;
+            box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
+          }
+
+          &.high-importance {
+            color: white;
+            background: @red;
+            box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
+          }
+        }
+      }
+    }
+
     .capabilities {
-      .full-size;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: @dt-nav-header-height;
       padding: @dt-wide-margin;
 
       .capability {
@@ -84,10 +138,12 @@
     left: 0;
     right: 0;
     height: @ph-nav-height;
+    overflow: hidden;
     background: black;
     color: @blue;
 
     .capabilities {
+      float: left;
       overflow: hidden;
       
       .capability {
@@ -119,6 +175,16 @@
         }
       }
     }
+    
+    .notifications {
+      float: right;
+      line-height: @ph-nav-height;
+
+      .badge {
+        font-size: 22px;
+        padding: 0 @ph-wide-margin;
+      }
+    }
   }
 }
 
@@ -142,6 +208,7 @@
 
     .capabilities {
       overflow: hidden;
+      float: left;
       
       .capability {
         .clickable;
@@ -172,10 +239,38 @@
         }
       }
     }
+    
+    .notifications {
+      float: right;
+      line-height: @ts-nav-height;
+
+      .badge {
+        font-size: 22px;
+        padding: 0 @ts-wider-margin;
+      }
+    }
+  }
+}
+
+#nav .notifications .badge {
+  .clickable;
+  color: @darker-blue;
+  
+  &.low-importance {
+    color: @blue;
+  }
+
+  &.medium-importance {
+    color: @yellow;
+  }
+
+  &.high-importance {
+    color: @red;
   }
 }
 
 .debug-icon { /* This is purely temporary */
+  display: none;
   position: absolute;
   right: 0;
   bottom: 0;

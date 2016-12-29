@@ -31,6 +31,9 @@ module.exports = class WebServer
     app.get "/api/scenes", (req, res) =>
       res.json @_server.scenes
 
+    app.get "/api/events", (req, res) =>
+      res.json @_server.events.ongoing()
+
     app.post "/api/scenes/:sceneId/activate", (req, res) =>
       scene = @_server.scenes.get(req.params.sceneId)
       scene.activate()
@@ -65,6 +68,11 @@ module.exports = class WebServer
         @log 'verbose', "Notifying client of change to capability #{model.id}"
         socket.emit 'capability:change', model.toJSON()
       @_server.capabilities.on 'change', notifyCapabilityChange, socket
+      notifyOngoingEventsChange = (model) =>
+        @log 'verbose', "Notifying client of change to ongoing events"
+        socket.emit 'events:change',
+          @_server.events.ongoing().map((e) -> e.toJSON())
+      @_server.events.on 'add remove change', notifyOngoingEventsChange, socket
 
       socket.on 'disconnect', =>
         @log 'debug', 'Client socket disconnected; unregistering notifications'
