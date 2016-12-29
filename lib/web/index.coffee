@@ -28,6 +28,15 @@ module.exports = class WebServer
     app.get "/api/capabilities", (req, res) =>
       res.json @_server.capabilities
 
+    app.post "/api/capabilities/:capabilityId/commands/:commandId", (req, res) =>
+      capability = @_server.capabilities.get(req.params.capabilityId)
+      capability.executeCommand req.params.commandId, req.body
+        .then -> res.json success: true
+        .catch (why) =>
+          @log 'warn', "Command failed on capability #{req.params.capabilityId}: #{JSON.stringify(why)}"
+          res.json 500, {success: false, message: why}
+        .done()
+
     app.get "/api/scenes", (req, res) =>
       res.json @_server.scenes
 
@@ -52,7 +61,7 @@ module.exports = class WebServer
       control.executeCommand req.params.commandId, req.body
         .then -> res.json success: true
         .catch (why) =>
-          @log 'warn', "Failed to execute command on #{req.params.controlId}: #{JSON.stringify(why)}"
+          @log 'warn', "Command failed on control #{req.params.controlId}: #{JSON.stringify(why)}"
           res.json 500, {success: false, message: why}
         .done()
 

@@ -1,3 +1,5 @@
+Q = require('q')
+_ = require('underscore')
 [Capability] = require('../../Capability')
 [SecurityRule, SecurityRules] = require('./SecurityRule')
 rules = require('./rules')
@@ -8,6 +10,12 @@ module.exports = class SecurityCapability extends Capability
   defaults:
     modes: {}
     rules: []
+
+  commands:
+    setMode: (capability, params) ->
+      # XXX Notice if mode is not in the defined modes
+      capability.enterMode(params.mode)
+      Q.fcall(-> true)
 
   start: ->
     # Instantiate rules
@@ -20,6 +28,10 @@ module.exports = class SecurityCapability extends Capability
         @log 'error', "Unknown security rule type #{type}"
     @enterMode @get('initialMode')
     @setValid true # XXX Notice if sources become invalid via Rules
+
+  _getState: ->
+    mode: @mode
+    rules: _.object(@rules.map((rule) -> [rule.id, rule.state()]))
 
   enterMode: (newMode) ->
     @mode = newMode
