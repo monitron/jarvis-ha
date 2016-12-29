@@ -48,8 +48,7 @@ module.exports = class Slack
   notifyNewEvent: (event) ->
     if _.contains(@config.eventImportance, event.get('importance'))
       message = @emoji.importance[event.get('importance')] + ' '
-      if message.isOngoing()
-        message += '*Ongoing:* '
+      if event.isOngoing() then message += '*Ongoing:* '
       message += event.get('title')
       @rtm.sendMessage message, @channelId()
 
