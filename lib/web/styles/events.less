@@ -1,21 +1,21 @@
 
-.events {
-  .event {
-    border-bottom: 1px solid #eee;
-
-    &.medium-importance {
-      background: @yellow;
-    }
-
-    &.high-importance {
-      background: @red;
-      color: white;
-    }
-    
-    .capability {
-      opacity: .4;
-    }
+.events .event {
+  .capability {
+    opacity: .4;
   }
+}
+
+.modal .events .event {
+  border-bottom: 1px solid #eee;
+
+  &.medium-importance {
+    background: @yellow;
+  }
+
+  &.high-importance {
+    background: @red;
+    color: white;
+  }    
 }
 
 .display-touchscreen .events {
