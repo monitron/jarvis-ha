@@ -75,7 +75,7 @@ module.exports = class Server
     yaml.safeLoad(text)
 
   naturalCommand: (command) ->
-    command = command.replace(/(\W|_)+/g, ' ').toLowerCase()
+    command = command.replace(/(\W|_)+/g, ' ').toLowerCase().trim()
     candidates = []
     @capabilities.each (cap) =>
       for commandId, params of cap.naturalCommandCandidates(command)

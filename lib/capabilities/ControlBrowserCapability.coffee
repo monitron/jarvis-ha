@@ -21,8 +21,8 @@ module.exports = class ControlBrowserCapability extends Capability
       execute: (cap, {control}) ->
         d = Q.defer()
         control.executeCommand('turnOn')
-          .fail -> d.reject  "Sorry, I couldn't turn it on."
-          .then -> d.resolve "Okay, it's on."
+          .fail -> d.reject  "Sorry, that didn't work."
+          .then -> d.resolve "Okay, turned on."
         d.promise
     off:
       forms: [
@@ -40,8 +40,8 @@ module.exports = class ControlBrowserCapability extends Capability
       execute: (cap, {control}) ->
         d = Q.defer()
         control.executeCommand('turnOff')
-          .fail -> d.reject  "Sorry, I couldn't turn it off."
-          .then -> d.resolve "Okay, it's off."
+          .fail -> d.reject  "Sorry, that didn't work."
+          .then -> d.resolve "Okay, turned off."
         d.promise
 
   start: ->
