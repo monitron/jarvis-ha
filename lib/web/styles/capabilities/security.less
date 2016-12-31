@@ -1,0 +1,192 @@
+
+@dt-security-mode-button-height: 40px;
+@ts-security-mode-button-height: 60px;
+@ph-security-mode-button-height: 50px;
+
+.security-capability {
+  .mode {
+    background: #444;
+    color: white;
+
+    .title {
+      font-size: 25px;
+      font-weight: 300;
+    }
+    
+    .modes {
+      .unstyled-list;
+      overflow: hidden;
+
+      li {
+        .clickable;
+        font-size: 20px;
+        background: #333;
+
+        i {
+          display: inline-block;
+          margin-right: 5px;
+          width: 24px;
+          text-align: center;
+        }
+
+        &:hover {
+          background: #222;
+        }
+        
+        &.current {
+          background: @darker-blue;
+        }
+      }
+    }
+  }
+
+  .status {
+    .ok {
+      color: @green;
+    }
+    
+    .triggered {
+      color: @red;
+    }
+
+    .unknown {
+      color: @blue;
+    }
+
+    .overall {
+      line-height: 60px;
+
+      .icon {
+        width: 60px;
+        float: left;
+        font-size: 58px;
+        margin-right: 10px;
+        text-align: center;
+      }
+      
+      .text {
+        font-weight: 300;
+      }
+    }
+
+    .problems {
+      .unstyled-list;
+      margin-left: 70px;
+
+      li {
+        width: 100%;
+        font-size: 18px;
+      }
+    }
+  }
+}
+
+.display-phone .security-capability {
+  .mode {
+    padding: @ph-wide-margin;
+
+    .modes li {
+      float: left;
+      line-height: @ph-security-mode-button-height;
+      height: @ph-security-mode-button-height;
+      border-radius: @ph-security-mode-button-height;
+      padding: 0 20px;
+      width: 100%;
+      margin-top: @ph-wide-margin;
+    }
+  }
+
+  .status {
+    padding: @ph-wide-margin;
+
+    .overall .text {
+      font-size: 22px;
+    }
+    
+    .problems li {
+      padding: @ph-normal-margin 0;
+    }
+  }
+}
+
+.display-touchscreen .security-capability {
+  .mode {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 40%;
+    padding: @ts-wider-margin;
+
+    .title {
+      margin-bottom: @ts-wide-margin;
+      line-height: 60px;
+    }
+
+    .modes li {
+      padding: 0 40px;
+      margin-bottom: @ts-wide-margin;
+      line-height: @ts-security-mode-button-height;
+      height: @ts-security-mode-button-height;
+      border-radius: @ts-security-mode-button-height;
+    }
+  }
+
+  .status {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 60%;
+    padding: @ts-wider-margin;
+
+    .overall .text {
+      font-size: 25px;
+    }
+    
+    .problems li {
+      padding: 7px 0;
+    }
+  }
+}
+
+.display-desktop .security-capability {
+  .mode {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 20%;
+    padding: @dt-wide-margin @dt-wider-margin;
+
+    .title {
+      margin-bottom: @dt-normal-margin;
+    }
+
+    .modes li {
+      float: left;
+      padding: 0 @dt-wide-margin;
+      margin-right: @dt-normal-margin;
+      line-height: @dt-security-mode-button-height;
+      height: @dt-security-mode-button-height;
+      border-radius: @dt-security-mode-button-height;
+    }
+  }
+
+  .status {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 20%;
+    padding: @dt-wider-margin;
+
+    .overall .text {
+      font-size: 30px;
+    }
+
+    .problems li {
+      padding: @dt-normal-margin 0;
+    }
+  }
+}

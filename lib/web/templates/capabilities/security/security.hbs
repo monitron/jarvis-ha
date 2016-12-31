@@ -1,0 +1,27 @@
+<div class="mode">
+  <div class="title">Security Mode</div>
+  <ul class="modes">
+    {{#each modes}}
+    <li data-id="{{id}}" {{#if current}}class="current"{{/if}}>
+      <i class="fa fa-{{icon}}"></i>
+      {{name}}
+    </li>
+    {{/each}}
+  </ul>
+</div>
+<div class="status">
+  {{#with status}}
+  <div class="overall {{overall}}">
+    <div class="icon"><i class="fa fa-{{icon}}"></i></div>
+    <div class="text">{{text}}</div>
+  </div>
+
+  <ul class="problems">
+    {{#each problems}}
+    <li class="{{type}}">
+      {{description}}
+    </li>
+    {{/each}}
+  </ul>
+  {{/with}}
+</div>

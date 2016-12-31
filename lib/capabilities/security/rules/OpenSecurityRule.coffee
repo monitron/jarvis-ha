@@ -6,6 +6,7 @@ module.exports = class OpenSecurityRule extends SecurityRule
     name:         'A door'
     presentTitle: '<%= name %> is open'
     pastTitle:    '<%= name %> was open'
+    unknownTitle: '<%= name %> open/closed status is unknown'
     normallyOpen: false
 
   initialize: ->
@@ -16,7 +17,7 @@ module.exports = class OpenSecurityRule extends SecurityRule
     sensor = @getConnectionTarget('openCloseSensor')
     value = sensor.getAspect('openCloseSensor').getDatum('state')
     if !value?
-      undefined
+      null
     else if @get('parameters').normallyOpen
       !value
     else

@@ -27,12 +27,14 @@ module.exports = class SecurityCapability extends Capability
       else
         @log 'error', "Unknown security rule type #{type}"
     @enterMode @get('initialMode')
+    @listenTo @rules, 'change', => @trigger 'change', this
     @setValid true # XXX Notice if sources become invalid via Rules
 
   _getState: ->
     mode: @mode
-    rules: _.object(@rules.map((rule) -> [rule.id, rule.state()]))
+    rules: _.object(@rules.map((rule) -> [rule.id, rule.toStateJSON()]))
 
   enterMode: (newMode) ->
     @mode = newMode
     @trigger 'mode:change', newMode
+    @trigger 'change', this

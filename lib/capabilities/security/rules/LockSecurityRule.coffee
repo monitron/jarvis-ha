@@ -5,6 +5,7 @@ module.exports = class LockSecurityRule extends SecurityRule
     name:           'A lock'
     presentTitle:   '<%= name %> is unlocked'
     pastTitle:      '<%= name %> was unlocked'
+    unknownTitle:   '<%= name %> lock status is unknown'
     normallyLocked: false
 
   initialize: ->
@@ -15,7 +16,7 @@ module.exports = class LockSecurityRule extends SecurityRule
     sensor = @getConnectionTarget('lock')
     value = sensor.getAspect('lock').getDatum('state')
     if !value?
-      undefined
+      null
     else if @get('parameters').normallyLocked
       value
     else

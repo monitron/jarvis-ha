@@ -30,7 +30,7 @@ class SecurityRule extends Backbone.Model
 
   # Override me with a method that tests whether the rule is currently
   # triggering. This method won't be called unless the rule is valid (all
-  # its connections are valid). Return undefined if the state
+  # its connections are valid). Return null if the state cannot be determined.
   state: ->
     undefined
 
@@ -68,6 +68,7 @@ class SecurityRule extends Backbone.Model
       @cancelDelayTimeout()
       if @ongoingEvent?
         @endOngoingEvent() # This event is no longer appropriate
+    @trigger 'change', this # XXX Only change if state actually changed
 
   currentModeParameters: ->
     @get('modes')[@_parent.mode] or {}
@@ -101,10 +102,23 @@ class SecurityRule extends Backbone.Model
       title: @buildMessage('pastTitle')
     delete @ongoingEvent
 
+  stateDescription: ->
+    state = @state()
+    if state
+      @buildMessage('presentTitle')
+    else if !state?
+      @buildMessage('unknownTitle')
+    else
+      undefined
+
   buildMessage: (msgParam) ->
     params = @get('parameters')
     # Later we might pass more data than just the params
     _.template(params[msgParam])(params)
+
+  toStateJSON: ->
+    state: @state()
+    description: @stateDescription()
 
   log: (level, message) ->
     @_parent.log level, "[#{@get('id')} rule(#{@get('type')})] #{message}"
