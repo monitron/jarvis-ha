@@ -117,8 +117,11 @@ class SecurityRule extends Backbone.Model
     _.template(params[msgParam])(params)
 
   toStateJSON: ->
-    state: @state()
-    description: @stateDescription()
+    if !@isValid()
+      undefined
+    else
+      state: @state()
+      description: @stateDescription()
 
   log: (level, message) ->
     @_parent.log level, "[#{@get('id')} rule(#{@get('type')})] #{message}"

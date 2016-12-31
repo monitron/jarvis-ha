@@ -23,7 +23,6 @@ module.exports = class VeraAdapter extends Adapter
   discoverDevices: ->
     @log 'debug', 'Discovering devices...'
     @_request('user_data').then (result) =>
-      @_shiz = result.devices
       for device in result.devices
         switch device.device_type
           when 'urn:schemas-micasaverde-com:device:DoorLock:1'
