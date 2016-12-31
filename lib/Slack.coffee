@@ -64,7 +64,7 @@ module.exports = class Slack
     @log 'verbose', "Message: #{JSON.stringify(msg)}"
     if msg.channel[0] == 'D'
       # This is a direct message. Try interpreting it as a NLP command
-      @server.naturalCommand(msg.text)
+      @server.naturalCommand(msg.text or msg.attachments?[0]?.fallback)
         .then (reply) => @rtm.sendMessage reply, msg.channel
         .fail (reply) => @rtm.sendMessage reply, msg.channel
 
