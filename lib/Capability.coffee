@@ -17,6 +17,9 @@ class Capability extends Backbone.Model
   # All commands must return a promise
   commands: {}
 
+  # Natural language commands
+  naturalCommands: {}
+
   initialize: (attributes, options) ->
     @_server = options.server
     @_valid = false
@@ -48,6 +51,24 @@ class Capability extends Backbone.Model
 
   _getState: ->
     {} # This is boring and you should probably override it
+
+  # Give a natural language command string, get an object mapping each
+  # applicable command id to the calculated parameters needed to execute it
+  naturalCommandCandidates: (input) ->
+    candidates = {}
+    for commandId, commandDetails of @naturalCommands
+      for form in commandDetails.forms
+        tokens = form.match(/<(\w*)>/g) or []
+        template = form.replace(/<(\w*)>/g, "(.*)")
+        match = input.match(template)
+        if match?
+          params = _.object(tokens.map((t) => t.slice(1, -1)), match.slice(1))
+          resolved = commandDetails.resolve(this, params)
+          if resolved? then candidates[commandId] = resolved
+    candidates
+
+  executeNaturalCommand: (command, params) ->
+    @naturalCommands[command].execute(this, params)
 
   log: (level, message) ->
     # Logs through the server because including winston breaks browserify

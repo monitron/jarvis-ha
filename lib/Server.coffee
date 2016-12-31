@@ -3,6 +3,7 @@ _ = require('underscore')
 winston = require('winston')
 fs = require('fs')
 yaml = require('js-yaml')
+Q = require('q')
 
 [Control, Controls] = require('./Control')
 controls = require('./controls')
@@ -72,3 +73,22 @@ module.exports = class Server
   readConfig: ->
     text = fs.readFileSync(__dirname + '/../configuration.yml', 'utf8')
     yaml.safeLoad(text)
+
+  naturalCommand: (command) ->
+    command = command.replace(/(\W|_)+/g, ' ').toLowerCase()
+    candidates = []
+    @capabilities.each (cap) =>
+      for commandId, params of cap.naturalCommandCandidates(command)
+        candidates.push
+          capability: cap.id
+          command: commandId
+          params: params
+    if candidates.length == 1
+      # Returns a promise of a response
+      cmd = candidates[0]
+      @capabilities.get(cmd.capability).
+        executeNaturalCommand cmd.command, cmd.params
+    else if candidates.length == 0
+      Q.fcall => "Sorry, I couldn't understand."
+    else
+      Q.fcall => "Sorry, multiple commands matched your request."

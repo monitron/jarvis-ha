@@ -49,6 +49,9 @@ class Control extends Backbone.Model
     @log 'debug', "Executing command #{verb} with params: #{JSON.stringify(params)}"
     @commands[verb](this, params)
 
+  hasCommand: (verb) ->
+    @commands[verb]?
+
   getState: ->
     if @isValid() then @_getState() else null
 
