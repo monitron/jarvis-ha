@@ -24,7 +24,7 @@ class Control extends baseControl
 
   sendCommand: (commandId, params = {}) ->
     promise = $.ajax
-      url: "/api/controls/#{@id}/commands/#{commandId}"
+      url: "api/controls/#{@id}/commands/#{commandId}"
       type: 'POST'
       data: params
     @addTask promise
@@ -32,6 +32,6 @@ class Control extends baseControl
 
 class Controls extends baseControls
   model: Control
-  url: '/api/controls'
+  url: 'api/controls'
 
 module.exports = [Control, Controls]
