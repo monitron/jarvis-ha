@@ -59,7 +59,9 @@ class Capability extends Backbone.Model
     for commandId, commandDetails of @naturalCommands
       for form in commandDetails.forms
         tokens = form.match(/<(\w*)>/g) or []
-        template = form.replace(/<(\w*)>/g, "(.*)")
+        # Make any existing groups into nonmatching groups, then replace
+        # parameter placeholders with matching groups
+        template = form.replace(/\(/g, '(?:').replace(/<(\w*)>/g, "(.*)")
         match = input.match(template)
         if match?
           params = _.object(tokens.map((t) => t.slice(1, -1)), match.slice(1))

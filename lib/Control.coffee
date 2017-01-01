@@ -8,6 +8,7 @@ class Control extends Backbone.Model
     parameters: {}
     connections: {}
     memberships: []
+    alternateNames: []
 
   defaultParameters: {}
 
@@ -54,6 +55,10 @@ class Control extends Backbone.Model
 
   getState: ->
     if @isValid() then @_getState() else null
+
+  matchableNames: ->
+    names = @get('alternateNames').concat(@get('name'))
+    name.toLowerCase() for name in names
 
   _getState: ->
     {} # This is boring and you should probably override it

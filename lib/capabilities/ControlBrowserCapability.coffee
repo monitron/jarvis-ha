@@ -1,5 +1,6 @@
-[Capability] = require('../Capability')
+_ = require('underscore')
 Q = require('q')
+[Capability] = require('../Capability')
 
 module.exports = class ControlBrowserCapability extends Capability
   name: "Control Browser"
@@ -7,14 +8,8 @@ module.exports = class ControlBrowserCapability extends Capability
   naturalCommands:
     on:
       forms: [
-        'turn on <control>'
-        'turn <control> on'
-        'turn the <control> on'
-        'turn on the <control>'
-        'switch on <control>'
-        'switch <control> on'
-        'switch the <control> on'
-        'switch on the <control>']
+        '(turn|switch) on( the)? <control>'
+        '(turn|switch)( the)? <control> on']
       resolve: (cap, {control}) ->
         control = cap.resolveControlName(control)
         if control?.hasCommand('turnOn') then {control: control} else null
@@ -26,14 +21,8 @@ module.exports = class ControlBrowserCapability extends Capability
         d.promise
     off:
       forms: [
-        'turn off <control>'
-        'turn <control> off'
-        'turn the <control> off'
-        'turn off the <control>'
-        'switch off <control>'
-        'switch <control> off'
-        'switch the <control> off'
-        'switch off the <control>']
+        '(turn|switch|shut) off( the)? <control>'
+        '(turn|switch|shut)( the)? <control> off']
       resolve: (cap, {control}) ->
         control = cap.resolveControlName(control)
         if control?.hasCommand('turnOff') then {control: control} else null
@@ -51,8 +40,5 @@ module.exports = class ControlBrowserCapability extends Capability
   resolveControlName: (controlName) ->
     # XXX This should be much smarter
     controls = @_server.controls.select (control) ->
-      control.get('name').toLowerCase() == controlName
-    if controls.length == 1
-      controls[0]
-    else
-      undefined
+      _.contains(control.matchableNames(), controlName)
+    if controls.length == 1 then controls[0] else undefined
