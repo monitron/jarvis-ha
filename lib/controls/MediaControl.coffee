@@ -20,4 +20,16 @@ module.exports = class MediaControl extends Control
     source = @getConnectionTarget('mediaSource').getAspect('mediaSource')
     power: power.getDatum('state')
     source: source.getDatum('state')
+    sourceName: source.getAttribute('choices')[source.getDatum('state')]
     sourceChoices: source.getAttribute('choices')
+
+  describeState: (state) ->
+    if state.power == true
+      if state.sourceName?
+        "On with source #{state.sourceName}"
+      else
+        'On'
+    else if state.power == false
+      'Off'
+    else
+      'not reporting status'

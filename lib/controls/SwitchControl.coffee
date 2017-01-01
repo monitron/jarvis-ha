@@ -15,3 +15,11 @@ module.exports = class SwitchControl extends Control
   _getState: ->
     power = @getConnectionTarget('powerOnOff').getAspect('powerOnOff')
     power: power.getDatum('state')
+
+  describeState: (state) ->
+    if state.power == true
+      'On'
+    else if state.power == false
+      'Off'
+    else
+      'not reporting status'

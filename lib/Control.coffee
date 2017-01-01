@@ -56,12 +56,23 @@ class Control extends Backbone.Model
   getState: ->
     if @isValid() then @_getState() else null
 
+  describeCurrentState: ->
+    if @isValid()
+      @describeState(@_getState())
+    else
+      "not available"
+
   matchableNames: ->
     names = @get('alternateNames').concat(@get('name'))
     name.toLowerCase() for name in names
 
   _getState: ->
     {} # This is boring and you should probably override it
+
+  # Override me with a function that generates English from a state object.
+  # The return value should be a phrase that can follow the words "is" or "was"
+  describeState: (state) ->
+    "indescribable"
 
   isActive: ->
     if @isValid() then @_isActive() else null

@@ -21,3 +21,14 @@ module.exports = class DimmerControl extends Control
     dimmer = @getConnectionTarget('brightness').getAspect('brightness')
     power: power.getDatum('state')
     brightness: dimmer.getDatum('state')
+
+  describeState: (state) ->
+    if state.power == true
+      if state.brightness?
+        "On at #{state.brightness}% brightness"
+      else
+        'On'
+    else if state.power == false
+      'Off'
+    else
+      'not reporting status'

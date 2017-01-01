@@ -28,3 +28,21 @@ module.exports = class DoorControl extends Control
     hasLock: lock?.hasAspect('lock')
     open: sensor?.getAspect('openCloseSensor').getDatum('state')
     locked: lock?.getAspect('lock').getDatum('state')
+
+  describeState: (state) ->
+    descriptions = []
+    if state.hasSensor?
+      if state.open == true
+        descriptions.push 'Open'
+      else if state.open == false
+        descriptions.push 'Closed'
+      else
+        descriptions.push 'not reporting open status'
+    if state.hasLock?
+      if state.locked == true
+        descriptions.push 'Locked'
+      else if state.locked == false
+        descriptions.push 'Unlocked'
+      else
+        descriptions.push 'not reporting lock status'
+    descriptions.join(' and ')

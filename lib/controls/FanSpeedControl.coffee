@@ -1,3 +1,4 @@
+_ = require('underscore')
 [Control] = require('../Control')
 
 module.exports = class FanSpeedControl extends Control
@@ -15,3 +16,11 @@ module.exports = class FanSpeedControl extends Control
     speed = @getConnectionTarget('discreteSpeed').getAspect('discreteSpeed')
     speed: speed.getDatum('state')
     speedChoices: speed.getAttribute('choices')
+    speedName: _.findWhere(speed.getAttribute('choices'),
+      id: speed.getDatum('state'))?.name
+
+  describeState: (state) ->
+    if state.speedName?
+      "Set to #{state.speedName}"
+    else
+      'not reporting status'

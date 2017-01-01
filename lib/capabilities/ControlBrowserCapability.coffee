@@ -32,6 +32,16 @@ module.exports = class ControlBrowserCapability extends Capability
           .fail -> d.reject  "Sorry, that didn't work."
           .then -> d.resolve "Okay, turned off."
         d.promise
+    status:
+      forms: [
+        '(what is |describe )?(the )?(status|state) of( the)? <control>'
+        'is( the)? <control> (on|off|open|closed|locked|unlocked)'
+        '<control> (status|state)']
+      resolve: (cap, {control}) ->
+        control = cap.resolveControlName(control)
+        if control? then {control: control} else null
+      execute: (cap, {control}) ->
+        Q.fcall => "#{control.get('name')} is #{control.describeCurrentState()}"
 
   start: ->
     # no-op server side
