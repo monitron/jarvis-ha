@@ -75,7 +75,15 @@ module.exports = class Server
     yaml.safeLoad(text)
 
   naturalCommand: (command) ->
-    command = command.replace(/(\W|_)+/g, ' ').toLowerCase().trim()
+    # XXX contractions must go
+    command = command
+      .toLowerCase()                   # all matching is done in lcase
+      .replace(/%/g, ' percent ')      # % -> percent
+      .replace(/[\u2018\u2019]/g, "'") # dumben apostrophes
+      .replace(/[^a-z0-9\']+/g, ' ')   # keep only alpha/num/'/space
+      .replace(/\ +/g, ' ')            # multiple spaces -> one space
+      .trim()                          # remove leading/trailing spaces
+    @log 'debug', "Command as heard: #{command}"
     candidates = []
     @capabilities.each (cap) =>
       for commandId, params of cap.naturalCommandCandidates(command)
