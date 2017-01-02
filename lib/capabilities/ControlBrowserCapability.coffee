@@ -36,7 +36,7 @@ module.exports = class ControlBrowserCapability extends Capability
       forms: [
         '(what is |describe|report )?(the )?(status|state) of( the)? <control>'
         '(what is |describe|report )?(the )?<control> (status|state)'
-        'is( the)? <control> (on|off|open|closed|locked|unlocked)']
+        '(is|are)( the)? <control> (on|off|open|closed|locked|unlocked)']
       resolve: (cap, {control}) ->
         control = cap.resolveControlName(control)
         if control? then {control: control} else null
