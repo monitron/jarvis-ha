@@ -65,6 +65,11 @@ module.exports = class WebServer
           res.json 500, {success: false, message: why}
         .done()
 
+    app.post "/integrations/apiai", (req, res) =>
+      @_server.naturalCommand req.body.result.resolvedQuery
+        .then (resp) -> res.json speech: resp, displayText: resp
+        .fail (resp) -> res.json speech: resp, displayText: resp
+
     app.use express.static(__dirname + '/public')
 
     io.on 'connection', (socket) =>
