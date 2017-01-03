@@ -4,6 +4,7 @@ winston = require('winston')
 fs = require('fs')
 yaml = require('js-yaml')
 Q = require('q')
+contractions = require('contractions')
 
 [Control, Controls] = require('./Control')
 controls = require('./controls')
@@ -75,7 +76,6 @@ module.exports = class Server
     yaml.safeLoad(text)
 
   naturalCommand: (command) ->
-    # XXX contractions must go
     command = command
       .toLowerCase()                   # all matching is done in lcase
       .replace(/%/g, ' percent ')      # % -> percent
@@ -83,6 +83,7 @@ module.exports = class Server
       .replace(/[^a-z0-9\']+/g, ' ')   # keep only alpha/num/'/space
       .replace(/\ +/g, ' ')            # multiple spaces -> one space
       .trim()                          # remove leading/trailing spaces
+    command = contractions.expand(command) # what's -> what is, etc.
     @log 'debug', "Command as heard: #{command}"
     candidates = []
     @capabilities.each (cap) =>
