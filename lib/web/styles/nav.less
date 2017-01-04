@@ -1,6 +1,6 @@
 
 @ts-nav-height: 65px;
-@ph-nav-height: 60px;
+@ph-nav-height: 55px;
 @dt-nav-width: 300px;
 @dt-nav-header-height: 60px;
 
@@ -48,6 +48,7 @@
 
         .badge {
           font-size: 20px;
+          text-shadow: 0 0 3px rgba(0, 0, 0, 0.65);
         }
       }
     }
@@ -98,63 +99,183 @@
 .display-phone {
   #body {
     position: absolute;
-    top: 0;
+    top: @ph-nav-height;
     left: 0;
     right: 0;
-    bottom: @ph-nav-height;
+    bottom: 0;
   }
   
   #nav {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: @ph-nav-height;
-    overflow: hidden;
-    background: black;
-    color: @blue;
-
-    .capabilities {
-      float: left;
+    .persistent {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: @ph-nav-height;
       overflow: hidden;
-      
-      .capability {
-        .clickable;
-        width: 65px;
-        float: left;
-        text-align: center;
-        padding: @ph-normal-margin @ph-normal-margin 0 @ph-normal-margin;
-        height: @ph-nav-height;
+      background: @dark-blue;
+      color: white;
+      padding: @ph-normal-margin;
+      line-height: @ph-nav-height - (@ph-normal-margin * 2);
+      z-index: 1;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 
-        &.selected {
-          color: white;
-          background: @darkest-blue;
+      .current-capability {
+        position: absolute;
+        top: @ph-normal-margin;
+        left: (@ph-normal-margin * 2) + 50px;
+        font-size: 22px;
+        font-weight: 300;
+      }
+
+      .notifications {
+        position: absolute;
+        top: 0;
+        right: 0;
+        line-height: @ph-nav-height;
+        padding: 0 @ph-wide-margin;
+        font-size: 22px;
+
+        .badge {
+          i {
+            color: white !important;
+            opacity: .6;
+          }
+
+          .number {
+            display: inline-block;
+            position: relative;
+            top: -4px;
+            font-size: 14px;
+            line-height: 21px;
+            margin-top: 5px;
+            border: 2px solid white;
+            border-radius: 15px;
+            padding: 0 10px;
+          }
+
+          &.high-importance .number {
+            color: white;
+            background: @red;
+          }
+
+          &.medium-importance .number {
+            color: white;
+            background: @orange;
+          }
+
+          &.low-importance .number {
+            color: @darker-blue;
+            background: @lighter-blue;
+          }
+          
+          &.high-importance, &.medium-importance, &.low-importance {
+            i {
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+
+    .drawer {
+      display: none;
+
+      &.visible {
+        display: block;
+      }
+
+      .shade {
+        .full-size;
+        z-index: 2;
+        background: black;
+        opacity: .5;
+      }
+
+      .body {
+        z-index: 3;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 80%;
+        background: #444;
+        box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+        color: white;
+      }
+    }
+
+    .header {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 150px;
+      background: linear-gradient(to bottom, @darkest-blue 0%, @dark-blue 100%);
+      line-height: @ph-nav-height - (@ph-normal-margin * 2);
+
+      .app-title {
+        position: absolute;
+        top: @ph-normal-margin;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 60px;
+        line-height: 150px - (@ph-normal-margin * 2);
+        opacity: .6;
+        font-weight: 300;
+      }
+    }
+    
+    .capabilities {
+      position: absolute;
+      top: 150px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow-y: auto;
+      padding-top: @ph-wide-margin;
+
+      .capability {
+        overflow: hidden;
+        padding: 0 @ph-wider-margin;
+
+        &:not(.selected) {
+          .clickable;
+
+          &:hover {
+            background: fadeout(@darker-blue, 60%);
+          }
         }
 
-        a {
-          display: block;
+        &.selected {
+          background: @darker-blue;
         }
 
         i {
-          margin-top: 2px;
-          font-size: 30px;
+          float: left;
+          font-size: 24px;
+          line-height: 46px;
+          text-align: center;
+          width: 25px;
         }
 
         .name {
-          font-size: 12px;
-          line-height: 18px;
-          margin-top: 3px;
+          margin-left: 40px;
+          line-height: 50px;
+          font-size: 20px;
+          font-weight: 300;
         }
       }
     }
     
-    .notifications {
-      float: right;
-      line-height: @ph-nav-height;
-
-      .badge {
-        font-size: 22px;
-      }
+    .hamburger {
+      position: absolute;
+      top: @ph-normal-margin;
+      left: @ph-normal-margin;
+      width: 50px;
+      text-align: center;
+      font-size: 20px;
     }
   }
 }
@@ -232,7 +353,7 @@
   }
 
   &.medium-importance {
-    color: @yellow;
+    color: @orange;
   }
 
   &.high-importance {
