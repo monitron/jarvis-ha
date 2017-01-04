@@ -5,8 +5,7 @@
 
 .security-capability {
   .mode {
-    background: #444;
-    color: white;
+    background: #d6d6d6;
 
     .title {
       font-size: 25px;
@@ -20,7 +19,8 @@
       li {
         .clickable;
         font-size: 20px;
-        background: #333;
+        background: #eee;
+        color: @dark-blue;
 
         i {
           display: inline-block;
@@ -30,11 +30,12 @@
         }
 
         &:hover {
-          background: #222;
+          background: #777;
         }
         
         &.current {
-          background: @darker-blue;
+          color: white;
+          background: @dark-blue;
         }
       }
     }

@@ -19,6 +19,8 @@
 @ts-scene-width: 185px;
 @ph-scene-width: 100%;
 
+@browser-grid-color: #e0e0e0;
+
 .control-browser {
   .full-size;
 
@@ -27,19 +29,18 @@
     top: 0;
     left: 0;
     right: 0;
-    background: #444;
-    color: white;
+    background: #d6d6d6;
 
     .button {
       .clickable;
       float: left;
       border-radius: 50%;
-      background: @dark-blue;
+      background: @blue;
       text-align: center;
       color: white;
 
       &:hover {
-        background: @blue;
+        background: @dark-blue;
       }
     }
   }
@@ -52,8 +53,8 @@
     overflow-y: auto;
 
     .scenes {
-      background-color: @darker-blue;
-      color: @lightest-blue;
+      background: #ececec;
+      color: @dark-blue;
     }
 
     .scenes-list {
@@ -64,8 +65,8 @@
   .control-container {
     position: relative;
     float: left;
-    border-bottom: 1px solid #ddd;
-    border-right: 1px solid #ddd;
+    border-bottom: 1px solid @browser-grid-color;
+    border-right: 1px solid @browser-grid-color;
 
     &.active {
       background: @lightest-blue;
@@ -85,6 +86,7 @@
       .name {
         .unselectable;
         position: absolute;
+        font-size: 18px;
         top: 0;
         left: 0;
       }
@@ -115,7 +117,7 @@
     float: left;
 
     &:hover {
-      color: white;
+      color: @blue;
     }
 
     &.busy {
@@ -158,9 +160,10 @@
   .sensors {
     font-weight: 300;
     font-size: 18px;
+    color: #444;
 
     .icon {
-      opacity: .6;
+      opacity: .5;
       width: 22px;
       text-align: center;
     }
@@ -206,8 +209,8 @@
     }
 
     .controls-list {
-      border-top: 1px solid #ddd;
-      border-left: 1px solid #ddd;
+      border-top: 1px solid @browser-grid-color;
+      border-left: 1px solid @browser-grid-color;
       overflow: hidden;
       margin: @dt-wider-margin @dt-wider-margin 0 @dt-wider-margin;
     }
@@ -366,6 +369,12 @@
 
     .scenes-list {
       margin: 0 @ts-wide-margin;
+    }
+
+    .controls-list {
+      border-top: 1px solid @browser-grid-color;
+      border-left: 1px solid @browser-grid-color;
+      overflow: hidden;
     }
   }
 

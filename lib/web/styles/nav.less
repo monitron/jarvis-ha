@@ -21,10 +21,9 @@
     left: 0;
     bottom: 0;
     width: @dt-nav-width;
-    background: #eee;
-    border-right: 1px solid #ddd;
+    background: #444;
     z-index: 1;
-    color: black;
+    color: white;
 
     .header {
       position: absolute;
@@ -39,7 +38,7 @@
         float: left;
         margin: 0;
         padding: 0;
-        opacity: .25;
+        opacity: .3;
         font-weight: 300;
         font-size: 30px;
       }
@@ -48,29 +47,7 @@
         float: right;
 
         .badge {
-          display: inline-block;
-          line-height: 30px;
-          color: #aaa;
-          background: #ddd;
-          padding: 0 @dt-normal-margin;
-          border-radius: 30px;
-          
-          &.low-importance {
-            color: white;
-            background: @blue;
-          }
-
-          &.medium-importance {
-            color: black;
-            background: @yellow;
-            box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
-          }
-
-          &.high-importance {
-            color: white;
-            background: @red;
-            box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
-          }
+          font-size: 20px;
         }
       }
     }
@@ -86,22 +63,17 @@
       .capability {
         overflow: hidden;
         padding: 0 @dt-wide-margin;
-        color: @dark-blue;
 
         &:not(.selected) {
           .clickable;
 
           &:hover {
-            background: fadeout(@dark-blue, 85%);
+            background: fadeout(@darker-blue, 60%);
           }
         }
 
         &.selected {
-          background: @dark-blue;
-
-          i, .name {
-            color: white;
-          }
+          background: @darker-blue;
         }
 
         i {
@@ -182,7 +154,6 @@
 
       .badge {
         font-size: 22px;
-        padding: 0 @ph-wide-margin;
       }
     }
   }
@@ -246,7 +217,7 @@
 
       .badge {
         font-size: 22px;
-        padding: 0 @ts-wider-margin;
+        padding: 0 @ts-wide-margin;
       }
     }
   }
@@ -254,7 +225,7 @@
 
 #nav .notifications .badge {
   .clickable;
-  color: @darker-blue;
+  color: #666;
   
   &.low-importance {
     color: @blue;
