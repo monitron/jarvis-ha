@@ -1,4 +1,5 @@
 
+Q = require('q')
 _ = require('underscore')
 Backbone = require('backbone')
 
@@ -47,8 +48,12 @@ class Control extends Backbone.Model
     _.find(@get('memberships'), (membership) -> _.isEqual(membership.path, path))
 
   executeCommand: (verb, params) ->
-    @log 'debug', "Executing command #{verb} with params: #{JSON.stringify(params)}"
-    @commands[verb](this, params)
+    if @isValid()
+      @log 'debug', "Executing command #{verb} with params: #{JSON.stringify(params)}"
+      @commands[verb](this, params)
+    else
+      @log 'warn', "Ignoring #{verb} command; not valid"
+      Q.fcall(-> throw new Error("Invalid"))
 
   hasCommand: (verb) ->
     @commands[verb]?
