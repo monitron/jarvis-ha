@@ -16,6 +16,7 @@ Persistence = require('./Persistence')
 capabilities = require('./capabilities')
 [Scene, Scenes] = require('./Scene')
 [Event, Events] = require('./Event')
+userScripts = require('../user-scripts')
 
 module.exports = class Server
   constructor: ->
@@ -31,6 +32,7 @@ module.exports = class Server
     if @config.debug then require('longjohn')
     @persistence = new Persistence()
     @events = new Events()
+
     # Gather adapters
     @adapters = new AdapterNodes()
     @adapters.on 'deepEvent', (path, ev, args) =>
@@ -45,10 +47,12 @@ module.exports = class Server
         adapter.start()
       else
         @log 'info', "Not starting disabled #{adapter.name} adapter"
+
     # Now let's controls
     @controls = new Controls()
     for controlConfig in (@config.controls or [])
       @controls.add new controls[controlConfig.type](controlConfig, {server: this})
+
     # Build capabilities
     @capabilities = new Capabilities()
     for capConfig in (@config.capabilities or [])
@@ -60,10 +64,19 @@ module.exports = class Server
         cap.start()
       else
         @log 'info', "Not starting disabled #{cap.name} capability"
+
     # Build scenes
     @scenes = new Scenes(@config.scenes or [], server: this)
+
+    # Build and start user scripts
+    @userScripts = (new script(this) for script in userScripts)
+    for script in @userScripts
+      @log 'debug', "Starting user script named [#{script.name}]"
+      script.start()
+
     # Start a web server
     @web = new WebServer(this, @config.webServer)
+
     # Start Slack integration if applicable
     if @config.slack?
       @slack = new Slack(this, @config.slack)

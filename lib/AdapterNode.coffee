@@ -32,7 +32,7 @@ class AdapterNode extends Backbone.Model
         @log "debug", "Aspect #{aspectId} emitted event: #{event}"
       aspect.on 'dataChanged', (data) =>
         @log "debug", "Aspect #{aspectId} data became: #{JSON.stringify(data)}"
-        @trigger 'aspectData:change'
+        @trigger 'aspectData:change', aspectId, data
       @_aspects[aspectId] = aspect
 
   isValid: ->
@@ -70,7 +70,7 @@ class AdapterNodes extends Backbone.Collection
 
   onEventAtPath: (path, event, callback) ->
     @listenTo this, 'deepEvent', (evPath, evEvent, args) ->
-      if _.isEqual(evPath, path) and event == evEvent then callback(args)
+      if _.isEqual(evPath, path) and event == evEvent then callback(args...)
 
 
 module.exports = [AdapterNode, AdapterNodes]
