@@ -3,6 +3,9 @@ moment = require('moment')
 crypto = require('crypto')
 [AdapterNode] = require('../../AdapterNode')
 
+# weatherAlerts significance and phenomenon explanations:
+# http://www.nws.noaa.gov/os/vtec/pdfs/VTEC_explanation6.pdf
+
 module.exports = class WeatherUndergroundStationNode extends AdapterNode
   aspects:
     temperatureSensor:
@@ -17,9 +20,15 @@ module.exports = class WeatherUndergroundStationNode extends AdapterNode
     dayNightSensor:
       events:
         changed: (prev, cur) -> prev.value != cur.value
-    weatherAlertsSensor:
+    weatherAlerts:
       events:
-        changed: (prev, cur) -> prev.value != cur.value
+        changed: (prev, cur) -> prev.alerts != cur.alerts
+    hourlyForecast:
+      events:
+        changed: (prev, cur) -> prev.alerts != cur.hours
+    dailyForecast:
+      events:
+        changed: (prev, cur) -> prev.alerts != cur.hours
 
   conditionMap:
     'clear': 'clear'
@@ -57,6 +66,8 @@ module.exports = class WeatherUndergroundStationNode extends AdapterNode
     @_processConditions data.current_observation
     @_processAstronomy data.moon_phase
     @_processAlerts data.alerts
+    @_processHourlyForecast data.hourly_forecast
+    @_processDailyForecast data.forecast
 
   _processConditions: (conditions) ->
     return unless conditions?
@@ -84,7 +95,7 @@ module.exports = class WeatherUndergroundStationNode extends AdapterNode
 
   _processAlerts: (alerts) ->
     return unless alerts?
-    @getAspect('weatherAlertsSensor').setData values: for alert in alerts
+    @getAspect('weatherAlerts').setData alerts: for alert in alerts
       attributes =
         description:  alert.description
         start:        moment(alert.date_epoch, 'X').toDate()
@@ -96,3 +107,29 @@ module.exports = class WeatherUndergroundStationNode extends AdapterNode
         .digest("hex")
       attributes.message = alert.message
       attributes
+
+  _processHourlyForecast: (hours) ->
+    return unless hours?
+    @getAspect('hourlyForecast').setData hours: for hour in hours
+      hour: Number(hour.FCTTIME.hour)
+      time: moment(hour.FCTTIME.epoch, 'X').toDate()
+      condition: @conditionMap[hour.icon]
+      temperature: Number(hour.temp.metric)
+      humidity: Number(hour.humidity)
+      feelsLike: Number(hour.feelslike.metric)
+      pop: Number(hour.pop)
+      windSpeed: Number(hour.wspd.metric)
+      windDirection: Number(hour.wdir.degrees)
+
+  _processDailyForecast: (forecast) ->
+    return unless forecast?
+    days = forecast.simpleforecast.forecastday
+    @getAspect('dailyForecast').setData days: for day in days
+      year: day.date.year
+      month: day.date.month
+      day: day.date.day
+      time: moment(day.date.epoch, 'X').toDate()
+      highTemperature: Number(day.high.celsius)
+      lowTemperature: Number(day.low.celsius)
+      condition: @conditionMap[day.icon]
+      pop: Number(day.pop)
