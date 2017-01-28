@@ -1,0 +1,14 @@
+<ul class="alerts">
+  {{#each alerts}}
+  <li class="level-{{level}}" data-id="{{id}}">
+    <i class="fa fa-warning"></i> {{description}}
+  </li>
+  {{/each}}
+</ul>
+
+<dl class="conditions">
+  {{#each conditions}}
+  <dt>{{name}}</dt>
+  <dd>{{{value}}}</dd>
+  {{/each}}
+</dl>

@@ -1,0 +1,42 @@
+.weather-capability .daily-forecast {
+  overflow-x: auto;
+  height: 300px;
+  white-space: nowrap;
+  
+  .day {
+    display: inline-block;
+    width: 100px;
+    height: 300px;
+    text-align: center;
+    padding: 0 10px;
+
+    .day-of-month {
+      font-size: 20px;
+      font-weight: 200;
+    }
+
+    .day-of-week {
+      font-size: 25px;
+      font-weight: 600;
+    }
+
+    .temperatures {
+      margin-top: 10px;
+      font-size: 35px;
+      line-height: 44px;
+
+      .low {
+        border-top: 1px solid #ccc;
+      }
+    }
+
+    .icon {
+      font-size: 50px;
+    }
+
+    .pop {
+      margin-top: 10px;
+      color: @light-blue;
+    }
+  }
+}

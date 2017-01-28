@@ -1,0 +1,31 @@
+.weather-alert-detail {
+  .full-size;
+  overflow-y: auto;
+
+  .description {
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  dt {
+    float: left;
+    font-weight: 600;
+  }
+
+  dd {
+    padding: 0 0 0 10px;
+    margin-left: 0 0 0 100px;
+  }
+}
+
+.display-desktop .weather-alert-detail {
+  padding: @dt-wide-margin;
+}
+
+.display-phone .weather-alert-detail {
+  padding: @ph-wide-margin;
+}
+
+.display-touchscreen .weather-alert-detail {
+  padding: @ts-wide-margin;
+}

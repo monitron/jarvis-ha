@@ -20,6 +20,24 @@ module.exports = class WeatherUndergroundStationNode extends AdapterNode
     dayNightSensor:
       events:
         changed: (prev, cur) -> prev.value != cur.value
+    ultravioletIndexSensor:
+      events:
+        changed: (prev, cur) -> prev.value != cur.value
+    apparentTemperatureSensor:
+      events:
+        changed: (prev, cur) -> prev.value != cur.value
+    windSpeedSensor:
+      events:
+        changed: (prev, cur) -> prev.value != cur.value
+    windDirectionSensor:
+      events:
+        changed: (prev, cur) -> prev.value != cur.value
+    dewpointSensor:
+      events:
+        changed: (prev, cur) -> prev.value != cur.value
+    barometricPressureSensor:
+      events:
+        changed: (prev, cur) -> prev.value != cur.value
     weatherAlerts:
       events:
         changed: (prev, cur) -> prev.alerts != cur.alerts
@@ -77,6 +95,18 @@ module.exports = class WeatherUndergroundStationNode extends AdapterNode
       value: parseInt(conditions.relative_humidity) # "45%"
     @getAspect('weatherConditionSensor').setData
       value: @conditionMap[conditions.icon]
+    @getAspect('apparentTemperatureSensor').setData
+      value: Number(conditions.feelslike_c)
+    @getAspect('ultravioletIndexSensor').setData
+      value: Number(conditions.UV)
+    @getAspect('windSpeedSensor').setData
+      value: conditions.wind_kph
+    @getAspect('windDirectionSensor').setData
+      value: conditions.wind_degrees
+    @getAspect('dewpointSensor').setData
+      value: conditions.dewpoint_c
+    @getAspect('barometricPressureSensor').setData
+      value: Number(conditions.pressure_mb)
 
   _processAstronomy: (astronomy) ->
     return unless astronomy?

@@ -1,0 +1,137 @@
+
+.weather-capability {
+  .full-size;
+  overflow: hidden;
+  
+  .current {
+    overflow: hidden;
+    background: #666;
+    color: white;
+    
+    .camera {
+      width: 100%;
+    }
+    
+    .basics {
+      overflow: hidden;
+      font-size: 28px;
+      line-height: 48px;
+      
+      .condition {
+        float: left;
+        overflow: hidden;
+        
+        .icon {
+          margin-right: 10px;
+          float: left;
+        }
+
+        .name {
+          float: left;
+          font-weight: 600;
+        }
+      }
+      
+      .temperature {
+        float: right;
+      }
+    }
+  }
+
+  .pages {
+    .select {
+      .unstyled-list;
+      overflow: hidden;
+      line-height: 31px;
+      font-size: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+
+      li {
+        .clickable;
+        display: inline-block;
+        color: @blue;
+        padding: 0 5px;
+        margin: 0 10px;
+        line-height: 33px;
+        font-size: 24px;
+
+        &:hover {
+          background: @lightest-blue;
+        }
+        
+        &.active {
+          color: @darker-blue;
+          border-bottom: 3px solid @darker-blue;
+        }
+      }
+    }
+  }
+}
+
+.display-desktop .weather-capability {
+  .current {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 38%;
+    padding: @dt-wide-margin;
+    background: #d6d6d6;
+    color: black;
+
+    .basics {
+      margin-top: @dt-normal-margin;
+    }
+  }
+  
+  .pages {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 62%;
+    padding: @dt-wide-margin;
+  }
+}
+
+.display-touchscreen .weather-capability {
+  .current {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 45%;
+
+    .basics {
+      margin: 0 @ts-wide-margin;
+    }
+  }
+
+  .pages {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 55%;
+    padding: @ts-wide-margin;
+  }
+}
+
+.display-phone .weather-capability {
+  overflow-y: auto;
+  
+  .current {
+    .title {
+      display: none;
+    }
+    
+    .basics {
+      padding: 0 @ph-wide-margin;
+    }
+  }
+
+  .pages {
+    padding: @ph-wide-margin;
+  }
+}

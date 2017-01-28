@@ -10,18 +10,15 @@
     <div class="temperature">
       <span class="value">{{temperature}}&deg;</span>
     </div>
-    <div class="humidity">
-      <span class="value">{{humidity}}%</span>
-      <span class="label">humidity</span>
-    </div>
   </div>
 </div>
 
-<div class="forecasts">
-<!--  <ul class="select">
-    <li data-id="hourly">Hourly</li>
-    <li data-id="daily" class="active">Daily</li>
-  </ul> -->
-  <div class="forecast">
+<div class="pages">
+  <ul class="select">
+    {{#each pages}}
+    <li data-id="{{id}}" {{#if active}}class="active"{{/if}}>{{name}}</li>
+    {{/each}}
+  </ul>
+  <div class="page">
   </div>
 </div>

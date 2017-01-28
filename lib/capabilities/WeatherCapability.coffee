@@ -1,6 +1,10 @@
 _ = require('underscore')
 [Capability] = require('../Capability')
 
+# cameraRefreshInterval:
+# Set to a time in seconds if the camera URL never changes and you wish it
+# to be periodically refreshed (with a random query string to avoid cache)
+
 module.exports = class WeatherCapability extends Capability
   name: "Weather"
 
@@ -9,6 +13,10 @@ module.exports = class WeatherCapability extends Capability
     temperatureUnits: 'c'
     temperaturePrecision: 0
     humidityPrecision: 0
+    speedUnits: 'kph'
+    pressureUnits: 'mbar'
+    pressurePrecision: 0
+    cameraRefreshInterval: null
 
   start: ->
     # Notice when source data changes
@@ -24,10 +32,7 @@ module.exports = class WeatherCapability extends Capability
 
   summarizeConditions: ->
     data = {}
-    aspect = @getSourceAspect('temperatureSensor')
-    if aspect? then data.temperature = aspect.getDatum('value')
-    aspect = @getSourceAspect('humiditySensor')
-    if aspect? then data.humidity = aspect.getDatum('value')
+
     aspect = @getSourceAspect('weatherConditionSensor')
     if aspect? then data.condition = aspect.getDatum('value')
     aspect = @getSourceAspect('dayNightSensor')
@@ -38,6 +43,13 @@ module.exports = class WeatherCapability extends Capability
     if aspect? then data.forecastDays = aspect.getDatum('days')
     aspect = @getSourceAspect('hourlyForecast')
     if aspect? then data.forecastHours = aspect.getDatum('hours')
+    aspect = @getSourceAspect('weatherAlerts')
+    if aspect? then data.alerts = aspect.getDatum('alerts')
+    for aspectName in ['humidity', 'temperature', 'barometricPressure',
+      'dewpoint', 'windDirection', 'windSpeed', 'ultravioletIndex',
+      'apparentTemperature']
+      aspect = @getSourceAspect(aspectName + 'Sensor')
+      if aspect? then data[aspectName] = aspect.getDatum('value')
     data
 
   _getState: ->
