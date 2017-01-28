@@ -46,6 +46,9 @@ class Capability extends Backbone.Model
     @log 'debug', "Adding event: #{JSON.stringify(attrs)}"
     @_server.events.add _.defaults(defaults, attrs) # Returns the new event
 
+  ongoingEvents: ->
+    @_server.events.fromCapability(@id, true)
+
   getState: ->
     if @isValid() then @_getState() else null
 
