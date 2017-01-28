@@ -2,34 +2,16 @@
 .weather-capability {
   .full-size;
   overflow: hidden;
-
-  .background {
-    .full-size;
-    z-index: -1;
-    background: @blue;
+    
+  .current {
+    overflow: hidden;
+    background: #d6d6d6;
     
     .camera {
-      .full-size;
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: 50% 50%;
+      width: 100%;
     }
-  }
-  
-  .title {
-    font-weight: 300;
-    font-size: 28px;
-  }
-
-  > .body {
-    .full-size;
-  }
-  
-  .current {
-    color: white;
-    text-shadow: 0 0 50px black, 0 0 5px black, 0 0 2px black;
     
-    .body {
+    .basics {
       .condition {
         font-size: 28px;
         line-height: 40px;
@@ -57,29 +39,100 @@
       }
     }
   }
-}
 
-.display-desktop .weather-capability > .body {
-  padding: 50px;
+  .forecasts {
+    .select {
+      .unstyled-list;
+      overflow: hidden;
+      line-height: 31px;
+      font-size: 20px;
+      text-align: center;
+      margin-bottom: 20px;
 
-  .current .body {
-    margin: @dt-wide-margin 0;
+      li {
+        display: inline-block;
+        color: @blue;
+        padding: 0 10px;
+        line-height: 35px;
+        font-size: 24px;
+        border-radius: 3px;
+
+        &.active {
+          background: @blue;
+          color: white;
+          font-weight: bold;
+        }
+      }
+    }
   }
 }
 
-.display-phone .weather-capability > .body {
-  padding: 20px;
+.display-desktop .weather-capability {
+  .current {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 38%;
+    padding: @dt-wide-margin;
 
-  .current .body {
-    margin: @ph-wide-margin 0;
+    .basics {
+      margin-top: @dt-normal-margin;
+    }
+
+    .camera {
+      margin-top: @dt-normal-margin;
+    }
+  }
+  
+  .forecasts {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 62%;
+    padding: @dt-wide-margin;
   }
 }
 
-.display-touchscreen .weather-capability > .body {
-  padding: 35px;
+.display-touchscreen .weather-capability {
+  .current {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 35%;
 
-  .current .body {
-    margin: @ts-wide-margin 0;
+    .basics {
+      margin: @ts-wide-margin;
+    }
+  }
+
+  .forecasts {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 65%;
+    padding: @ts-wide-margin;
+  }
+}
+
+.display-phone .weather-capability {
+  overflow-y: auto;
+  
+  .current {
+    .title {
+      display: none;
+    }
+    
+    .basics {
+      padding: @ph-normal-margin @ph-wide-margin 0 @ph-wide-margin;
+    }
+  }
+
+  .forecasts {
+    padding: @ph-wide-margin;
   }
 }
 
@@ -102,5 +155,48 @@
   .numbers i {
     opacity: .5;
     font-size: 80%;
+  }
+}
+
+.daily-forecast {
+  overflow-x: auto;
+  height: 300px;
+  white-space: nowrap;
+  
+  .day {
+    display: inline-block;
+    width: 100px;
+    height: 300px;
+    text-align: center;
+    padding: 0 10px;
+
+    .day-of-month {
+      font-size: 20px;
+      font-weight: 200;
+    }
+
+    .day-of-week {
+      font-size: 25px;
+      font-weight: 600;
+    }
+
+    .temperatures {
+      margin-top: 10px;
+      font-size: 35px;
+      line-height: 44px;
+
+      .low {
+        border-top: 1px solid #ccc;
+      }
+    }
+
+    .icon {
+      font-size: 50px;
+    }
+
+    .pop {
+      margin-top: 10px;
+      color: @light-blue;
+    }
   }
 }

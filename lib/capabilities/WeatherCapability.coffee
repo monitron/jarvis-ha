@@ -34,6 +34,10 @@ module.exports = class WeatherCapability extends Capability
     if aspect? then data.isDay = aspect.getDatum('value')
     aspect = @getSourceAspect('stillCamera')
     if aspect? then data.imageLocation = aspect.getDatum('imageLocation')
+    aspect = @getSourceAspect('dailyForecast')
+    if aspect? then data.forecastDays = aspect.getDatum('days')
+    aspect = @getSourceAspect('hourlyForecast')
+    if aspect? then data.forecastHours = aspect.getDatum('hours')
     data
 
   _getState: ->
