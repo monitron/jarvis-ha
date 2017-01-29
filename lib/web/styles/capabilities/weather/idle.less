@@ -1,4 +1,28 @@
-.weather-idle {
+.weather-idle-daily {
+  padding-top: 45px;
+  
+  .daily-forecast {
+    transform-origin: top left;
+    transform: scale(1.44);
+  }
+  
+  .day {
+    .day-of-month {
+      opacity: .5;
+    }
+    
+    .temperatures .low {
+      border-top: 1px solid fadeout(@blue, 75%);
+    }
+
+    .pop {
+      color: inherit;
+      opacity: .5;
+    }
+  }
+}
+
+.weather-idle-conditions {
   text-align: center;
   font-size: 45px;
   font-weight: 300;
