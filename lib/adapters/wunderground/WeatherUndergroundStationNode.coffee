@@ -163,3 +163,5 @@ module.exports = class WeatherUndergroundStationNode extends AdapterNode
       lowTemperature: Number(day.low.celsius)
       condition: @conditionMap[day.icon]
       pop: Number(day.pop)
+      windSpeed: day.avewind.kph
+      windDirection: day.avewind.degrees

@@ -1,5 +1,5 @@
 .weather-idle-daily {
-  padding-top: 45px;
+  padding-top: 25px;
   
   .daily-forecast {
     transform-origin: top left;
@@ -8,16 +8,19 @@
   
   .day {
     .day-of-month {
-      opacity: .5;
+      opacity: .65;
     }
     
     .temperatures .low {
-      border-top: 1px solid fadeout(@blue, 75%);
+      border-top: 1px solid fadeout(@blue, 50%);
     }
 
     .pop {
       color: inherit;
-      opacity: .5;
+    }
+
+    .wind i {
+      opacity: .65;
     }
   }
 }
@@ -38,8 +41,14 @@
     margin-top: 20px;
   }
 
-  .numbers i {
-    opacity: .5;
-    font-size: 80%;
+  .numbers {
+    span {
+      margin: 0 10px;
+    }
+    
+    i {
+      opacity: .5;
+      font-size: 80%;
+    }
   }
 }
