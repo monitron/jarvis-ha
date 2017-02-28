@@ -1,0 +1,13 @@
+<div class="scroll">
+  <div class="chart-container"></div>
+  {{#each hours}}
+  <div class="hour">
+    <div class="time">{{hour}}</div>
+    <div class="temperature">{{temperatureString}}&deg;</div>
+    <div class="icon"><i class="wi {{conditionIcon}}"></i></div>
+    <div class="pop">{{#if nonzeroPop}}{{pop}}%{{/if}}</div>
+    <div class="humidity"><i class="fa fa-tint"></i> {{humidityString}}%</div>
+    <div class="wind"><i class="wi wi-strong-wind"></i> {{windSpeedString}}</div>
+  </div>
+  {{/each}}
+</div>
