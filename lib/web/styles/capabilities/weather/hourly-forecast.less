@@ -16,7 +16,7 @@
     z-index: -1;
 
     path {
-      fill: url(#gradient);
+      fill: url(#tempGradient);
     }
 
     .gradient-start {
@@ -27,6 +27,27 @@
     .gradient-end {
       stop-color: @blue;
       stop-opacity: 0;
+    }
+  }
+
+  .pop-chart {
+    position: absolute;
+    left: 0;
+    top: 130px;
+    z-index: -1;
+
+    rect {
+      fill: url(#popGradient);
+    }
+
+    .gradient-start {
+      stop-color: @blue;
+      stop-opacity: 0.6;
+    }
+
+    .gradient-end {
+      stop-color: @blue;
+      stop-opacity: 0.1;
     }
   }
 
@@ -54,7 +75,7 @@
 
     .pop {
       margin-top: 5px;
-      color: @light-blue;
+      color: @blue;
       height: 25px;
     }
     
