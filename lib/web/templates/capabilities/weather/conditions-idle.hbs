@@ -1,7 +1,10 @@
 <div class="condition-icon"><i class="wi {{conditionIcon}}"></i></div>
-<div class="condition-name">{{conditionName}}</div>
+<div class="description">
+  <span class="temperature">{{temperature}}&deg;</span>
+  <span class="delimiter">&bull;</span>
+  <span class="condition-name">{{conditionName}}</span>
+</div>
 <div class="numbers">
-  <span class="temperature"><i class="wi wi-thermometer"></i> {{temperature}}&deg;</span>
   <span class="humidity"><i class="fa fa-tint"></i> {{humidity}}%</span>
-  <span class="wind-speed"><i class="wi wi-strong-wind"></i> {{windSpeed}}</span>
+  <span class="wind-speed"><i class="wi wi-strong-wind"></i> {{windSpeed}} {{windUnits}}</span>
 </div>
