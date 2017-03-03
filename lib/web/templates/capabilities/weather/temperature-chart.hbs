@@ -4,5 +4,17 @@
       <stop offset="0%" class="gradient-start" />
       <stop offset="100%" class="gradient-end" />
     </linearGradient>
+    <linearGradient id="tempEdgeGradient">
+      <stop offset="0%" stop-color="black" stop-opacity="1"/>
+      <stop offset="100%" stop-color="white" stop-opacity="1"/>
+    </linearGradient>
+    <mask id="tempEdgeMask" cox="{{sackie}}" maskContentUnits="userSpaceOnUse">
+      <rect x="0" width="{{width}}" height="{{height}}" fill="white" />
+      <rect x="{{edgeWidth}}" width="{{edgeWidth}}" height="{{height}}"
+            fill="url(#tempEdgeGradient)" />
+      <rect x="{{bodyRight}}" width="{{edgeWidth}}" height="{{height}}"
+            fill="url(#tempEdgeGradient)"
+            transform="rotate(180 {{bodyRight}} {{halfHeight}})" />
+    </mask>
   </defs>
 </svg>
