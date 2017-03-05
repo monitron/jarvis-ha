@@ -26,12 +26,11 @@ module.exports = class IsyAdapter extends Adapter
     @listenTo @_api, 'property-update', (update) =>
       targetNode = @children.get(update.node)
       if targetNode?
-        properties = {}
-        properties[update.property] = update.value
-        targetNode.processData properties
+        targetNode.processData _.object([[update.property, update.value]])
       else
         @log 'verbose', "Unexpected property update #{JSON.stringify(update)}"
     @discover()
+    # TODO There is an "ERR" property!! We should use it
 
   executeCommand: (node, command, args...) ->
     @_api.executeCommand node, command, args

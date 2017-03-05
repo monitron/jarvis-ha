@@ -7,6 +7,12 @@ winston = require('winston')
 WebSocketClient = require('websocket').client
 
 module.exports = class IsyAPI extends Backbone.Model
+  defaults:
+    commandTimeout: 2000
+
+  initialize: ->
+    @_pendingCommands = {}
+
   connect: ->
     @_subscribe()
 
@@ -25,11 +31,24 @@ module.exports = class IsyAPI extends Backbone.Model
     deferred.promise
 
   executeCommand: (node, command, args = []) ->
-    # Later: wait for update in stream
     deferred = Q.defer()
     @_request(['nodes', node, 'cmd', command].concat(args).join('/'))
       .fail (err) => deferred.reject err
-      .done => deferred.resolve()
+    # If there already was a command pending for this node, mark it failed
+    # (is this wise?)
+    if @_pendingCommands[node]?
+      @log 'debug', "Command superceded for #{node}"
+      @_pendingCommands[node].reject 'superceded'
+    # Add this command as pending so it gets resolved when an update arrives
+    @_pendingCommands[node] = deferred
+    # Set a timeout so we notice if the update never happens
+    cleanUpFailure = =>
+      @log 'debug', "Command timed out for #{node}"
+      delete @_pendingCommands[node]
+      deferred.reject 'timeout'
+    timeout = setTimeout cleanUpFailure, @get('commandTimeout')
+    # The timeout must go away when the update arrives
+    deferred.promise.then => clearTimeout(timeout)
     deferred.promise
 
   log: (level, message) ->
@@ -41,12 +60,16 @@ module.exports = class IsyAPI extends Backbone.Model
         @log 'debug', "Unable to XML parse subscription message: #{msg}"
       else
         if data.Event? and data.Event.control[0][0] != '_' # Not an internal message
+          node = data.Event.node[0]
           update =
-            node: data.Event.node[0]
+            node: node
             property: data.Event.control[0]
             value: data.Event.action[0]
           @log 'verbose', "Dispatching property update #{JSON.stringify(update)}"
           @trigger 'property-update', update
+          if @_pendingCommands[node]?
+            @_pendingCommands[node].resolve()
+            delete @_pendingCommands[node]
 
   _subscribe: ->
     # XXX Notice lack of heartbeats

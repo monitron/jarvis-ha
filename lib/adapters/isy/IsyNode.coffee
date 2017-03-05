@@ -10,7 +10,7 @@ module.exports = class IsyNode extends AdapterNode
     false
 
   percentageToByte: (value) ->
-    value * 2.55
+    Math.round(value * 2.55)
 
   byteToPercentage: (value) ->
     value / 2.55
