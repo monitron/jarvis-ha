@@ -44,7 +44,9 @@ module.exports = class IsyAdapter extends Adapter
         if deviceClass?
           @log 'debug', "Instantiating node #{node.address} (#{node.name}) " +
             "as #{deviceClass.prototype.key}"
-          @children.add new deviceClass({id: node.address}, {adapter: this})
+          ourNode = new deviceClass({id: node.address}, {adapter: this})
+          @children.add ourNode
+          ourNode.processData node.properties
         else
           @log 'warn', "Ignoring node #{node.address} (#{node.name}) - " +
             "no match for device type #{deviceType.join('.')}"
