@@ -6,9 +6,11 @@ request = require('request')
 winston = require('winston')
 WebSocketClient = require('websocket').client
 
+# XXX Commands "time out" if they do not result in a change
+
 module.exports = class IsyAPI extends Backbone.Model
   defaults:
-    commandTimeout: 2000
+    commandTimeout: 5000
 
   initialize: ->
     @_pendingCommands = {}
