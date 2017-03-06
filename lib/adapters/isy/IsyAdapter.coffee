@@ -4,14 +4,17 @@ IsyAPI = require('./IsyAPI')
 
 ISY_DEVICE_CLASSES = [
   require('./IsyInsteonDimmerNode'),
-  require('./IsyInsteonSwitchNode')
+  require('./IsyInsteonSwitchNode'),
+  require('./IsyInsteonOpenCloseSensorNode'),
+  require('./IsyInsteonFanMotorNode')
 ]
 
 module.exports = class IsyAdapter extends Adapter
   name: 'ISY'
 
   # Required: host, username, password
-  defaults: {}
+  defaults:
+    devices: {}
 
   initialize: ->
     super
@@ -38,9 +41,14 @@ module.exports = class IsyAdapter extends Adapter
   discover: ->
     @_api.getNodes().done (nodes) =>
       for node in nodes
-        deviceType = node.type.slice(0, 2)
-        deviceClass = _.find ISY_DEVICE_CLASSES,
-          (klass) -> klass.matchesType(deviceType)
+        configuration = @get('devices')[node.address]
+        if configuration?.classify?
+          deviceClass = _.find ISY_DEVICE_CLASSES,
+            (klass) -> klass.prototype.key == configuration.classify
+        else
+          deviceType = node.type.slice(0, 2)
+          deviceClass = _.find ISY_DEVICE_CLASSES,
+            (klass) -> klass.matchesType(deviceType)
         if deviceClass?
           @log 'debug', "Instantiating node #{node.address} (#{node.name}) " +
             "as #{deviceClass.prototype.key}"

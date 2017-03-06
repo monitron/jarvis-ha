@@ -9,6 +9,9 @@ module.exports = class IsyNode extends AdapterNode
       return true if _.isEqual(candidate, type)
     false
 
+  configuration: (key) ->
+    (@adapter.get('devices')[@id] or {})[key]
+
   percentageToByte: (value) ->
     Math.round(value * 2.55)
 
