@@ -35,8 +35,8 @@ module.exports = class IsyAdapter extends Adapter
     @discover()
     # TODO There is an "ERR" property!! We should use it
 
-  executeCommand: (node, command, args...) ->
-    @_api.executeCommand node, command, args
+  executeCommand: (node, command, args, expectResponse = true) ->
+    @_api.executeCommand node, command, args, expectResponse
 
   discover: ->
     @_api.getNodes().done (nodes) =>

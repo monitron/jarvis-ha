@@ -14,7 +14,9 @@ module.exports = class IsyInsteonFanMotorNode extends IsyNode
     discreteSpeed:
       commands:
         set: (node, value) ->
-          node.adapter.executeCommand node.id, 'DON', node.SPEED_MAP[value]
+          operative = node.getAspect('discreteSpeed').getDatum('state') != value
+          node.adapter.executeCommand node.id, 'DON',
+            [node.SPEED_MAP[value]], operative
       attributes:
         choices: [
           {id: 'off',  name: 'Off'}

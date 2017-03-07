@@ -6,11 +6,9 @@ request = require('request')
 winston = require('winston')
 WebSocketClient = require('websocket').client
 
-# XXX Commands "time out" if they do not result in a change
-
 module.exports = class IsyAPI extends Backbone.Model
   defaults:
-    commandTimeout: 5000
+    commandTimeout: 10000
 
   initialize: ->
     @_pendingCommands = {}
@@ -32,25 +30,32 @@ module.exports = class IsyAPI extends Backbone.Model
         deferred.resolve nodes
     deferred.promise
 
-  executeCommand: (node, command, args = []) ->
+  executeCommand: (node, command, args = [], expectResponse = true) ->
+    @log 'verbose', "Command for #{node}: #{command} [#{args.join(', ')}] - " +
+      (if expectResponse then "will await response" else "set and forget")
     deferred = Q.defer()
-    @_request(['nodes', node, 'cmd', command].concat(args).join('/'))
+    req = @_request(['nodes', node, 'cmd', command].concat(args).join('/'))
       .fail (err) => deferred.reject err
-    # If there already was a command pending for this node, mark it failed
-    # (is this wise?)
-    if @_pendingCommands[node]?
-      @log 'debug', "Command superceded for #{node}"
-      @_pendingCommands[node].reject 'superceded'
-    # Add this command as pending so it gets resolved when an update arrives
-    @_pendingCommands[node] = deferred
-    # Set a timeout so we notice if the update never happens
-    cleanUpFailure = =>
-      @log 'debug', "Command timed out for #{node}"
-      delete @_pendingCommands[node]
-      deferred.reject 'timeout'
-    timeout = setTimeout cleanUpFailure, @get('commandTimeout')
-    # The timeout must go away when the update arrives
-    deferred.promise.then => clearTimeout(timeout)
+
+    if expectResponse
+      # If there already was a command pending for this node, mark it failed
+      # (is this wise?)
+      if @_pendingCommands[node]?
+        @log 'debug', "Command superceded for #{node}"
+        @_pendingCommands[node].reject 'superceded'
+      # Add command as pending so it gets resolved when an update arrives
+      @_pendingCommands[node] = deferred
+      # Set a timeout so we notice if the update never happens
+      cleanUpFailure = =>
+        @log 'debug', "Command timed out for #{node}"
+        delete @_pendingCommands[node]
+        deferred.reject 'timeout'
+      timeout = setTimeout cleanUpFailure, @get('commandTimeout')
+      # The timeout must go away when the update arrives
+      deferred.promise.then => clearTimeout(timeout)
+    else # No response expected
+      req.done -> deferred.resolve() # Resolve when command sending succeeds
+
     deferred.promise
 
   log: (level, message) ->
