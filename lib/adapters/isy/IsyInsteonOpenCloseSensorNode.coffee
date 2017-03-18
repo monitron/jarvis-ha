@@ -9,6 +9,11 @@ module.exports = class IsyInsteonOpenCloseSensorNode extends IsyNode
 
   processData: (data) ->
     if data.ST?
-      value = data.ST != '0'
+      value = if data.ST == ' '
+        undefined
+      else if data.ST == '0'
+        false
+      else
+        true
       if @configuration('invert') and value? then value = !value
       @getAspect('openCloseSensor').setData state: value
