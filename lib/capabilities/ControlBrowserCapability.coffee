@@ -32,6 +32,30 @@ module.exports = class ControlBrowserCapability extends Capability
           .fail -> d.reject  "Sorry, that didn't work."
           .then -> d.resolve "Okay, turned off."
         d.promise
+    lock:
+      forms: [
+        'lock( the)? <control>']
+      resolve: (cap, {control}) ->
+        control = cap.resolveControlName(control)
+        if control?.hasCommand('lock') then {control: control} else null
+      execute: (cap, {control}) ->
+        d = Q.defer()
+        control.executeCommand('lock')
+          .fail -> d.reject  "Sorry, that didn't work."
+          .then -> d.resolve "Okay, locked."
+        d.promise
+    unlock:
+      forms: [
+        'unlock( the)? <control>']
+      resolve: (cap, {control}) ->
+        control = cap.resolveControlName(control)
+        if control?.hasCommand('unlock') then {control: control} else null
+      execute: (cap, {control}) ->
+        d = Q.defer()
+        control.executeCommand('unlock')
+          .fail -> d.reject  "Sorry, that didn't work."
+          .then -> d.resolve "Okay, unlocked."
+        d.promise
     status:
       forms: [
         '(what is |describe|report )?(the )?(status|state) of( the)? <control>'

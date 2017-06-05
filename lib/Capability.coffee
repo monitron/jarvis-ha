@@ -61,6 +61,7 @@ class Capability extends Backbone.Model
     candidates = {}
     for commandId, commandDetails of @naturalCommands
       for form in commandDetails.forms
+        form = "^#{form}$" # Don't match partial commands
         tokens = form.match(/<(\w*)>/g) or []
         # Make any existing groups into nonmatching groups, then replace
         # parameter placeholders with matching groups
