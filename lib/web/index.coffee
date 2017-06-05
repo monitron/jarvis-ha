@@ -70,6 +70,11 @@ module.exports = class WebServer
         .then (resp) -> res.json speech: resp, displayText: resp
         .fail (resp) -> res.json speech: resp, displayText: resp
 
+    app.post "/api/natural/:command", (req, res) =>
+      @_server.naturalCommand req.params.command
+        .then (resp) -> res.json success: true,  response: resp
+        .fail (resp) -> res.json success: false, response: resp
+
     app.use express.static(__dirname + '/public')
 
     io.on 'connection', (socket) =>
