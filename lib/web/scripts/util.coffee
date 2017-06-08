@@ -71,11 +71,11 @@ module.exports =
   resourceURI: (adapterPath, resource) ->
     "api/resources/#{adapterPath.join('/')}/#{resource}?#{new Date().getTime()}"
 
-  loadImageOntoCanvas: (canvas, uri) ->
+  loadImageOntoCanvas: (canvas, uri, aspectRatio) ->
     context = canvas.getContext('2d')
     img = new Image();
     img.addEventListener 'load', ->
-      imgAspect = img.width / img.height
+      imgAspect = aspectRatio || (img.width / img.height)
       canvasAspect = canvas.width / canvas.height
       drawWidth = canvas.width
       drawHeight = canvas.height

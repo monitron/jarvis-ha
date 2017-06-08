@@ -30,6 +30,7 @@ module.exports = class DoorBirdStationNode extends AdapterNode
     super
     @getAspect('stillCamera').setData
       imageResource: 'still'
+      aspectRatio: 16.0 / 9
 
   _apiBaseUrl: ->
     "http://#{@get('host')}/bha-api/"
