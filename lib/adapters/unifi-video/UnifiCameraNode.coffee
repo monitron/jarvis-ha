@@ -1,4 +1,3 @@
-
 Q = require('q')
 request = require('request')
 
@@ -9,7 +8,7 @@ module.exports = class UnifiCameraNode extends AdapterNode
     stillCamera: {}
 
   resources:
-    still: (node) =>
+    still: (node) ->
       deferred = Q.defer()
       options =
         url: node.adapter.apiBaseUrl() + "snapshot/camera/#{node.id}"
@@ -26,3 +25,8 @@ module.exports = class UnifiCameraNode extends AdapterNode
             contentType: res.headers['content-type']
             data: body
       deferred.promise
+
+  initialize: ->
+    super
+    @getAspect('stillCamera').setData
+      imageResource: 'still'
