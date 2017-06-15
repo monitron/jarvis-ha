@@ -1,4 +1,5 @@
 
+_ = require('underscore')
 express = require('express')
 http = require('http')
 winston = require('winston')
@@ -15,9 +16,24 @@ module.exports = class WebServer
     app.use bodyParser.urlencoded()
     app.use bodyParser.json()
 
-    app.get /^\/api\/paths\/(.*)$/, (req, res) =>
+    app.get /^\/api\/resources\/(.*)$/, (req, res) =>
       path = @normalizePath(unescape(req.params[0]))
-      res.json @_server.controls.findMembersOfPath(path)
+      resourceId = path.pop()
+      node = @_server.adapters.getPath(path)
+      if node?
+        node.getResource resourceId
+          .then (resource) ->
+            res.set 'Content-Type', resource.contentType
+            res.send resource.data
+          .catch (why) =>
+            @log 'warn', "Failed to send resource #{path.join('/')} " +
+              "#{resourceId}: #{JSON.stringify(why)}"
+            res.status(500).json {success: false, message: why}
+          .done()
+      else
+        res.status(404).json
+          success: false
+          message: "No such adapter node #{path.join('/')}"
 
     app.get "/api/stations/:stationId", (req, res) =>
       res.json @_server.config.stations?[req.params.stationId] or {}
@@ -101,7 +117,7 @@ module.exports = class WebServer
     httpServer.listen @_config.port, =>
       @log 'info', "Listening on port #{httpServer.address().port}"
 
-  normalizePath: ->
+  normalizePath: (path) ->
     if _.isString(path) then path.split("/") else path
 
   log: (level, message) ->

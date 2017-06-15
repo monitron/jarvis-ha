@@ -1,11 +1,14 @@
 _ = require('underscore')
 Backbone = require('backbone')
 Aspect = require('./Aspect')
+Q = require('q')
 
 class AdapterNode extends Backbone.Model
   deepEvents: ['aspectData:change']
 
   aspects: {}
+
+  resources: {}
 
   # Takes options:
   #   adapter    - (required) a reference to the parent adapter
@@ -59,6 +62,14 @@ class AdapterNode extends Backbone.Model
   refreshData: ->
     @adapter.refreshData()
 
+  getResource: (resourceId) ->
+    resource = @resources[resourceId]
+    if !resource?
+      deferred = Q.defer()
+      deferred.reject("Invalid resource id #{resourceId}")
+      deferred.promise
+    else
+      resource(this) # This must return a promise as well
 
 class AdapterNodes extends Backbone.Collection
   model: AdapterNode

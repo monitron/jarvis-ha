@@ -6,3 +6,4 @@ module.exports =
   energy: require('./EnergyCapability')
   comfort: require('./ComfortCapability')
   security: require('./security/SecurityCapability')
+  cameras: require('./CamerasCapability')

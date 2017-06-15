@@ -67,3 +67,25 @@ module.exports =
 
   speedToMPH: (speed) ->
     speed * 0.621371
+
+  resourceURI: (adapterPath, resource) ->
+    "api/resources/#{adapterPath.join('/')}/#{resource}?#{new Date().getTime()}"
+
+  loadImageOntoCanvas: (canvas, uri, aspectRatio) ->
+    context = canvas.getContext('2d')
+    img = new Image();
+    img.addEventListener 'load', ->
+      imgAspect = aspectRatio || (img.width / img.height)
+      canvasAspect = canvas.width / canvas.height
+      drawWidth = canvas.width
+      drawHeight = canvas.height
+      if imgAspect >= canvasAspect
+        drawHeight = canvas.width / imgAspect
+      else
+        drawWidth = canvas.height * imgAspect
+      context.drawImage img,
+        (canvas.width - drawWidth) / 2,
+        (canvas.height - drawHeight) / 2,
+        drawWidth,
+        drawHeight
+    img.src = uri

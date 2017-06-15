@@ -1,0 +1,98 @@
+@cameras-thumbnail-aspect: 16/9;
+
+@dt-cameras-thumb-width: 300px;
+@dt-cameras-thumb-img-width: @dt-cameras-thumb-width - (@dt-normal-margin * 2);
+
+@ts-cameras-thumb-width: 253px;
+@ts-cameras-thumb-img-width: @ts-cameras-thumb-width - (@ts-normal-margin * 2);
+
+
+.cameras-capability {
+  .image-container {
+    position: relative;
+  }
+
+  .thumbnails {
+    .full-size;
+    overflow-y: auto;
+    
+    ul {
+      .unstyled-list;
+
+      li {
+        .clickable;
+        background: #e5e5e5;
+
+        &:hover {
+          background: #d0d0d0;
+        }
+      }
+    }
+  }
+
+  .expanded {
+    .full-size;
+    background: #e5e5e5;
+  }
+}
+
+.display-phone .cameras-capability {
+  .thumbnails li {
+    border-bottom: 2px solid white;
+
+    .name {
+      line-height: 150%;
+      margin-left: @ph-normal-margin;
+    }
+    
+    canvas {
+      width: 100%;
+    }
+  }
+}
+
+.display-desktop .cameras-capability {
+  .thumbnails ul {
+    margin: @dt-normal-margin;
+    
+    li {
+      position: relative;
+      float: left;
+      width: @dt-cameras-thumb-width;
+      padding: @dt-normal-margin;
+      margin: @dt-normal-margin;
+
+      canvas {
+        width: @dt-cameras-thumb-img-width;
+        height: @dt-cameras-thumb-img-width / @cameras-thumbnail-aspect;
+      }
+
+      .name {
+        margin-top: @dt-normal-margin;
+      }
+    }
+  }
+}
+
+.display-touchscreen .cameras-capability {
+  .thumbnails ul {
+    margin: @ts-normal-margin;
+    
+    li {
+      position: relative;
+      float: left;
+      width: @ts-cameras-thumb-width;
+      padding: @ts-normal-margin;
+      margin: @ts-normal-margin;
+
+      canvas {
+        width: @ts-cameras-thumb-img-width;
+        height: @ts-cameras-thumb-img-width / @cameras-thumbnail-aspect;
+      }
+
+      .name {
+        margin-top: @ts-normal-margin;
+      }
+    }
+  }
+}
