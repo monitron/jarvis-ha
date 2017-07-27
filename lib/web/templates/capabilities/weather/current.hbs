@@ -6,9 +6,12 @@
   {{/each}}
 </ul>
 
-<dl class="conditions">
+<ul class="conditions">
   {{#each conditions}}
-  <dt>{{name}}</dt>
-  <dd>{{{value}}}</dd>
+  <li>
+    <div class="name">{{name}}</div>
+    <div class="value">{{{value}}}</div>
+    <div class="sub">{{sub}}</div>
+  </li>
   {{/each}}
-</dl>
+</ul>

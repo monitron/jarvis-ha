@@ -23,19 +23,54 @@
   }
 
   .conditions {
-    font-size: 20px;
-    line-height: 34px;
-    
-    dt {
-      font-weight: 600;
-      float: left;
+    .unstyled-list;
+
+    li {
       width: 50%;
-      text-align: right;
-      padding-right: 10px;
+      float: left;
     }
+
+    .name {
+      text-transform: uppercase;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .value {
+      font-size: 40px;
+      font-weight: 200;
+      line-height: 50px;
+    }
+
+    .sub {
+      font-size: 16px;
+      color: #999;
+      line-height: 20px;
+      height: 20px;
+    }
+  }
+}
+
+.display-phone .weather-capability .current-conditions {
+  .conditions li {
+    padding: @ph-wide-margin;
     
-    dd {
-      margin: 0;
+  }
+}
+
+.display-desktop .weather-capability .current-conditions {
+  .conditions {
+    margin: 0 auto;
+    max-width: 500px;
+    
+    li {
+      padding: @dt-wide-margin;
     }
+  }
+}
+
+.display-touchscreen .weather-capability .current-conditions {
+  .conditions li {
+    padding: @ts-wide-margin;
   }
 }

@@ -62,6 +62,21 @@ module.exports =
     if degrees < 326.25 then return 'NW'
     return 'NNW'
 
+  describeUvIndex: (index) ->
+    if index < 3  then return "Low"
+    if index < 6  then return "Moderate"
+    if index < 8  then return "High"
+    if index < 11 then return "Very High"
+    return "Extreme"
+
+  describeDewpoint: (dewpoint) ->
+    if dewpoint < 12.78 then return "Pleasant"
+    if dewpoint < 16.11 then return "Comfortable"
+    if dewpoint < 18.89 then return "Sticky"
+    if dewpoint < 21.67 then return "Uncomfortable"
+    if dewpoint < 24.44 then return "Oppressive"
+    return "Miserable"
+
   pressureToInHg: (pressure) ->
     pressure * 0.02953
 
