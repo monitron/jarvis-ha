@@ -12,6 +12,10 @@ module.exports = class DimmerControl extends Control
       target = control.getConnectionTarget('brightness')
       target.getAspect('brightness').executeCommand 'set',
         parseInt(params.value)
+    togglePower: (control, params) ->
+      # Turns off if on. Turns on if off or undefined
+      aspect = control.getConnectionTarget('powerOnOff').getAspect('powerOnOff')
+      aspect.executeCommand 'set', !aspect.getDatum('state')
 
   _isActive: ->
     @getConnectionTarget('powerOnOff').getAspect('powerOnOff').getDatum('state')

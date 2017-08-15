@@ -8,6 +8,10 @@ module.exports = class SwitchControl extends Control
     turnOn: (control, params) ->
       target = control.getConnectionTarget('powerOnOff')
       target.getAspect('powerOnOff').executeCommand 'set', true
+    togglePower: (control, params) ->
+      # Turns off if on. Turns on if off or undefined
+      aspect = control.getConnectionTarget('powerOnOff').getAspect('powerOnOff')
+      aspect.executeCommand 'set', !aspect.getDatum('state')
 
   _isActive: ->
     @getConnectionTarget('powerOnOff').getAspect('powerOnOff').getDatum('state')
