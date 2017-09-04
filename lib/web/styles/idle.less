@@ -1,4 +1,5 @@
 @idle-clock-height: 100px;
+@large-idle-clock-height: 150px;
 
 .app.is-idle .idle-content {
   display: block;
@@ -59,5 +60,23 @@
     right: @ts-wider-margin;
     bottom: @ts-wider-margin;
     width: 55%;
+    overflow: hidden;
+  }
+}
+
+@media @ts-large {
+  .idle-content {
+    > .clock {
+      height: @large-idle-clock-height;
+      font-size: 230%;
+    }
+    
+    > .notifications {
+      bottom: (@ts-wider-margin * 2) + @large-idle-clock-height;
+    }
+    
+    > .capability {
+      bottom: @large-idle-clock-height;
+    }
   }
 }

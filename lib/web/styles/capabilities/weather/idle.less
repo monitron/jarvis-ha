@@ -23,6 +23,12 @@
       opacity: .65;
     }
   }
+
+  @media @ts-large {
+    .daily-forecast {
+      transform: scale(1.85);
+    }
+  }
 }
 
 .weather-idle-hourly {
@@ -31,6 +37,12 @@
   .hourly-forecast {
     transform-origin: top left;
     transform: scale(1.44);
+  }
+
+  @media @ts-large {
+    .hourly-forecast {
+      transform: scale(1.85);
+    }
   }
 }
 
@@ -69,6 +81,16 @@
 
     .temperature {
       font-weight: 400;
+    }
+  }
+
+  @media @ts-large {
+    font-size: 58px;
+    line-height: 75px;
+
+    .condition-icon {
+      font-size: 270px;
+      line-height: 393px;
     }
   }
 }

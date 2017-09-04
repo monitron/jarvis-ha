@@ -3,8 +3,8 @@
 @dt-cameras-thumb-width: 300px;
 @dt-cameras-thumb-img-width: @dt-cameras-thumb-width - (@dt-normal-margin * 2);
 
-@ts-cameras-thumb-width: 253px;
-@ts-cameras-thumb-img-width: @ts-cameras-thumb-width - (@ts-normal-margin * 2);
+@ts-cameras-thumb-width: 314px;
+@ts-cameras-thumb-img-width: @ts-cameras-thumb-width - (@ts-wide-margin * 2);
 
 
 .cameras-capability {
@@ -76,14 +76,14 @@
 
 .display-touchscreen .cameras-capability {
   .thumbnails ul {
-    margin: @ts-normal-margin;
+    margin: @ts-wide-margin;
     
     li {
       position: relative;
       float: left;
       width: @ts-cameras-thumb-width;
-      padding: @ts-normal-margin;
-      margin: @ts-normal-margin;
+      padding: @ts-wide-margin;
+      margin: @ts-wide-margin;
 
       canvas {
         width: @ts-cameras-thumb-img-width;
@@ -91,7 +91,7 @@
       }
 
       .name {
-        margin-top: @ts-normal-margin;
+        margin-top: @ts-wide-margin;
       }
     }
   }
