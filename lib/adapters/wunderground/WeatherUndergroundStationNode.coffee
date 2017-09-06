@@ -80,7 +80,6 @@ module.exports = class WeatherUndergroundStationNode extends AdapterNode
     'N': 'synopsis'
 
   processData: (data) ->
-    console.log data
     @_processConditions data.current_observation
     @_processAstronomy data.moon_phase
     @_processAlerts data.alerts

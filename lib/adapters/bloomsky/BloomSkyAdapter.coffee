@@ -22,7 +22,7 @@ module.exports = class BloomSkyAdapter extends Adapter
 
   poll: ->
     @_request().then (res) =>
-      @children.get('device').processData(res[0].Data)
+      @children.get('device').processData(res[0])
 
   _request: ->
     deferred = Q.defer()
