@@ -9,6 +9,7 @@
       padding: 5px 10px;
       background: #eee;
       border-radius: 3px;
+      margin-bottom: 10px;
 
       &.level-medium {
         background: @orange;
@@ -49,23 +50,58 @@
       height: 20px;
     }
   }
+
+  .precip {
+    border-radius: 3px;
+    background: @blue;
+    padding: 17px 10px 10px 10px;
+    color: white;
+    margin-bottom: 10px;
+    overflow: hidden;
+
+    i, .precip-stat {
+      float: left;
+      padding-right: 20px;
+    }
+    
+    i {
+      display: block;
+      width: 14%;
+      text-align: center;
+      font-size: 60px;
+      line-height: 60px;
+    }
+
+    .precip-stat {
+      width: 43%;
+    }
+    
+    .name {
+      text-transform: uppercase;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .value {
+      font-size: 25px;
+      line-height: 44px;
+      font-weight: 200;
+    }
+  }
 }
 
 .display-phone .weather-capability .current-conditions {
   .conditions li {
     padding: @ph-wide-margin;
-    
   }
 }
 
 .display-desktop .weather-capability .current-conditions {
-  .conditions {
-    margin: 0 auto;
-    max-width: 500px;
-    
-    li {
-      padding: @dt-wide-margin;
-    }
+  margin: 0 auto;
+  max-width: 500px;
+
+  .conditions li {
+    padding: @dt-wide-margin;
   }
 }
 

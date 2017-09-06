@@ -6,6 +6,26 @@
   {{/each}}
 </ul>
 
+{{#if precipitation}}
+{{#with precipitation}}
+<div class="precip">
+  <i class="wi wi-raindrops"></i>
+  {{#if rate}}
+  <div class="precip-stat rate">
+    <div class="name">Current Rate</div>
+    <div class="value">{{rate}}</div>
+  </div>
+  {{/if}}
+  {{#if qty}}
+  <div class="precip-stat quantity">
+    <div class="name">Last 24 Hours</div>
+    <div class="value">{{qty}}</div>
+  </div>
+  {{/if}}
+</div>
+{{/with}}
+{{/if}}
+
 <ul class="conditions">
   {{#each conditions}}
   <li>

@@ -18,6 +18,8 @@ module.exports = class WeatherCapability extends Capability
     temperatureUnits: 'c'
     temperaturePrecision: 0
     humidityPrecision: 0
+    precipitationPrecision: 2
+    precipitationUnits: 'in' # or mm
     speedUnits: 'kph'
     pressureUnits: 'mbar'
     pressurePrecision: 0
@@ -66,9 +68,13 @@ module.exports = class WeatherCapability extends Capability
     if aspect? then data.forecastHours = aspect.getDatum('hours')
     aspect = @getSourceAspect('weatherAlerts')
     if aspect? then data.alerts = aspect.getDatum('alerts')
+    aspect = @getSourceAspect('precipitationQuantitySensor')
+    if aspect?
+      data['precipitationQuantity24Hour'] = aspect.getDatum('24hour')
+      data['precipitationQuantityToday'] = aspect.getDatum('today')
     for aspectName in ['humidity', 'temperature', 'barometricPressure',
       'dewpoint', 'windDirection', 'windSpeed', 'ultravioletIndex',
-      'apparentTemperature']
+      'apparentTemperature', 'windGustSpeed', 'precipitationRate']
       aspect = @getSourceAspect(aspectName + 'Sensor')
       if aspect? then data[aspectName] = aspect.getDatum('value')
     data

@@ -11,7 +11,7 @@ module.exports = class BloomSkyDeviceNode extends AdapterNode
     humiditySensor:
       events:
         changed: (prev, cur) -> prev.value != cur.value
-    pressureSensor:
+    barometricPressureSensor:
       events:
         changed: (prev, cur) -> prev.value != cur.value
     dayNightSensor:
@@ -49,7 +49,7 @@ module.exports = class BloomSkyDeviceNode extends AdapterNode
         value: skyData.Temperature
       @getAspect('humiditySensor').setData
         value: skyData.Humidity
-      @getAspect('pressureSensor').setData
+      @getAspect('barometricPressureSensor').setData
         value: skyData.Pressure
       @getAspect('dayNightSensor').setData
         value: skyData.Night
