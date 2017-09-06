@@ -42,7 +42,7 @@
     width: 40%;
 
     .event {
-      padding: 0 0 @ts-wide-margin 0;
+      padding: 0 0 @ts-wide-margin 0 !important;
       
       &.medium-importance {
         color: @orange;
@@ -73,6 +73,11 @@
     
     > .notifications {
       bottom: (@ts-wider-margin * 2) + @large-idle-clock-height;
+      font-size: 135%;
+
+      .event {
+        padding-bottom: @ts-wider-margin !important;
+      }
     }
     
     > .capability {
