@@ -1,0 +1,17 @@
+<div class="name">{{name}}</div>
+{{#if icon}}
+<div class="icon">
+  <i class="fa fa-{{icon}}"></i>
+</div>
+{{/if}}
+<div class="status">
+  {{#if done}}
+  Done.
+  {{else}}
+  {{#if failed}}
+  Sorry, something went wrong.
+  {{else}}
+  Working...
+  {{/if}}
+  {{/if}}
+</div>
