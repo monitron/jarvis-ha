@@ -18,8 +18,8 @@ module.exports = class WeatherCapability extends Capability
     temperatureUnits: 'c'
     temperaturePrecision: 0
     humidityPrecision: 0
-    precipitationPrecision: 2
-    precipitationUnits: 'in' # or mm
+    precipitationPrecision: 0
+    precipitationUnits: 'mm' # or 'in'
     speedUnits: 'kph'
     pressureUnits: 'mbar'
     pressurePrecision: 0
