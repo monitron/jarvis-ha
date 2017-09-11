@@ -19,8 +19,6 @@ class Control extends Backbone.Model
   initialize: (attributes, options) ->
     @_server = options.server
     @set 'parameters', _.defaults(@get('parameters'), @defaultParameters)
-    @_memberships = for membership in attributes.memberships
-      _.extend(membership, path: membership.path)
     if @_server?
       # Notice when our connections' data changes
       for path in @getUniqueConnectionPaths()
@@ -43,6 +41,9 @@ class Control extends Backbone.Model
     for path in _.values(@get('connections'))
       uniquePaths.push(path) unless _.find(uniquePaths, (p) -> _.isEqual(p, path))
     uniquePaths
+
+  getUniqueMembershipPaths: ->
+    _.uniq(_.pluck(@get('memberships'), 'path'))
 
   getMembership: (path) ->
     _.find(@get('memberships'), (membership) -> _.isEqual(membership.path, path))
