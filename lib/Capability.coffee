@@ -41,13 +41,13 @@ class Capability extends Backbone.Model
     @commands[verb](this, params)
 
   createEvent: (attrs, momentary = false) ->
-    defaults = {capability: @id, start: new Date()}
+    defaults = {sourceType: 'capability', sourceId: @id, start: new Date()}
     if momentary then defaults.end = defaults.start
     @log 'debug', "Adding event: #{JSON.stringify(attrs)}"
     @_server.events.add _.defaults(defaults, attrs) # Returns the new event
 
   ongoingEvents: ->
-    @_server.events.fromCapability(@id, true)
+    @_server.events.fromSource('capability', @id, true)
 
   getState: ->
     if @isValid() then @_getState() else null

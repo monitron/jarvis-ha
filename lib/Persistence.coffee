@@ -46,8 +46,9 @@ module.exports = class Persistence
   createEvent: (event) ->
     @log 'verbose', "Creating event #{event.id} (#{event.get('title')})"
     deferred = Q.defer()
-    sql = "INSERT INTO events (id, capability, reference, importance, start, " +
-      "end, title, description) VALUES ($id, $capability, $reference, " +
+    sql = "INSERT INTO events (id, source_type, source_id, reference," +
+      "importance, start, end, title, description) " +
+      "VALUES ($id, $sourceType, $sourceId, $reference, " +
       "$importance, $start, $end, $title, $description)"
     @_db.run sql, @_sqlParamsForEvent(event), (err) =>
       if err?
@@ -74,7 +75,8 @@ module.exports = class Persistence
 
   _sqlParamsForEvent: (event) ->
     '$id':          event.id
-    '$capability':  event.get('capability')
+    '$sourceType':  event.get('sourceType')
+    '$sourceId':    event.get('sourceId')
     '$reference':   event.get('reference')
     '$importance':  event.get('importance')
     '$title':       event.get('title')
@@ -87,8 +89,8 @@ module.exports = class Persistence
       @_db.run "CREATE TABLE IF NOT EXISTS adapter_data (" +
         "adapter TEXT, key TEXT, value TEXT)"
       @_db.run "CREATE TABLE IF NOT EXISTS events (id TEXT, " +
-        "capability TEXT, reference TEXT, importance TEXT, start INTEGER,
-        end INTEGER, title TEXT, description TEXT)"
+        "source_type TEXT, source_id TEXT, reference TEXT, importance TEXT,
+        start INTEGER, end INTEGER, title TEXT, description TEXT)"
 
   log: (level, message) ->
     winston.log level, "[Persistence] #{message}"

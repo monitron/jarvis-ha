@@ -4,9 +4,10 @@ Backbone = require('backbone')
 uuid = require('uuid/v4')
 
 # Event:
-#  capability: capability id
+#  sourceType: 'capability', 'control', 'adapter'
+#    sourceId: capability id, control id, etc.
 #   reference: a string
-#  importance: one of low, medium, high
+#  importance: one of: routine, low, medium, high
 #  start, end: Dates. end may be null
 #       title: a short string
 # description: a longer string, or null
@@ -24,13 +25,13 @@ class Event extends Backbone.Model
 class Events extends Backbone.Collection
   model: Event
 
-  importances: ['high', 'medium', 'low'] # in decreasing order
+  importances: ['high', 'medium', 'low', 'routine'] # in decreasing order
 
   ongoing: ->
     @filter (event) -> event.isOngoing()
 
-  fromCapability: (capability, ongoingOnly = false) ->
-    events = @where(capability: capability)
+  fromSource: (sourceType, sourceId, ongoingOnly = false) ->
+    events = @where(sourceType: sourceType, sourceId: sourceId)
     if ongoingOnly then events = _.filter(events, (e) -> e.isOngoing())
     events
 
