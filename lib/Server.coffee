@@ -32,6 +32,8 @@ module.exports = class Server
     if @config.debug then require('longjohn')
     @persistence = new Persistence()
     @events = new Events()
+    @events.on 'add', (event) => @persistence.createEvent(event)
+    @events.on 'change', (event) => @persistence.updateEvent(event)
 
     # Gather adapters
     @adapters = new AdapterNodes()
