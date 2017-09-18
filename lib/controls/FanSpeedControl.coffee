@@ -6,6 +6,9 @@ module.exports = class FanSpeedControl extends Control
     set: (control, params) ->
       target = control.getConnectionTarget('discreteSpeed')
       target.getAspect('discreteSpeed').executeCommand 'set', params.value
+    turnOff: (control, params) ->
+      target = control.getConnectionTarget('discreteSpeed')
+      target.getAspect('discreteSpeed').executeCommand 'set', 'off'
 
   isActive: ->
     speed = @getConnectionTarget('discreteSpeed')?.getAspect('discreteSpeed').
@@ -24,3 +27,12 @@ module.exports = class FanSpeedControl extends Control
       "Set to #{state.speedName}"
     else
       'not reporting status'
+
+  describeStateTransition: (before, after) ->
+    return null unless before.speed?
+    if after.speed == 'off'
+      'was turned off'
+    else if before.speed == 'off'
+      "was turned on at #{after.speedName}"
+    else
+      "was changed to #{after.speedName}"

@@ -33,3 +33,22 @@ module.exports = class MediaControl extends Control
       'Off'
     else
       'not reporting status'
+
+  describeStateTransition: (before, after) ->
+    if after.power == true
+      if before.power == true and before.sourceName != after.sourceName
+        "was switched to source #{after.sourceName}"
+      else if before.power == false
+        if after.sourceName?
+          "was turned on with source #{after.sourceName}"
+        else
+          "was turned on"
+      else
+        null
+    else if after.power == false
+      if before.power == true
+        'was turned off'
+      else
+        null
+    else
+      null

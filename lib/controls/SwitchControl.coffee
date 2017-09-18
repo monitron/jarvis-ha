@@ -27,3 +27,7 @@ module.exports = class SwitchControl extends Control
       'Off'
     else
       'not reporting status'
+
+  describeStateTransition: (before, after) ->
+    return null unless before.power? and after.power?
+    if after.power then 'was turned on' else 'was turned off'

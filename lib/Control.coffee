@@ -20,16 +20,25 @@ class Control extends Backbone.Model
     @_server = options.server
     @set 'parameters', _.defaults(@get('parameters'), @defaultParameters)
     if @_server?
+      transitionEventually = _.debounce((=> @handleStateTransition()), 100)
+      @_prevState = @getState()
       # Notice when our connections' data changes
       for path in @getUniqueConnectionPaths()
         @_server.adapters.onEventAtPath path, 'aspectData:change', =>
+          @_beginTransitionState ||= @_prevState
+          @_prevState = @getState()
+          @trigger 'change', this
+          transitionEventually()
+        # Notice when our connections become valid (or invalid)
+        @_server.adapters.onEventAtPath path, 'valid:change', =>
+          @_prevState = @getState()
           @trigger 'change', this
 
   isValid: ->
     _.every @getUniqueConnectionPaths(), (path) =>
       p = @_server.adapters.getPath(path)
       unless p? then @log 'warn', "Path #{path} is missing"
-      p?
+      p? and p.isValid()
 
   getConnectionTarget: (connId) ->
     path = @get('connections')[connId]
@@ -79,6 +88,28 @@ class Control extends Backbone.Model
   # The return value should be a phrase that can follow the words "is" or "was"
   describeState: (state) ->
     "indescribable"
+
+  # Override me with a function that generates English from a pair of state
+  # objects (old and new). The return should be a past-tense phrase which can
+  # follow "{name of control}"
+  # Both states are guaranteed to be non-null and different
+  # By default, no state transitions will be recorded (null)
+  describeStateTransition: (oldState, newState) ->
+    null
+
+  handleStateTransition: ->
+    oldState = @_beginTransitionState
+    delete @_beginTransitionState
+    newState = @getState()
+    if oldState? and newState? and !_.isEqual(oldState, newState)
+      desc = @describeStateTransition(oldState, newState)
+      if desc? then @_server.events.add
+        sourceType: 'control'
+        sourceId:   @id
+        start:      new Date()
+        end:        new Date()
+        importance: 'routine'
+        title:      desc
 
   isActive: ->
     if @isValid() then @_isActive() else null

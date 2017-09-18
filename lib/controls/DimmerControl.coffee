@@ -29,10 +29,28 @@ module.exports = class DimmerControl extends Control
   describeState: (state) ->
     if state.power == true
       if state.brightness?
-        "On at #{state.brightness}% brightness"
+        "On at #{Math.round(state.brightness)}% brightness"
       else
         'On'
     else if state.power == false
       'Off'
     else
       'not reporting status'
+
+  describeStateTransition: (before, after) ->
+    return null unless before.power?
+    if after.power == true
+      if after.brightness?
+        if before.power == true and before.brightness?
+          if after.brightness < before.brightness
+            "was dimmed to #{Math.round(after.brightness)}%"
+          else
+            "was brightened to #{Math.round(after.brightness)}%"
+        else
+          "was turned on at #{Math.round(after.brightness)}% brightness"
+      else
+        'was turned on'
+    else if after.power == false
+      'was turned off'
+    else
+      null

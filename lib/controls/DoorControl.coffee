@@ -1,3 +1,4 @@
+_ = require('underscore')
 [Control] = require('../Control')
 
 module.exports = class DoorControl extends Control
@@ -46,3 +47,12 @@ module.exports = class DoorControl extends Control
       else
         descriptions.push 'not reporting lock status'
     descriptions.join(' and ')
+
+  describeStateTransition: (before, after) ->
+    changes = []
+    if before.open? and after.open? and before.open != after.open
+      changes.push if after.open then 'opened' else 'closed'
+    if before.locked? and after.locked? and before.locked != after.locked
+      changes.push if after.locked then 'locked' else 'unlocked'
+    return null if _.isEmpty(changes)
+    "was #{changes.join(' and ')}"

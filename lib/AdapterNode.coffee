@@ -4,7 +4,7 @@ Aspect = require('./Aspect')
 Q = require('q')
 
 class AdapterNode extends Backbone.Model
-  deepEvents: ['aspectData:change']
+  deepEvents: ['aspectData:change', 'valid:change']
 
   aspects: {}
 
@@ -18,6 +18,9 @@ class AdapterNode extends Backbone.Model
     @server = options?.server
     @children = new AdapterNodes()
     @_valid = true
+    # Our logical validity changes when our adapter's changes
+    if options?.adapter?
+      @listenTo @adapter, 'valid:change', => @trigger 'valid:change'
     # Generate deepEvents as needed
     _.each @deepEvents, (ev) =>
       @listenTo this, ev, (args...) => @trigger 'deepEvent', [@id], ev, args
@@ -39,10 +42,11 @@ class AdapterNode extends Backbone.Model
       @_aspects[aspectId] = aspect
 
   isValid: ->
-    @_valid
+    @_valid and (this == @adapter or @adapter.isValid())
 
   setValid: (@_valid) ->
     @log "debug", "Became #{if @_valid then 'valid' else 'invalid'}"
+    @trigger 'valid:change', @_valid
 
   log: (level, message) ->
     @adapter.log level, "[Node #{@id}] #{message}"

@@ -1,5 +1,6 @@
 
 _ = require('underscore')
+Q = require('q')
 Adapter = require('../../Adapter')
 harmony = require('harmonyhubjs-client')
 HarmonyHubNode = require('./HarmonyHubNode')
@@ -45,11 +46,11 @@ module.exports = class HarmonyAdapter extends Adapter
         adapter: this
         attributes:
           mediaSource: {choices: _.omit(activityMap, @powerOffActivityId)}
-      @setValid true
-      @pollCurrentActivity() # Get initial state
+      @pollCurrentActivity().then => @setValid(true) # Get initial state
     promise.done()
 
   pollCurrentActivity: ->
+    deferred = Q.defer()
     @log "verbose", "Polling current activity..."
     if @_pollWaiting
       @log "warn", "Current activity poll has eaten itself"
@@ -58,11 +59,14 @@ module.exports = class HarmonyAdapter extends Adapter
     promise.catch (error) =>
       @log "error", "Failed to poll current activity (#{error})"
       @_pollWaiting = false
+      deferred.reject()
     promise.then (activity) =>
       @log "verbose", "Current activity is #{activity}"
       @children.first().processData currentActivity: activity
       @_pollWaiting = false
+      deferred.resolve()
     promise.done()
+    deferred.promise
 
   turnOff: ->
     @_harmony.turnOff() # Returns promise
