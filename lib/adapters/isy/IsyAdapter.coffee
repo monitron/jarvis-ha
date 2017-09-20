@@ -39,23 +39,30 @@ module.exports = class IsyAdapter extends Adapter
     @_api.executeCommand node, command, args, expectResponse
 
   discover: ->
-    @_api.getNodes().done (nodes) =>
-      for node in nodes
-        configuration = @get('devices')[node.address]
-        if configuration?.classify?
-          deviceClass = _.find ISY_DEVICE_CLASSES,
-            (klass) -> klass.prototype.key == configuration.classify
-        else
-          deviceType = node.type.slice(0, 2)
-          deviceClass = _.find ISY_DEVICE_CLASSES,
-            (klass) -> klass.matchesType(deviceType)
-        if deviceClass?
-          @log 'debug', "Instantiating node #{node.address} (#{node.name}) " +
-            "as #{deviceClass.prototype.key}"
-          ourNode = new deviceClass({id: node.address}, {adapter: this})
-          @children.add ourNode
-          ourNode.processData node.properties
-        else
-          @log 'warn', "Ignoring node #{node.address} (#{node.name}) - " +
-            "no match for device type #{deviceType.join('.')}"
-      @setValid true
+    @_api.getNodes()
+      .then (nodes) =>
+        for node in nodes
+          configuration = @get('devices')[node.address]
+          if configuration?.classify?
+            deviceClass = _.find ISY_DEVICE_CLASSES,
+              (klass) -> klass.prototype.key == configuration.classify
+          else
+            deviceType = node.type.slice(0, 2)
+            deviceClass = _.find ISY_DEVICE_CLASSES,
+              (klass) -> klass.matchesType(deviceType)
+          if deviceClass?
+            @log 'debug', "Instantiating node #{node.address} (#{node.name}) " +
+              "as #{deviceClass.prototype.key}"
+            ourNode = new deviceClass({id: node.address}, {adapter: this})
+            @children.add ourNode
+            ourNode.processData node.properties
+          else
+            @log 'warn', "Ignoring node #{node.address} (#{node.name}) - " +
+              "no match for device type #{deviceType.join('.')}"
+        @setValid true
+      .fail =>
+        # TODO Try again?
+        # TODO Mark invalid? currently unnecessary because discover is only
+        #      called when we are already invalid
+        @log 'error', "Could not discover nodes; abandoning"
+      .done()

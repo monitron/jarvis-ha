@@ -19,8 +19,7 @@ module.exports = class IsyAPI extends Backbone.Model
   getNodes: ->
     deferred = Q.defer()
     @_request('nodes')
-      .fail (err) => deferred.reject err
-      .done (data) =>
+      .then (data) =>
         nodes = for node in data.nodes.node
           address: node.address[0]
           name:    node.name[0]
@@ -28,6 +27,8 @@ module.exports = class IsyAPI extends Backbone.Model
           properties: _.object(for prop in node.property
             [prop['$'].id, prop['$'].value])
         deferred.resolve nodes
+      .fail (err) => deferred.reject err
+      .done()
     deferred.promise
 
   executeCommand: (node, command, args = [], expectResponse = true) ->
