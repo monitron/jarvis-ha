@@ -54,6 +54,35 @@
   }
 }
 
+.dark .location-picker {
+  .floors {
+    background: #333;
+  }
+
+  .floor {
+    &.selected {
+      background: @darker-blue;
+      color: @lightest-blue;
+    }
+    
+    &:not(.selected):hover {
+      background: @darkest-blue;
+    }
+  }
+  
+  .room {
+    color: @dark-blue;
+    
+    &.selected {
+      color: @lighter-blue;
+    }
+    
+    &:hover {
+      background: @darkest-blue;
+    }
+  }
+}
+
 .display-phone .location-picker {
   .full-size;
   overflow-y: auto;

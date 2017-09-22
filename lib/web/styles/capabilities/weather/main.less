@@ -37,33 +37,54 @@
     }
   }
 
-  .pages {
-    .select {
-      .unstyled-list;
-      overflow: hidden;
-      line-height: 31px;
-      font-size: 20px;
-      text-align: center;
-      margin-bottom: 20px;
+  .pages .select {
+    .unstyled-list;
+    overflow: hidden;
+    line-height: 31px;
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 20px;
 
-      li {
-        .clickable;
-        display: inline-block;
-        color: @blue;
-        padding: 0 5px;
-        margin: 0 10px;
-        line-height: 33px;
-        font-size: 24px;
+    li {
+      .clickable;
+      display: inline-block;
+      color: @blue;
+      padding: 0 5px;
+      margin: 0 10px;
+      line-height: 33px;
+      font-size: 24px;
 
-        &:hover {
-          background: @lightest-blue;
-        }
-        
-        &.active {
-          color: @darker-blue;
-          border-bottom: 3px solid @darker-blue;
-        }
+      &:hover {
+        background: @lightest-blue;
       }
+      
+      &.active {
+        color: @darker-blue;
+        border-bottom: 3px solid @darker-blue;
+      }
+    }
+  }
+}
+
+.dark .weather-capability {
+  background: #222;
+  color: @dark-mode-text;
+
+  .current {
+    background: #444;
+    color: @dark-mode-text;
+  }
+  
+  .pages .select li {
+    color: @dark-blue;
+
+    &:hover {
+      background: @darkest-blue;
+    }
+
+    &.active {
+      color: @lighter-blue;
+      border-bottom-color: @lighter-blue;
     }
   }
 }
@@ -107,6 +128,13 @@
       top: 80px;
       overflow-y: auto;
     }
+  }
+}
+
+.display-desktop.dark .weather-capability {
+  .current {
+    background: #444;
+    color: @dark-mode-text;
   }
 }
 

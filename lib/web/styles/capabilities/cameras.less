@@ -8,6 +8,8 @@
 
 
 .cameras-capability {
+  .full-size;
+  
   .image-container {
     position: relative;
   }
@@ -36,6 +38,23 @@
   }
 }
 
+.dark .cameras-capability {
+  background: #222;
+  color: @dark-mode-text;
+
+  .thumbnails ul li {
+    background: #333;
+
+    &:hover {
+      background: #444;
+    }
+  }
+
+  .expanded {
+    background: #444;
+  }
+}
+
 .display-phone .cameras-capability {
   .thumbnails li {
     border-bottom: 2px solid white;
@@ -48,6 +67,12 @@
     canvas {
       width: 100%;
     }
+  }
+}
+
+.dark.display-phone .cameras-capability {
+  .thumbnails li {
+    border-bottom-color: #666;
   }
 }
 

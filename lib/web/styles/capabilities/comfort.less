@@ -17,6 +17,33 @@
   }
 }
 
+.dark .comfort-capability {
+  background: #222;
+  color: @dark-mode-text;
+
+  .thermostat {
+    background: #444;
+  }
+
+  .comfort-sensor-disparity svg {
+    text {
+      fill: @dark-mode-text;
+    }
+
+    .bar {
+      fill: @dark-blue;
+    }
+
+    .x.axis line {
+      stroke: #666;
+    }
+
+    .x.zero {
+      stroke: @dark-mode-text;
+    }
+  }
+}
+
 .comfort-sensor-disparity {
   max-width: 400px;
   overflow-y: auto;

@@ -82,6 +82,32 @@
   }
 }
 
+.dark .security-capability {
+  color: @dark-mode-text;
+  
+  .mode {
+    background: #333;
+
+    .modes li {
+      background: #222;
+      color: @blue;
+
+      &:hover {
+        background: #111;
+      }
+
+      &.current {
+        background: @darker-blue;
+        color: @lighter-blue;
+      }
+    }
+  }
+  
+  .status {
+    background: #222;
+  }
+}
+
 .display-phone .security-capability {
   .mode {
     padding: @ph-wide-margin;

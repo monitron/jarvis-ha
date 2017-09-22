@@ -60,7 +60,7 @@
         line-height: @ctrl-track-height;
       }
     }
-    
+  
     .track {
       position: relative;
       width: 100%;
@@ -126,6 +126,35 @@
     text-align: center;
     border-radius: @ctrl-track-height / 2;
     border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+}
+
+.dark .control {
+  .slider {
+    .track {
+      background: @darker-blue;
+    }
+
+    .detent {
+      color: @dark-mode-text;
+
+      &.reversed {
+        color: @darker-blue;
+      }
+    }
+
+    .handle {
+      background: @dark-mode-text;
+    }
+
+    .trail {
+      background: @lightest-blue;
+    }
+  }
+
+  .display {
+    border-color: rgba(255, 255, 255, 0.1);
+    color: @dark-mode-text;
   }
 }
 

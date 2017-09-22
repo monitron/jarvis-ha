@@ -80,6 +80,15 @@
   }
 }
 
+.dark .energy-capability {
+  background: #222;
+  color: @dark-mode-text;
+
+  .meter-graphs li .meter-bar {
+    background: @dark-blue;
+  }
+}
+
 .display-touchscreen .energy-idle {
   position: absolute;
   top: 50%;
@@ -208,3 +217,8 @@
     margin-top: @ph-wide-margin;
   }
 }
+
+.dark.display-phone .energy-meter-values {
+  border-bottom: 1px solid #444;
+}
+

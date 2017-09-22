@@ -21,6 +21,8 @@
 
 @browser-grid-color: #e0e0e0;
 
+@dark-browser-grid-color: #444;
+
 .control-browser {
   .full-size;
 
@@ -174,6 +176,50 @@
   }
 }
 
+.dark .control-browser {
+  background: #222;
+
+  .header {
+    background: #444;
+    color: @dark-mode-text;
+
+    .button {
+      background: @darker-blue;
+      color: @lighter-blue;
+
+      &:hover {
+        background: @dark-blue;
+      }
+    }
+  }
+
+  .sensors {
+    color: #999;
+  }
+
+  .control-container {
+    border-bottom-color: @dark-browser-grid-color;
+    border-right-color: @dark-browser-grid-color;
+
+    .contents .name {
+      color: @dark-mode-text;
+    }
+
+    &.active {
+      background: @darkest-blue;
+    }
+  }
+  
+  > .body .scenes {
+    background: #555;
+    color: @blue;
+  }
+
+  .scene:hover {
+    color: @light-blue;
+  }
+}
+
 .display-desktop .control-browser {
   > .header {
     height: @dt-browser-header-height;
@@ -257,6 +303,13 @@
         margin-left: @dt-thin-margin;
       }
     }
+  }
+}
+
+.dark.display-desktop .control-browser {
+  > .body .controls-list {
+    border-top-color: @dark-browser-grid-color;
+    border-left-color: @dark-browser-grid-color;
   }
 }
 
@@ -348,6 +401,12 @@
   }
 }
 
+.dark.display-phone .control-browser {
+  .controls-list {
+    border-top: 1px solid @dark-browser-grid-color;
+  }
+}
+
 .display-touchscreen .control-browser {
   > .header {
     height: @ts-browser-header-height;
@@ -419,5 +478,12 @@
         margin-left: @ts-thin-margin;
       }
     }
+  }
+}
+
+.dark.display-touchscreen .control-browser {
+  > .body .controls-list {
+    border-top-color: @dark-browser-grid-color;
+    border-left-color: @dark-browser-grid-color;
   }
 }
