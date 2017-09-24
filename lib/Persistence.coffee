@@ -3,6 +3,7 @@ _ = require('underscore')
 sqlite3 = require('sqlite3')
 winston = require('winston')
 Q = require('q')
+[Event, Events] = require('./Event')
 
 module.exports = class Persistence
   constructor: ->
@@ -58,6 +59,43 @@ module.exports = class Persistence
         deferred.resolve()
     deferred.promise
 
+  searchEvents: (query) ->
+    # Query options, all strings:
+    # minImportance: specifies a minimum importance
+    # timesStart:    the earliest UNIX timestamp that will be included
+    # timesEnd:      the latest UNIX timestamp that will be included
+    # sourceType:    specifies a type of source e.g. capability
+    # sourceId:      specifies a source ID
+    @log 'verbose', "Searching events with query #{JSON.stringify(query)}"
+    deferred = Q.defer()
+    predicates = []
+    params = {}
+    if query.minImportance?
+      importances = Events.prototype.importances
+      qis = importances[0..importances.indexOf(query.minImportance)]
+      qis = qis.map((i) -> "'#{i}'").join(', ')
+      predicates.push "importance in (#{qis})"
+    if query.timesStart?
+      predicates.push '(start >= $timesStart OR end >= $timesStart)'
+      params['$timesStart'] = Number(query.timesStart)
+    if query.timesEnd?
+      predicates.push 'start <= $timesEnd'
+      params['$timesEnd'] = Number(query.timesEnd)
+    if query.sourceType?
+      predicates.push 'source_type = $sourceType'
+      params['$sourceType'] = query.sourceType
+    if query.sourceId?
+      predicates.push 'source_id = $sourceId'
+      params['$sourceId'] = query.sourceId
+    sql = "SELECT * FROM events WHERE " + predicates.join(" AND ")
+    @_db.all sql, params, (err, rows) =>
+      if err?
+        @log 'error', "Failed to search events: #{err}"
+        deferred.reject(err)
+      else
+        deferred.resolve new Events(rows.map((row) => @_eventJSONFromSqlRow(row)))
+    deferred.promise
+
   updateEvent: (event) ->
     @log 'verbose', "Updating event #{event.id} (#{event.get('title')})"
     deferred = Q.defer()
@@ -83,6 +121,17 @@ module.exports = class Persistence
     '$description': event.get('description')
     '$start': if event.has('start') then Math.floor(event.get('start') / 1000)
     '$end':   if event.has('end')   then Math.floor(event.get('end') / 1000)
+
+  _eventJSONFromSqlRow: (row) ->
+    id:          row.id
+    sourceType:  row['source_type']
+    sourceId:    row['source_id']
+    reference:   row.reference
+    importance:  row.importance
+    title:       row.title
+    description: row.description
+    start:       row.start? && new Date(row.start * 1000)
+    end:         row.end?   && new Date(row.end * 1000)
 
   _createIfNeeded: ->
     @_db.serialize =>

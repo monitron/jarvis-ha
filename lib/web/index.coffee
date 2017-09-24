@@ -59,6 +59,14 @@ module.exports = class WebServer
     app.get "/api/events", (req, res) =>
       res.json @_server.events.ongoing()
 
+    app.get "/api/events/search", (req, res) =>
+      @_server.persistence.searchEvents(req.query)
+        .then (results) -> res.json results.toJSON()
+        .catch (why) =>
+          @log 'warn', "Events search failed: #{JSON.stringify(why)}"
+          res.status(500).json {success: false, message: why}
+      res.json
+
     app.post "/api/scenes/:sceneId/activate", (req, res) =>
       scene = @_server.scenes.get(req.params.sceneId)
       scene.activate()
