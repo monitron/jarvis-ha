@@ -201,12 +201,14 @@
     border-bottom-color: @dark-browser-grid-color;
     border-right-color: @dark-browser-grid-color;
 
-    .contents .name {
-      color: @dark-mode-text;
+    .contents {
+      .name, .icons {
+        color: @dark-mode-text;
+      }
     }
 
     &.active {
-      background: @darkest-blue;
+      background: fadeout(@darkest-blue, 70%);
     }
   }
   
