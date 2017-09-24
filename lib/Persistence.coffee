@@ -87,7 +87,8 @@ module.exports = class Persistence
     if query.sourceId?
       predicates.push 'source_id = $sourceId'
       params['$sourceId'] = query.sourceId
-    sql = "SELECT * FROM events WHERE " + predicates.join(" AND ")
+    sql = "SELECT * FROM events WHERE #{predicates.join(" AND ")} " +
+      "ORDER BY start DESC"
     @_db.all sql, params, (err, rows) =>
       if err?
         @log 'error', "Failed to search events: #{err}"

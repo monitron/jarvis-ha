@@ -77,7 +77,10 @@ module.exports = class EnergyCapability extends Capability
     for event in ongoing
       unless _.findWhere(@_wastefulControls, id: event.get('reference'))?
         @log 'debug', "Ending waste event for #{event.get('reference')}"
-        event.set end: new Date()
+        name = @_server.controls.get(event.get('reference')).get('name')
+        event.set
+          end: new Date()
+          title: "#{name} may have been on unnecessarily"
     # Create events for new wasteful controls
     now = new Date()
     delay = @get('wastefulControlDelay')
