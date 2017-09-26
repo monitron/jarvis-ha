@@ -44,9 +44,11 @@ class AdapterNode extends Backbone.Model
   isValid: ->
     @_valid and (this == @adapter or @adapter.isValid())
 
-  setValid: (@_valid) ->
-    @log "debug", "Became #{if @_valid then 'valid' else 'invalid'}"
-    @trigger 'valid:change', @_valid
+  setValid: (valid) ->
+    if valid != @_valid
+      @_valid = valid
+      @log "debug", "Became #{if @_valid then 'valid' else 'invalid'}"
+      @trigger 'valid:change', @_valid
 
   log: (level, message) ->
     @adapter.log level, "[Node #{@id}] #{message}"
