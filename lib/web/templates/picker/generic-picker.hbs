@@ -1,0 +1,8 @@
+<div class="items">
+  {{#each items}}
+  <div class="item{{#if selected}} selected{{/if}}" data-item="{{id}}">
+    {{#if icon}}<div class="icon"><i class="fa fa-{{icon}}"></i></div>{{/if}}
+    <div class="name">{{name}}</div>
+  </div>
+  {{/each}}
+</div>

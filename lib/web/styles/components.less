@@ -1,3 +1,6 @@
+@slider-handle-extension: 5px;
+@slider-handle-diameter: @ctrl-track-height + (2 * @slider-handle-extension);
+
 .pages .select {
   .unstyled-list;
   overflow: hidden;
@@ -26,6 +29,128 @@
   }
 }
 
+.button {
+  .clickable;
+  background: @blue;
+  text-align: center;
+  color: white;
+
+  &:hover {
+    background: @dark-blue;
+  }
+}
+
+.slider {
+  position: relative;
+
+  &.disabled {
+    background: none !important;
+    pointer-events: none;
+    filter: grayscale(100%);
+  }
+  
+  .bounds {
+    position: absolute;
+    left: 0;
+    top: -@slider-handle-extension;
+    width: 100%;
+    height: @slider-handle-diameter;
+  }
+  
+  i {
+    font-size: 130%;
+    position: relative;
+    top: 1px;
+    pointer-events: none;
+  }
+  
+  .label {
+    .unselectable;
+    font-size: 12px;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+
+  .detents {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: @ctrl-track-height;
+  }
+  
+  .detent {
+    position: absolute;
+    top: 0;
+    width: @ctrl-track-height;
+    color: white;
+    text-align: center;
+
+    &.reversed {
+      color: @blue;
+    }
+    
+    .label {
+      line-height: @ctrl-track-height;
+    }
+  }
+  
+  .track {
+    position: relative;
+    width: 100%;
+    margin: @ctrl-vertical-margin 0;
+    height: @ctrl-track-height;
+    border-radius: @ctrl-track-height / 2;
+    background: @blue;
+    pointer-events: none;
+
+    .track-contents {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: @ctrl-track-height / 2;
+      right: @ctrl-track-height / 2;
+    }
+  }
+
+  .handle {
+    position: absolute;
+    top: -@slider-handle-extension;
+    left: 0;
+    width: @slider-handle-diameter;
+    height: @slider-handle-diameter;
+    border-radius: @slider-handle-diameter / 2;
+    background: white;
+    box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.4);
+
+    .label {
+      .unselectable;
+      color: black;
+      font-weight: bold;
+      text-align: center;
+      line-height: @slider-handle-diameter;
+    }
+
+    &.invalid {
+      display: none;
+    }
+  }
+
+  .trail {
+    position: absolute;
+    box-sizing: content-box;
+    top: 0;
+    left: @ctrl-track-height / -2;
+    height: @ctrl-trail-height;
+    border-radius: (@ctrl-trail-height / 2) 0 0 (@ctrl-trail-height / 2);
+    background: white;
+    margin-top: @ctrl-inset;
+    margin-left: @ctrl-inset;
+    padding-right: @ctrl-track-height / 2;
+    pointer-events: none;
+  }
+}
+
 .dark {
   .pages .select li {
     color: @dark-blue;
@@ -37,6 +162,37 @@
     &.active {
       color: @lighter-blue;
       border-bottom-color: @lighter-blue;
+    }
+  }
+
+  .button {
+    background: @darker-blue;
+    color: @lighter-blue;
+
+    &:hover {
+      background: @dark-blue;
+    }
+  }
+  
+  .slider {
+    .track {
+      background: @darker-blue;
+    }
+
+    .detent {
+      color: @lighter-blue;
+
+      &.reversed {
+        color: @darkest-blue;
+      }
+    }
+
+    .handle {
+      background: @lighter-blue;
+    }
+
+    .trail {
+      background: @light-blue;
     }
   }
 }

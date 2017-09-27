@@ -1,0 +1,75 @@
+
+@ts-generic-picker-line-height: 60px;
+@dt-generic-picker-line-height: 60px;
+@ph-generic-picker-line-height: 60px;
+
+.generic-picker {
+  .full-size;
+  overflow-y: auto;
+  
+  .item {
+    .clickable;
+    color: @darker-blue;
+    font-weight: 600;
+
+    .icon {
+      float: left;
+      text-align: center;
+      margin-right: 10px;
+      width: 25px;
+      text-align: center;
+    }
+    
+    &.selected {
+      background: @darker-blue;
+      color: white;
+    }
+    
+    &:not(.selected):hover {
+      background: @lighter-blue;
+    }
+  }
+}
+
+.dark .generic-picker {
+  .item {
+    &.selected {
+      background: @darker-blue;
+      color: @lightest-blue;
+    }
+    
+    &:not(.selected):hover {
+      background: @darkest-blue;
+    }
+  }
+}
+
+.display-phone .generic-picker {
+  .item {
+    line-height: @ph-generic-picker-line-height;
+    padding: 0 @ph-wide-margin;
+    font-size: 20px;
+  }
+}
+
+.display-touchscreen .generic-picker {
+  .item {
+    line-height: @ts-generic-picker-line-height;
+    padding: 0 @ts-wide-margin;
+    font-size: 25px;
+  }
+  
+  @media @ts-large {
+    .item {
+      padding: 0 @ts-wider-margin;
+    }
+  }
+}
+
+.display-desktop .generic-picker {
+  .item {
+    line-height: @dt-generic-picker-line-height;
+    padding: 0 @dt-wide-margin;
+    font-size: 20px;
+  }
+}

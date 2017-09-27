@@ -1,0 +1,34 @@
+<div class="zone">
+  {{zoneName}}<i class="fa fa-caret-down"></i>
+</div>
+<div class="basics">
+  <div class="source">
+    <div class="label">Source</div>
+    <div class="button off-button{{#if isOff}} disabled{{/if}}">
+      <i class="fa fa-power-off"></i> Off
+    </div>
+    <div class="select">
+      {{#if sourceName}}
+      {{sourceName}}
+      {{else}}
+      Choose a Source
+      {{/if}}
+      <i class="fa fa-caret-down"></i>
+    </div>
+  </div>
+  <div class="volume">
+    <div class="label">Volume</div>
+    <div class="controls">
+      <div class="button-container">
+        <div class="button mute-button{{#if isOff}} disabled{{/if}}">
+          {{#if isMuted}}
+          <i class="fa fa-volume-up"></i>
+          {{else}}
+          <i class="fa fa-volume-off"></i>
+          {{/if}}
+        </div>
+      </div>
+      <div class="control"></div>
+    </div>
+  </div>
+</div>

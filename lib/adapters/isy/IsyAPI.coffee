@@ -122,5 +122,5 @@ module.exports = class IsyAPI extends Backbone.Model
             deferred.reject err
           else
             deferred.resolve data
-    req = request options, callback
+    request options, callback
     deferred.promise

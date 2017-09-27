@@ -1,0 +1,144 @@
+.media-capability {
+  .full-size;
+
+  .button {
+    line-height: 40px;
+    border-radius: 20px;
+    font-size: 20px;
+    padding: 0 20px;
+  }
+  
+  .zone {
+    .clickable;
+    background: #d6d6d6;
+    color: @darker-blue;
+    height: 60px;
+    line-height: 60px;
+    font-size: 24px;
+    font-weight: 600;
+
+    i {
+      margin-left: 5px;
+    }
+  }
+
+  .basics {
+    overflow: hidden;
+    background: #ececec;
+
+    .select, .button {
+      margin-top: 10px;
+    }
+
+    > div > .label {
+      text-transform: uppercase;
+      font-size: 14px;
+      font-weight: bold;
+      opacity: .5;
+    }
+    
+    .source {
+      .select {
+        .clickable;
+        overflow: hidden;
+        line-height: 40px;
+        height: 40px;
+        border-radius: 40px;
+        background: #f9f9f9;
+        padding: 0 20px;
+        color: @blue;
+        font-size: 20px;
+
+        i {
+          float: right;
+          line-height: 40px;
+        }
+
+        &:hover {
+          background: @light-blue;
+          color: white;
+        }
+      }
+
+      .off-button {
+        float: left;
+        margin-right: 10px;
+      }
+    }
+
+    .volume {
+      overflow: hidden;
+      
+      .button-container {
+        width: 16%;
+        padding-left: 10px;
+        float: right;
+      }
+      
+      .control {
+        width: 84%;
+        float: left;
+      }
+    }
+  }
+}
+
+.dark .media-capability {
+  background: #222;
+
+  .zone {
+    background: #444;
+    color: @lighter-blue;
+  }
+
+  .basics {
+    background: #333;
+
+    > div > .label {
+      color: white;
+    }
+    
+    .source .select {
+      background: #272727;
+      
+      &:hover {
+        background: @darkest-blue;
+        color: @lighter-blue;
+      }
+    }
+  }
+}
+
+.display-desktop .media-capability {
+  .zone {
+    padding: 0 @dt-wide-margin;
+  }
+
+  .basics > div {
+    float: left;
+    width: 50%;
+    padding: @dt-wide-margin;
+  }
+}
+
+.display-touchscreen .media-capability {
+  .zone {
+    padding: 0 @ts-wide-margin;
+  }
+
+  .basics > div {
+    float: left;
+    width: 50%;
+    padding: @ts-wide-margin;
+  }
+}
+
+.display-phone .media-capability {
+  .zone {
+    padding: 0 @ph-wide-margin;
+  }
+
+  .basics > div {
+    padding: @ph-wide-margin;
+  }
+}

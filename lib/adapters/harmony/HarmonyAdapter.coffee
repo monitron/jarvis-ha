@@ -28,7 +28,7 @@ module.exports = class HarmonyAdapter extends Adapter
       @discoverActivities()
       @_keepalive = setInterval((=> @pollCurrentActivity()),
         @get('keepaliveInterval') * 1000)
-      #@_harmony._xmppClient.on 'stanza', (s) -> console.log(s)
+      @_harmony._xmppClient.on 'stanza', (s) => @_processXMPPMessage(s)
     promise.done()
 
   discoverActivities: ->
@@ -73,3 +73,13 @@ module.exports = class HarmonyAdapter extends Adapter
 
   startActivity: (id) ->
     @_harmony.startActivity(id) # Returns promise
+
+  _processXMPPMessage: (message) ->
+    child = message.children?[0]
+    if child? and child.attrs?.type == "harmony.engine?startActivityFinished"
+      details = child.children?[0] or ""
+      details = _.object(details.split(':').map((d) -> d.split('=')))
+      if details.activityId?
+        activity = details.activityId
+        @log "verbose", "XMPP indicates current activity is #{activity}"
+        @children.first().processData currentActivity: activity
