@@ -34,7 +34,6 @@ module.exports = class HarmonyAdapter extends Adapter
   discoverActivities: ->
     @log "debug", "Discovering activities..."
     promise = @_harmony.getActivities()
-    @_apromise = promise
     promise.catch (error) =>
       @log "error", "Failed to discover activities (#{error})"
     promise.then (activities) =>
