@@ -15,6 +15,7 @@ module.exports = class IsyAdapter extends Adapter
   # Required: host, username, password
   defaults:
     devices: {}
+    pollInterval: 60 # seconds between complete data refreshes
 
   initialize: ->
     super
@@ -33,6 +34,7 @@ module.exports = class IsyAdapter extends Adapter
       else
         @log 'verbose', "Unexpected property update #{JSON.stringify(update)}"
     @discover()
+    setInterval (=> @poll()), @get('pollInterval') * 1000
     # TODO There is an "ERR" property!! We should use it
 
   executeCommand: (node, command, args, expectResponse = true) ->
@@ -65,4 +67,19 @@ module.exports = class IsyAdapter extends Adapter
         # TODO Mark invalid? currently unnecessary because discover is only
         #      called when we are already invalid
         @log 'error', "Could not discover nodes; abandoning"
+      .done()
+
+  poll: ->
+    # XXX Notice additions or removals of devices?
+    return unless @isValid()
+    @_api.getNodes()
+      .then (nodes) =>
+        count = 0
+        for node in nodes
+          child = @children.get(node.address)
+          if child?
+            count += 1
+            child.processData node.properties
+        @log 'verbose', "Poll updated status of #{count} node(s)"
+      .fail (err) => @log 'warn', "Failed polling: #{err}"
       .done()
