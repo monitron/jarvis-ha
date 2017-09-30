@@ -6,7 +6,8 @@ ISY_DEVICE_CLASSES = [
   require('./IsyInsteonDimmerNode'),
   require('./IsyInsteonSwitchNode'),
   require('./IsyInsteonOpenCloseSensorNode'),
-  require('./IsyInsteonFanMotorNode')
+  require('./IsyInsteonFanMotorNode'),
+  require('./IsyInsteonMotionSensorNode')
 ]
 
 module.exports = class IsyAdapter extends Adapter
