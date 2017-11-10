@@ -1,12 +1,18 @@
 <div class="header">
-  <div class="button pick-location-button">
-    <i class="fa fa-map"></i>
+  <div class="buttons">
+    <div class="button-container pick-location-button">
+      <div class="button">
+        <i class="fa fa-map"></i>
+      </div>
+    </div>
+    {{#if hasHome}}
+    <div class="button-container go-home-button">
+      <div class="button{{#if isAtHome}} disabled{{/if}}">
+        <i class="fa fa-map-marker"></i>
+      </div>
+    </div>
+    {{/if}}
   </div>
-  {{#if hasHome}}
-  <div class="button go-home-button{{#if isAtHome}} disabled{{/if}}">
-    <i class="fa fa-map-marker"></i>
-  </div>
-  {{/if}}
   <div class="sensors"></div>
   <div class="name">{{name}}</div>
 </div>

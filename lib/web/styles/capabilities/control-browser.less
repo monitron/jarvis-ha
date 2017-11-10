@@ -33,9 +33,12 @@
     right: 0;
     background: #d6d6d6;
 
+    .button-container {
+      float: left;
+    }
+
     .button {
       border-radius: 50%;
-      float: left;
     }
   }
 
@@ -213,12 +216,15 @@
     .name {
       float: left;
       font-size: 24px;
-      padding-left: @dt-normal-margin;
+      padding-left: @dt-normal-margin / 2;
+    }
+
+    .buttons {
+      margin: 0 (@dt-normal-margin / 2);
     }
     
     .button {
-      margin-left: @dt-normal-margin;
-      margin-top: @dt-normal-margin;
+      margin: @dt-normal-margin (@dt-normal-margin / 2);
       line-height: @dt-browser-header-height - (@dt-normal-margin * 2);
       width: @dt-browser-header-height - (@dt-normal-margin * 2);
       height: @dt-browser-header-height - (@dt-normal-margin * 2);
@@ -316,12 +322,15 @@
     .name {
       float: left;
       font-size: 24px;
-      padding-left: @ph-wide-margin;
+      padding-left: @ph-wide-margin / 2;
+    }
+
+    .buttons {
+      margin: 0 (@ph-wide-margin / 2);
     }
     
     .button {
-      margin-left: @ph-wide-margin;
-      margin-top: @ph-wide-margin;
+      margin: @ph-wide-margin (@ph-wide-margin / 2);
       line-height: @ph-browser-header-height - (@ph-wide-margin * 2);
       width: @ph-browser-header-height - (@ph-wide-margin * 2);
       height: @ph-browser-header-height - (@ph-wide-margin * 2);
@@ -400,12 +409,15 @@
     .name {
       float: left;
       font-size: 24px;
-      padding-left: @ts-wide-margin;
+      padding-left: @ts-normal-margin;
+    }
+
+    .buttons {
+      margin: 0 (@ts-wide-margin / 2);
     }
 
     .button {
-      margin-left: @ts-wide-margin;
-      margin-top: @ts-wide-margin;
+      margin: @ts-wide-margin (@ts-wide-margin / 2);
       line-height: @ts-browser-header-height - (@ts-wide-margin * 2);
       width: @ts-browser-header-height - (@ts-wide-margin * 2);
       height: @ts-browser-header-height - (@ts-wide-margin * 2);
