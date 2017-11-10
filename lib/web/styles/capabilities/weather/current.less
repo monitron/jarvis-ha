@@ -90,6 +90,22 @@
   }
 }
 
+.dark .weather-capability .current-conditions {
+  .alerts li {
+    &.level-medium {
+      background: @dark-orange;
+    }
+    
+    &.level-high {
+      background: @dark-red;
+    }
+  }
+  
+  .precip {
+    background: @darkest-blue;
+  }
+}
+
 .display-phone .weather-capability .current-conditions {
   .conditions li {
     padding: @ph-wide-margin;
