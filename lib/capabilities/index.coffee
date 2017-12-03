@@ -1,5 +1,6 @@
 
 module.exports =
+  home: require('./HomeCapability')
   controlBrowser: require('./ControlBrowserCapability')
   weather: require('./WeatherCapability')
   energy: require('./EnergyCapability')
