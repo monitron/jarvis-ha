@@ -19,6 +19,9 @@ class Control extends baseControl
   isActive: ->
     @get('active')
 
+  hasCommand: (verb) ->
+    _.contains(@get('commands'), verb)
+
   isBusy: ->
     !_.isEmpty(@_tasks)
 
