@@ -10,7 +10,7 @@
     .capability {
       text-transform: uppercase;
       font-weight: 600;
-      opacity: .7;
+      opacity: .6;
 
       .name {
         font-size: 90%;
@@ -20,7 +20,24 @@
     .body {
       .title {
         font-size: 24px;
-        font-weight: 300;
+        font-weight: 200;
+      }
+
+      .section {
+        overflow: hidden;
+        font-weight: 500;
+      }
+
+      .busy {
+        float: right;
+      }
+
+      .action {
+        .clickable;
+        color: @blue;
+        text-transform: uppercase;
+        font-weight: 700;
+        float: right;
       }
     }
 
@@ -76,6 +93,10 @@
       padding: @ph-wide-margin;
     }
 
+    .section {
+      line-height: 30px;
+    }
+
     .header {
       margin-bottom: @ph-normal-margin;
       padding: @ph-wide-margin @ph-wide-margin 0 @ph-wide-margin;
@@ -94,6 +115,7 @@
 
     .section {
       padding: @ts-wide-margin;
+      line-height: 30px;
     }
 
     .header {
