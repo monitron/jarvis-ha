@@ -1,7 +1,14 @@
 .home-capability {
   .full-size;
+  overflow-y: auto;
   background: #eee;
-  
+
+  .greeting {
+    color: #999;
+    font-size: 30px;
+    font-weight: 200;
+  }
+
   .home-card {
     background: white;
     border-radius: 3px;
@@ -50,6 +57,14 @@
 .dark .home-capability {
   background: #222;
 
+  .greeting {
+    color: #aaa;
+  }
+
+  .home-cards .empty {
+    color: #eee;
+  }
+  
   .home-card {
     background: #444;
     color: #eee;
@@ -66,11 +81,15 @@
 }
 
 .display-desktop .home-capability {
-  .home-cards {
+  .home-cards, .greeting {
     max-width: 500px;
     margin: 0 auto;
   }
-  
+
+  .greeting, .home-cards .empty {
+    padding: @dt-normal-margin;
+  }
+
   .home-card {
     margin-top: @dt-normal-margin;
 
@@ -86,6 +105,10 @@
 }
 
 .display-phone .home-capability {
+  .greeting, .home-cards .empty {
+    margin: @ph-wide-margin * 2;
+  }
+  
   .home-card {
     margin: @ph-wide-margin;
 
@@ -105,9 +128,13 @@
 }
 
 .display-touchscreen .home-capability {
-  .home-cards {
+  .home-cards, .greeting {
     max-width: 500px;
     margin: 0 auto;
+  }
+
+  .greeting, .home-cards .empty {
+    padding: @ts-wide-margin;
   }
   
   .home-card {
