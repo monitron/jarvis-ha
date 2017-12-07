@@ -32,3 +32,26 @@
     </div>
   </div>
 </div>
+<div class="source">
+  {{#if metadata}}
+  <div class="metadata">
+    {{#with metadata}}
+    {{#if source}}<div class="src">{{source}}</div>{{/if}}
+    {{#if title}}<div class="title">{{title}}</div>{{/if}}
+    {{#if subtitle}}<div class="subtitle">{{subtitle}}</div>{{/if}}
+    {{/with}}
+  </div>
+  {{/if}}
+  <div class="controls">
+    {{#if isPlaying}}
+    <div class="button pause-button">
+      <i class="fa fa-pause"></i>
+    </div>
+    {{/if}}
+    {{#if isPaused}}
+    <div class="button play-button">
+      <i class="fa fa-play"></i>
+    </div>
+    {{/if}}
+  </div>
+</div>

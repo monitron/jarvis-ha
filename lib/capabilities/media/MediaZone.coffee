@@ -3,16 +3,21 @@ Backbone = require('backbone')
 
 class MediaZone extends Backbone.Model
   defaults:
-    connections: {}
+    connections: []
+    sources: []
 
   initialize: (attrs, options) ->
     @_parent = @collection.parent
     @_server = @collection.server
 
     # Notice when our connections' data changes
-    for source in @get('connections')
-      @_server.adapters.onEventAtPath source.path,
+    for connection in @get('connections')
+      @_server.adapters.onEventAtPath connection.path,
         'aspectData:change', => @trigger 'change', this
+    for source in @get('sources')
+      for connection in source.connections or []
+        @_server.adapters.onEventAtPath connection.path,
+          'aspectData:change', => @trigger 'change', this
 
   isValid: ->
     _.every @get('connections'), (connection) =>
@@ -23,32 +28,49 @@ class MediaZone extends Backbone.Model
   summarizeBasics: ->
     basics = {}
     for aspectName in ['powerOnOff', 'mediaSource', 'volume', 'mute']
-      aspect = @getSourceAspect(aspectName)
+      aspect = @getConnectionAspect(aspectName)
       if aspect? then basics[aspectName] = aspect.getDatum('state')
     basics
 
   summarizeSources: ->
-    aspect = @getSourceAspect('mediaSource')
+    aspect = @getConnectionAspect('mediaSource')
     return [] unless aspect
     for sourceId, sourceName of aspect.getAttribute('choices')
       sourceDef = _.findWhere(@get('sources'), {id: sourceId}) or {}
-      # + source media metadata and transport details
       id: sourceId
       name: sourceDef.name or sourceName
       icon: sourceDef.icon
+      transport: @getSourceConnectionAspect(sourceId, 'mediaTransport')?.getData()
+      metadata: @getSourceConnectionAspect(sourceId, 'mediaMetadata')?.getData()
 
   setBasic: (aspectName, newState) ->
-    @getSourceAspect(aspectName).executeCommand('set', newState)
+    @getConnectionAspect(aspectName).executeCommand('set', newState)
 
-  getSourceAspect: (aspect) ->
-    path = @getSourcePath(aspect)
+  sourceCommand: (sourceId, command) ->
+    @getSourceConnectionAspect(sourceId, 'mediaTransport').
+      executeCommand(command)
+
+  getConnectionAspect: (aspect) ->
+    path = @getConnectionPath(aspect)
     return undefined unless path?
     @_server.adapters.getPath(path)?.getAspect(aspect)
 
-  getSourcePath: (aspect) ->
-    source = _.find(@get('connections'), (s) -> _.contains(s.aspects, aspect))
-    return undefined unless source?
-    source.path
+  getConnectionPath: (aspect) ->
+    conn = _.find(@get('connections'), (s) -> _.contains(s.aspects, aspect))
+    return undefined unless conn?
+    conn.path
+
+  getSourceConnectionAspect: (source, aspect) ->
+    path = @getSourceConnectionPath(source, aspect)
+    return undefined unless path?
+    @_server.adapters.getPath(path)?.getAspect(aspect)
+
+  getSourceConnectionPath: (source, aspect) ->
+    connections = _.findWhere(@get('sources'), id: source)?.connections
+    return unless connections?
+    conn = _.find(connections, (s) -> _.contains(s.aspects, aspect))
+    return undefined unless conn?
+    conn.path
 
   toStateJSON: ->
     valid: @isValid()
