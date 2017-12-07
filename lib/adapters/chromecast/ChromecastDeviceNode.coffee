@@ -60,6 +60,7 @@ module.exports = class ChromecastDeviceNode extends AdapterNode
       @getAspect('mediaMetadata').setData {}
 
   _onMediaStatus: (status) ->
+    return unless status?
     @getAspect('mediaTransport').setData
       state: switch status.playerState
         when 'BUFFERING', 'PLAYING' then 'play'
