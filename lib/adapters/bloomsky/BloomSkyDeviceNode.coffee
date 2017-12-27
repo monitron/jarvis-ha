@@ -4,6 +4,8 @@ moment = require('moment')
 _ = require('underscore')
 
 module.exports = class BloomSkyDeviceNode extends AdapterNode
+  invalidDatumMarker: 9999
+
   aspects:
     temperatureSensor:
       events:
@@ -43,36 +45,34 @@ module.exports = class BloomSkyDeviceNode extends AdapterNode
         changed: (prev, cur) -> prev.captureTime < cur.captureTime
 
   processData: (datum) ->
+    simpleSetData = (aspect, value, massage) =>
+      aspect = @getAspect(aspect)
+      if value == @invalidDatumMarker
+        aspect.clearData()
+      else
+        if massage? then value = massage(value)
+        aspect.setData value: value
     skyData = datum.Data
     if skyData?
-      @getAspect('temperatureSensor').setData
-        value: skyData.Temperature
-      @getAspect('humiditySensor').setData
-        value: skyData.Humidity
-      @getAspect('barometricPressureSensor').setData
-        value: skyData.Pressure
-      @getAspect('dayNightSensor').setData
-        value: skyData.Night
-      @getAspect('liquidPresenceSensor').setData
-        value: skyData.Rain
+      simpleSetData 'temperatureSensor', skyData.Temperature
+      simpleSetData 'humiditySensor', skyData.Humidity
+      simpleSetData 'barometricPressureSensor', skyData.Pressure
+      simpleSetData 'dayNightSensor', skyData.Night
+      simpleSetData 'liquidPresenceSensor', skyData.Rain
       @getAspect('stillCamera').setData
         imageLocation: skyData.ImageURL
         captureTime: moment(skyData.ImageTS, 'X').toISOString()
     stormData = datum.Storm
     if stormData?
-      @getAspect('precipitationRateSensor').setData
-        value: stormData.RainRate
-      @getAspect('ultravioletIndexSensor').setData
-        value: parseInt(stormData.UVIndex) # "1"
+      simpleSetData 'precipitationRateSensor', stormData.RainRate
+      simpleSetData 'ultravioletIndexSensor', parseInt(stormData.UVIndex) # "1"
+      simpleSetData 'windSpeedSensor', stormData.SustainedWindSpeed
+      simpleSetData 'windGustSpeedSensor', stormData.WindGust
+      simpleSetData 'windDirectionSensor', stormData.WindDirection,
+        (dir) => @_cardinalDirectionToAngle(dir)
       @getAspect('precipitationQuantitySensor').setData
         '24hour': stormData["24hRain"]
         today:    stormData.RainDaily
-      @getAspect('windSpeedSensor').setData
-        value: stormData.SustainedWindSpeed
-      @getAspect('windGustSpeedSensor').setData
-        value: stormData.WindGust
-      @getAspect('windDirectionSensor').setData
-        value: @_cardinalDirectionToAngle(stormData.WindDirection)
 
   _cardinalDirectionToAngle: (card) ->
     {
