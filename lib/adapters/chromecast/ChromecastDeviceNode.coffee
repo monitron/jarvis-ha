@@ -13,13 +13,16 @@ module.exports = class ChromecastDeviceNode extends AdapterNode
         pause: (node) -> node.sendAppCommand 'pause'
         stop:  (node) -> node.sendAppCommand 'stop'
         seek:  (node, time) -> node.sendAppCommand 'seek', time
+    volume:
+      commands:
+        set: (node, value) -> node.setVolume(value)
+    mute:
+      commands:
+        set: (node, value) -> node.setMute(value)
 
   initialize: ->
     super
-    @_client = new Client()
-    @_client.connect @get('address'), => @_onConnect()
-    @_client.on 'error', (err) => @_onError(err)
-    @_client.on 'status', (status) => @_onDeviceStatus(null, status)
+    @_connect()
 
   showSomething: (media) ->
     media ||=
@@ -32,11 +35,33 @@ module.exports = class ChromecastDeviceNode extends AdapterNode
     deferred = Q.defer()
     if @_currentApp?
       callback = (err) ->
-        if err? then deferred.resolve() else deferred.reject 'Command failed'
+        if err? then deferred.reject('Command failed') else deferred.resolve()
       @_currentApp[command](arg..., callback)
     else
       deferred.reject 'No current media'
     deferred.promise
+
+  setVolume: (level) ->
+    deferred = Q.defer()
+    callback = (err) ->
+        if err? then deferred.reject('Command failed') else deferred.resolve()
+    @_client.setVolume {level: (level / 100.0)}, callback
+    deferred.promise
+
+  setMute: (muted) ->
+    deferred = Q.defer()
+    callback = (err) ->
+        if err? then deferred.reject('Command failed') else deferred.resolve()
+    @_client.setVolume {muted: muted}, callback
+    deferred.promise
+
+  _connect: ->
+    @log 'debug', "Connecting to #{@get('name')} at #{@get('address')}"
+    @_client?.close()
+    @_client = new Client()
+    @_client.connect @get('address'), => @_onConnect()
+    @_client.on 'error', (err) => @_onError(err)
+    @_client.on 'status', (status) => @_onDeviceStatus(null, status)
 
   _onConnect: ->
     @log 'debug', "Connected to #{@get('name')}"
@@ -58,6 +83,10 @@ module.exports = class ChromecastDeviceNode extends AdapterNode
       delete @_currentAppName
       @getAspect('mediaTransport').setData {}
       @getAspect('mediaMetadata').setData {}
+    if status?.volume?
+      @getAspect('mute').setData state: status.volume.muted
+      unless status.volume.muted # When muted, volume appears as 0..not helpful
+        @getAspect('volume').setData state: status.volume.level * 100
 
   _onMediaStatus: (status) ->
     return unless status?
@@ -80,3 +109,4 @@ module.exports = class ChromecastDeviceNode extends AdapterNode
 
   _onError: (err) ->
     @log 'warn', "Client error: #{err}"
+    @_connect()
