@@ -54,6 +54,10 @@ class Control extends Backbone.Model
   getUniqueMembershipPaths: ->
     _.uniq(_.pluck(@get('memberships'), 'path'))
 
+  getDefaultMembershipPath: (prefix = []) ->
+    _.find @getUniqueMembershipPaths(),
+      (path) -> _.isEqual(path.slice(0, prefix.length), prefix)
+
   getMembership: (path) ->
     _.find(@get('memberships'), (membership) -> _.isEqual(membership.path, path))
 
