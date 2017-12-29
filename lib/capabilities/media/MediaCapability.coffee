@@ -37,3 +37,8 @@ module.exports = class MediaCapability extends Capability
 
   _getState: ->
     zones: _.object(@zones.map((zone) -> [zone.id, zone.toStateJSON()]))
+
+  toJSON: ->
+    json = super
+    json.zones = @zones.map((zone) -> zone.toJSON())
+    json

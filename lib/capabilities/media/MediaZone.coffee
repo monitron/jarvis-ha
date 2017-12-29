@@ -14,6 +14,12 @@ class MediaZone extends Backbone.Model
     for connection in @get('connections')
       @_server.adapters.onEventAtPath connection.path,
         'aspectData:change', => @trigger 'change', this
+
+    if @has('source')
+      @set 'single-source', true
+      @set 'sources', [_.defaults(id: 'single', @get('source'))]
+      @unset 'source'
+
     for source in @get('sources')
       for connection in source.connections or []
         @_server.adapters.onEventAtPath connection.path,
@@ -33,9 +39,13 @@ class MediaZone extends Backbone.Model
     basics
 
   summarizeSources: ->
-    aspect = @getConnectionAspect('mediaSource')
-    return [] unless aspect
-    for sourceId, sourceName of aspect.getAttribute('choices')
+    if @get('single-source')
+      sources = single: 'Single Source'
+    else
+      aspect = @getConnectionAspect('mediaSource')
+      return [] unless aspect
+      sources = aspect.getAttribute('choices')
+    for sourceId, sourceName of sources
       sourceDef = _.findWhere(@get('sources'), {id: sourceId}) or {}
       id: sourceId
       name: sourceDef.name or sourceName

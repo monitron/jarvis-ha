@@ -2,6 +2,7 @@
   {{zoneName}}<i class="fa fa-caret-down"></i>
 </div>
 <div class="basics">
+  {{#if hasMultipleSources}}
   <div class="source">
     <div class="label">Source</div>
     <div class="button off-button{{#if isOff}} disabled{{/if}}">
@@ -16,6 +17,7 @@
       <i class="fa fa-caret-down"></i>
     </div>
   </div>
+  {{/if}}
   <div class="volume">
     <div class="label">Volume</div>
     <div class="controls">
