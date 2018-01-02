@@ -3,6 +3,9 @@
 </div>
 {{#each zones}}
 <div class="section zone" data-id="{{id}}">
+  {{#if canStop}}
+  <div class="action stop-button"><i class="fa fa-stop"></i></div>
+  {{/if}}
   {{#if canPlay}}
   <div class="action play-button"><i class="fa fa-play"></i></div>
   {{/if}}

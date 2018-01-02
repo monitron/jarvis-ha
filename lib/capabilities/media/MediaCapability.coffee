@@ -30,6 +30,9 @@ module.exports = class MediaCapability extends Capability
     sourcePause: (capability, params) ->
       capability.zones.get(params.zone).sourceCommand(params.source, 'pause')
 
+    sourceStop: (capability, params) ->
+      capability.zones.get(params.zone).sourceCommand(params.source, 'stop')
+
   start: ->
     @zones = new MediaZones(@get('zones'), {parent: this, server: @_server})
     @listenTo @zones, 'change', => @trigger 'change', this
