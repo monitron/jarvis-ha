@@ -1,0 +1,23 @@
+<div class="section">
+  <div class="title">{{title}}</div>
+</div>
+{{#each zones}}
+<div class="section zone" data-id="{{id}}">
+  {{#if canPlay}}
+  <div class="action play-button"><i class="fa fa-play"></i></div>
+  {{/if}}
+  {{#if canPause}}
+  <div class="action pause-button"><i class="fa fa-pause"></i></div>
+  {{/if}}
+  <div class="name clickable">{{name}} <i class="fa fa-external-link"></i></div>
+  {{#if sourceName}}<div class="description">{{sourceName}}</div>{{/if}}
+  {{#if metadata}}
+  {{#with metadata}}
+  <div class="subsection">
+    {{#if source}}<div class="description minor">{{source}}</div>{{/if}}
+    {{#if title}}<div class="description">{{title}}{{#if subtitle}} - {{subtitle}}{{/if}}</div>{{/if}}
+  </div>
+  {{/with}}
+  {{/if}}
+</div>
+{{/each}}
