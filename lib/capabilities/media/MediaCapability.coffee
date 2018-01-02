@@ -1,3 +1,4 @@
+Q = require('q')
 _ = require('underscore')
 [Capability] = require('../../Capability')
 [MediaZone, MediaZones] = require('./MediaZone')
@@ -10,28 +11,49 @@ module.exports = class MediaCapability extends Capability
 
   commands:
     setZoneVolume: (capability, params) ->
+      zone = capability.zones.get(params.zone)
+      if !zone? or !zone.isValid()
+        return Q.fcall(-> throw new Error("Missing or invalid zone"))
       volume = Number(params.volume)
-      capability.zones.get(params.zone).setBasic('volume', volume)
+      zone.setBasic('volume', volume)
 
     setZonePower: (capability, params) ->
+      zone = capability.zones.get(params.zone)
+      if !zone? or !zone.isValid()
+        return Q.fcall(-> throw new Error("Missing or invalid zone"))
       if _.isString(params.power) then params.power = params.power == 'true'
-      capability.zones.get(params.zone).setBasic('powerOnOff', params.power)
+      zone.setBasic('powerOnOff', params.power)
 
     setZoneMute: (capability, params) ->
+      zone = capability.zones.get(params.zone)
+      if !zone? or !zone.isValid()
+        return Q.fcall(-> throw new Error("Missing or invalid zone"))
       if _.isString(params.mute) then params.mute = params.mute == 'true'
-      capability.zones.get(params.zone).setBasic('mute', params.mute)
+      zone.setBasic('mute', params.mute)
 
     setZoneSource: (capability, params) ->
-      capability.zones.get(params.zone).setBasic('mediaSource', params.source)
+      zone = capability.zones.get(params.zone)
+      if !zone? or !zone.isValid()
+        return Q.fcall(-> throw new Error("Missing or invalid zone"))
+      zone.setBasic('mediaSource', params.source)
 
     sourcePlay: (capability, params) ->
-      capability.zones.get(params.zone).sourceCommand(params.source, 'play')
+      zone = capability.zones.get(params.zone)
+      if !zone? or !zone.isValid()
+        return Q.fcall(-> throw new Error("Missing or invalid zone"))
+      zone.sourceCommand(params.source, 'play')
 
     sourcePause: (capability, params) ->
-      capability.zones.get(params.zone).sourceCommand(params.source, 'pause')
+      zone = capability.zones.get(params.zone)
+      if !zone? or !zone.isValid()
+        return Q.fcall(-> throw new Error("Missing or invalid zone"))
+      zone.sourceCommand(params.source, 'pause')
 
     sourceStop: (capability, params) ->
-      capability.zones.get(params.zone).sourceCommand(params.source, 'stop')
+      zone = capability.zones.get(params.zone)
+      if !zone? or !zone.isValid()
+        return Q.fcall(-> throw new Error("Missing or invalid zone"))
+      zone.sourceCommand(params.source, 'stop')
 
   start: ->
     @zones = new MediaZones(@get('zones'), {parent: this, server: @_server})

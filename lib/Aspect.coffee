@@ -14,7 +14,7 @@ module.exports = class Aspect extends EventEmitter
       if conditionalFn(@_data, newData) then @emit('aspectEvent', event)
     oldData = @_data
     @_data = newData
-    unless _.isEqual(oldData, @_data) then @emit('dataChanged', @_data)
+    unless _.isEqual(oldData, @_data) then @emit('dataChanged', @_data, oldData)
 
   clearData: ->
     @setData {}

@@ -29,7 +29,7 @@ class MediaZone extends Backbone.Model
     _.every @get('connections'), (connection) =>
       p = @_server.adapters.getPath(connection.path)
       unless p? then @log 'warn', "Connected path #{connection.path} is missing"
-      p?
+      p?.isValid()
 
   summarizeBasics: ->
     basics = {}
