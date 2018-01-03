@@ -53,13 +53,26 @@
         float: right;
       }
 
+      .left {
+        float: left;
+      }
+      
+      .right {
+        float: right;
+      }
+
       .description {
         font-weight: 300;
 
-        &.minor {
-          opacity: .5;
-        }
       }
+      
+      .minor {
+        opacity: .5;
+      }
+    }
+
+    .section:first-child {
+      padding-top: 0 !important;
     }
 
     .section:not(:first-child) {
@@ -83,10 +96,6 @@
     background: #444;
     color: #eee;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.7);
-
-    .section:first-child {
-      padding-top: 0 !important;
-    }
     
     .section:not(:first-child) {
       border-top: 1px solid #666;

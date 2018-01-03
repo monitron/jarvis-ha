@@ -1,0 +1,25 @@
+<div class="section clickable">
+  <div class="title">
+    <div class="right">
+      <i class="wi {{conditionIcon}}"></i>
+    </div>
+    {{temperature}}&deg;
+    <span class="minor">&bull;</span>
+    {{conditionName}}
+  </div>
+</div>
+{{#each alerts}}
+<div class="section clickable alert" data-id="{{id}}">
+  <i class="fa fa-warning"></i> {{description}}
+</div>
+{{/each}}
+<div class="section clickable description">
+  {{#with today}}
+  <span class="minor">Forecast:</span>
+  <span>&nbsp;</span>
+  <i class="wi {{conditionIcon}} minor"></i> {{conditionName}}
+  <span>&nbsp;</span>
+  <i class="wi wi-direction-up minor"></i> {{highTemperature}}&deg;
+  <i class="wi wi-direction-down minor"></i> {{lowTemperature}}&deg;
+  {{/with}}
+</div>
