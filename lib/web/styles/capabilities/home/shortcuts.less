@@ -1,0 +1,91 @@
+.home-capability .shortcuts {
+  .icon, i.busy {
+    text-align: center;
+  }
+
+  .fa-chevron-right {
+    opacity: .5;
+  }
+
+  .category {
+    .header {
+      text-transform: uppercase;
+      font-weight: 600;
+      opacity: .4;
+      font-size: 90%;
+    }
+  }
+  
+  .shortcut {
+    color: @blue;
+    font-size: 110%;
+
+    &.important {
+      font-weight: 600;
+    }
+
+    .busy {
+      display: none;
+    }
+
+    &.busy {
+      cursor: wait;
+      opacity: .5;
+      pointer-events: none;
+      
+      .icon {
+        display: none;
+      }
+
+      .busy {
+        display: inline-block;
+      }
+    }
+  }
+}
+
+.dark .home-capability .shortcuts {
+  color: white;
+}
+
+.display-desktop .home-capability .shortcuts {
+  padding: @dt-normal-margin;
+
+  .icon, i.busy {
+    width: 25px;
+  }
+  
+  .category {
+    margin-bottom: @dt-wide-margin;
+  }
+
+  .header {
+    margin-bottom: @dt-thin-margin;
+  }
+
+  .shortcut {
+    .clickable;
+    line-height: 160%;
+  }
+}
+
+.display-touchscreen .home-capability .shortcuts {
+  padding: @ts-wide-margin;
+
+  .icon, i.busy {
+    width: 25px;
+  }
+  
+  .category {
+    margin-bottom: @ts-wider-margin;
+  }
+
+  .header {
+    margin-bottom: @ts-normal-margin;
+  }
+
+  .shortcut {
+    .clickable;
+    line-height: 250%;
+  }
+}

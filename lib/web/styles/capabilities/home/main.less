@@ -1,0 +1,95 @@
+.home-capability {
+  .full-size;
+  overflow-y: auto;
+  background: #eee;
+
+  .greeting {
+    color: #999;
+    font-size: 30px;
+    font-weight: 200;
+  }
+
+  .columns {
+    overflow: hidden;
+  }
+}
+
+.dark .home-capability {
+  background: #222;
+
+  .home-cards .empty {
+    color: #eee;
+  }
+  
+  .greeting {
+    color: #aaa;
+  }
+}
+
+.display-desktop .home-capability {
+  .columns, .greeting {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .columns > * {
+    padding: @dt-normal-margin;
+  }
+
+  .cards-container {
+    width: 60%;
+    float: left;
+  }
+
+  .shortcuts-container {
+    width: 40%;
+    float: right;
+  }
+
+  .greeting {
+    padding: @dt-normal-margin @dt-normal-margin 0 @dt-normal-margin;
+  }
+
+  .home-cards .empty {
+    padding: @dt-normal-margin;
+  }
+}
+
+.display-phone .home-capability {
+  .greeting {
+    padding: @ph-wide-margin @ph-wide-margin @ph-normal-margin @ph-wide-margin;
+  }
+
+  .home-cards .empty {
+    margin: @ph-wide-margin * 2;
+  }
+}
+
+.display-touchscreen .home-capability {
+  .columns, .greeting {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .columns > * {
+    padding: @ts-wide-margin;
+  }
+
+  .cards-container {
+    width: 60%;
+    float: left;
+  }
+
+  .shortcuts-container {
+    width: 40%;
+    float: right;
+  }
+
+  .greeting {
+    padding: @ts-wide-margin @ts-wide-margin 0 @ts-wide-margin;
+  }
+
+  .home-cards .empty {
+    padding: @ts-wide-margin;
+  }
+}

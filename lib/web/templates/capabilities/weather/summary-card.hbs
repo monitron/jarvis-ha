@@ -13,6 +13,7 @@
   <i class="fa fa-warning"></i> {{description}}
 </div>
 {{/each}}
+{{#if today}}
 <div class="section clickable description">
   {{#with today}}
   <span class="minor">Today:</span>
@@ -23,3 +24,4 @@
   <i class="wi wi-direction-down minor"></i> {{lowTemperature}}&deg;
   {{/with}}
 </div>
+{{/if}}

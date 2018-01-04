@@ -1,0 +1,168 @@
+.home-capability .home-card {
+  background: white;
+  border-radius: 3px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+
+  .capability {
+    text-transform: uppercase;
+    font-weight: 600;
+    opacity: .6;
+
+    .name {
+      font-size: 90%;
+    }
+  }
+
+  .fa-external-link {
+    opacity: .7;
+    font-size: 80%;
+    color: @dark-blue;
+  }
+
+  .body {
+    .title {
+      font-size: 24px;
+      font-weight: 200;
+    }
+
+    .section {
+      overflow: hidden;
+      font-weight: 500;
+    }
+
+    .busy {
+      float: right;
+    }
+
+    .action {
+      .clickable;
+      color: @blue;
+      text-transform: uppercase;
+      font-weight: 700;
+      float: right;
+    }
+
+    .left {
+      float: left;
+    }
+    
+    .right {
+      float: right;
+    }
+
+    .description {
+      font-weight: 300;
+
+    }
+    
+    .minor {
+      opacity: .5;
+    }
+  }
+
+  .section:first-child {
+    padding-top: 0 !important;
+  }
+
+  .section:not(:first-child) {
+    border-top: 1px solid #ddd;
+  }
+}
+
+.dark .home-capability .home-card {
+  background: #444;
+  color: #eee;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.7);
+  
+  .section:not(:first-child) {
+    border-top: 1px solid #666;
+  }
+}
+
+.display-desktop .home-capability .home-card {
+  margin-top: @dt-normal-margin;
+
+  .header, .section {
+    padding: @dt-normal-margin;
+  }
+
+  .header {
+    margin-bottom: @dt-thin-margin;
+    padding: @dt-normal-margin @dt-normal-margin 0 @dt-normal-margin;
+  }
+
+  .action {
+    margin-left: @dt-normal-margin;
+
+    i {
+      padding: 0 @dt-thin-margin;
+    }
+  }
+  
+  .subsection {
+    margin-top: @dt-normal-margin;
+  }
+}
+
+.display-phone .home-capability .home-card {
+  margin: @ph-wide-margin;
+
+  .header, .section {
+    padding: @ph-wide-margin;
+  }
+
+  .section {
+    line-height: 30px;
+  }
+
+  .action {
+    margin-left: @ph-wide-margin;
+
+    i {
+      padding: 0 @ph-normal-margin;
+    }
+  }
+
+  .description {
+    line-height: normal;
+  }
+
+  .subsection {
+    margin-top: @ph-normal-margin;
+  }
+  
+  .header {
+    margin-bottom: @ph-normal-margin;
+    padding: @ph-wide-margin @ph-wide-margin 0 @ph-wide-margin;
+  }
+}
+
+.display-touchscreen .home-capability .home-card {
+  margin-top: @ts-wide-margin;
+
+  .section {
+    padding: @ts-wide-margin;
+    line-height: 30px;
+  }
+
+  .action {
+    margin-left: @ts-wide-margin;
+
+    i {
+      padding: 0 @ts-normal-margin;
+    }
+  }
+
+  .description {
+    line-height: normal;
+  }
+
+  .subsection {
+    margin-top: @ts-normal-margin;
+  }
+
+  .header {
+    margin-bottom: @ts-normal-margin;
+    padding: @ts-wide-margin @ts-wide-margin 0 @ts-wide-margin;
+  }
+}
