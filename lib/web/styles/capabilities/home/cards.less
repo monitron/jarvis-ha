@@ -52,11 +52,30 @@
 
     .description {
       font-weight: 300;
-
     }
     
     .minor {
       opacity: .5;
+    }
+
+    .overflow-disclosure {
+      .clickable;
+      color: @blue;
+      text-align: center;
+    }
+
+    .overflow {
+      display: none;
+    }
+
+    .overflow-disclosed {
+      .overflow-disclosure {
+        display: none;
+      }
+
+      .overflow {
+        display: block;
+      }
     }
   }
 
