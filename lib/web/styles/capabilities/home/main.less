@@ -27,37 +27,52 @@
 }
 
 .display-desktop .home-capability {
-  .columns, .greeting {
+  .columns {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
     max-width: 800px;
     margin: 0 auto;
   }
 
   .columns > * {
-    padding: @dt-normal-margin;
+    padding: @dt-wide-margin;
+    top: 0;
+    bottom: 0;
+    overflow-y: auto;
   }
 
-  .cards-container {
+  .main-column {
+    position: absolute;
+    padding-left: @dt-wider-margin;
+    left: 0;
     width: 60%;
-    float: left;
   }
 
   .shortcuts-container {
+    position: absolute;
+    right: 0;
     width: 40%;
-    float: right;
+    padding-right: @dt-wider-margin;
+    padding-top: 50px + @dt-wide-margin;
   }
 
   .greeting {
-    padding: @dt-normal-margin @dt-normal-margin 0 @dt-normal-margin;
+    line-height: 50px;
   }
 
   .home-cards .empty {
-    padding: @dt-normal-margin;
+    padding: @dt-wide-margin;
   }
 }
 
 .display-phone .home-capability {
   .greeting {
-    padding: @ph-wide-margin @ph-wide-margin @ph-normal-margin @ph-wide-margin;
+    padding: @ph-wide-margin @ph-wide-margin 0 @ph-wide-margin;
+    line-height: 50px;
   }
 
   .home-cards .empty {
@@ -66,27 +81,41 @@
 }
 
 .display-touchscreen .home-capability {
-  .columns, .greeting {
+  .columns {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
     max-width: 800px;
     margin: 0 auto;
   }
 
   .columns > * {
     padding: @ts-wide-margin;
+    top: 0;
+    bottom: 0;
+    overflow-y: auto;
   }
 
-  .cards-container {
+  .main-column {
+    position: absolute;
+    padding-left: @ts-wider-margin;
+    left: 0;
     width: 60%;
-    float: left;
   }
 
   .shortcuts-container {
+    position: absolute;
+    right: 0;
     width: 40%;
-    float: right;
+    padding-right: @ts-wider-margin;
+    padding-top: 50px + @ts-wide-margin;
   }
 
   .greeting {
-    padding: @ts-wide-margin @ts-wide-margin 0 @ts-wide-margin;
+    line-height: 50px;
   }
 
   .home-cards .empty {
