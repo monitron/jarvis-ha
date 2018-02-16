@@ -29,7 +29,7 @@ class AdapterNode extends Backbone.Model
       @trigger 'deepEvent', [@id].concat(path), args...
     # Instantiate preconfigured aspects
     @_aspects = {}
-    _.each @aspects, (aspectConfig, aspectId) =>
+    _.each _.result(this, 'aspects'), (aspectConfig, aspectId) =>
       # Copy in aspect attributes as passed in options
       aspectConfig.attributes = _.clone(aspectConfig.attributes) or {}
       _.extend(aspectConfig.attributes, options.attributes?[aspectId] or {})
