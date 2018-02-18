@@ -2,7 +2,8 @@ _ = require('underscore')
 Adapter = require('../../Adapter')
 
 SYNTHESIS_NODE_CLASSES = [
-  require('./OccupancyNode')
+  require('./OccupancyNode'),
+  require('./OccupantsNode')
 ]
 
 module.exports = class SynthesisAdapter extends Adapter
