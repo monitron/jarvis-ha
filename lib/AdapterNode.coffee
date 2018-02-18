@@ -20,7 +20,7 @@ class AdapterNode extends Backbone.Model
     @_valid = true
     # Our logical validity changes when our adapter's changes
     if options?.adapter?
-      @listenTo @adapter, 'valid:change', => @trigger 'valid:change'
+      @listenTo @adapter, 'valid:change', => @trigger 'valid:change', @isValid()
     # Generate deepEvents as needed
     _.each @deepEvents, (ev) =>
       @listenTo this, ev, (args...) => @trigger 'deepEvent', [@id], ev, args

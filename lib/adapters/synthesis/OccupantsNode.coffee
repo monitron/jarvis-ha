@@ -59,19 +59,26 @@ module.exports = class OccupantsNode extends AdapterNode
   initialize: ->
     super
     @_pendingChanges = []
-    for id, conf of @get('people')
+    _.each @get('people'), (conf, id) =>
       @children.add new OccupantsIndividualNode({id: id}, {adapter: this})
       # Watch network presence sensor state
       @server.adapters.onEventAtPath conf.networkPresence, 'aspectData:change',
         (aspectId, data) =>
           if aspectId == 'networkPresenceSensor'
             @handleNewNetworkState(id, data.value)
+      @server.adapters.onEventAtPath conf.networkPresence, 'valid:change',
+        (valid) =>
+          if valid
+            netNode = @server.adapters.getPath(conf.networkPresence)
+            datum = netNode.getAspect('networkPresenceSensor')?.getDatum('value')
+            if datum? then @handleNewNetworkState(id, datum)
       # Try to set initial state
       netNode = @server.adapters.getPath(conf.networkPresence)
-      if netNode.isValid()
+      if netNode?.isValid()
         datum = netNode.getAspect('networkPresenceSensor')?.getDatum('value')
+        @log 'verbose', "Initial state for #{id}: #{datum}"
         if datum? then @handleNewNetworkState(id, datum)
-    for door in @get('doors')
+    _.each @get('doors'), (door) =>
       @server.adapters.onEventAtPath door, 'aspectData:change',
         (aspectId, data) => @handleDoorChange(aspectId, data)
     setInterval((=> @calculate()), @get('processInterval') * 1000)
@@ -81,15 +88,17 @@ module.exports = class OccupantsNode extends AdapterNode
       @_lastDoorOpen = moment()
 
   handleNewNetworkState: (personId, state) ->
+    @log 'verbose', "New network state: #{personId} - #{state}"
     person = @children.get(personId)
     currentValue = person.getAspect('occupantSensor').getData()
-    if currentValue? # Consider an update
+    if !_.isEmpty(currentValue) # Consider an update
       # Does this contradict an existing change during the networkGraceTime?
       change = _.findWhere(@_pendingChanges, {person: personId})
       if change? # Yes, cancel it
         @_pendingChanges = _.without(@_pendingChanges, change)
-      else # No, this is new
-        @_pendingChanges.push person: personId, state: state, time: moment()
+      else # No, there is no opposing pending change
+        if state != currentValue.state # No point if this doesn't change state
+          @_pendingChanges.push person: personId, state: state, time: moment()
     else # This is the initial state...set immediately
       # we're confident about presence but not about absence
       person.processData state: state, confident: state
