@@ -48,7 +48,7 @@ module.exports = class UnifiAdapter extends Adapter
       @log 'verbose', 'Processing poll results'
       for mac in @get('wifiClients')
         node = _.findWhere(data.data, mac: mac)
-        @children.get(mac).processData(node?.ip? or false)
+        @children.get(mac).processData(node?.signal? or false)
 
   handleEvent: (event) ->
     switch event.key

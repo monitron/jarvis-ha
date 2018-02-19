@@ -1,0 +1,14 @@
+<div class="section">
+  <div class="title">
+    {{title}}
+  </div>
+</div>
+{{#each people}}
+<div class="section">
+  <div class="{{#if isAway}}minor{{/if}}">
+    <div class="right description">{{description}}</div>
+    <div class="name">{{name}}</div>
+  </div>
+</div>
+{{/each}}
+

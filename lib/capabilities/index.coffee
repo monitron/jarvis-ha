@@ -8,3 +8,4 @@ module.exports =
   security: require('./security/SecurityCapability')
   cameras: require('./CamerasCapability')
   media: require('./media/MediaCapability')
+  people: require('./people/PeopleCapability')
