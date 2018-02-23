@@ -44,9 +44,9 @@ module.exports = class OccupantsNode extends AdapterNode
     people: {} # name: { networkPresence: [path to a node with a
                #         networkPresenceSensor aspect] }
     doors:  [] # A list of paths with openCloseSensor aspects
-    networkGraceTime:  120 # (sec) time a device can be on/off the network
+    networkGraceTime:    0 # (sec) time a device can be on/off the network
                            # before we consider it to be here/gone
-    maxExitLagTime:    900 # (sec) max time after an door open that a following
+    maxExitLagTime:   1200 # (sec) max time after an door open that a following
                            # network presence loss may be considered related
     maxExitLeadTime:   120 # (sec) max time before an door open that a preceding
                            # network presence loss may be considered related
