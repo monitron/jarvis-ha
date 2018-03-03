@@ -76,7 +76,7 @@ module.exports = class PeopleCapability extends Capability
         state: @_describePersonState(person))
       .groupBy('state')
       .map((people, state) =>
-        list = @_englishList(_.pluck(people, 'name'))
+        list = @formatNaturalList(_.pluck(people, 'name'))
         verb = if people.length == 1 then 'is' else 'are'
         "#{list} #{verb} #{state}.")
       .value()
@@ -89,13 +89,6 @@ module.exports = class PeopleCapability extends Capability
       d
     else
       'unknown'
-
-  _englishList: (things) ->
-    if things.length == 1
-      things[0]
-    else
-      head = things.slice(0, -1).join(', ')
-      [head, things.slice(-1)[0]].join(" and ")
 
   _getState: ->
     people: @peopleState()

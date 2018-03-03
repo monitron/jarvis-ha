@@ -80,6 +80,13 @@ class Capability extends Backbone.Model
   executeNaturalCommand: (command, params) ->
     @naturalCommands[command].execute(this, params)
 
+  formatNaturalList: (things) ->
+    if things.length == 1
+      things[0]
+    else
+      head = things.slice(0, -1).join(', ')
+      [head, things.slice(-1)[0]].join(" and ")
+
   log: (level, message) ->
     # Logs through the server because including winston breaks browserify
     @_server.log level, "[#{@name} capability] #{message}"
