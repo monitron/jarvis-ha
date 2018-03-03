@@ -70,7 +70,10 @@ class Capability extends Backbone.Model
         match = input.match(template)
         if match?
           params = _.object(tokens.map((t) => t.slice(1, -1)), match.slice(1))
-          resolved = commandDetails.resolve(this, params)
+          resolved = if commandDetails.resolve?
+            commandDetails.resolve(this, params)
+          else
+            {}
           if resolved? then candidates[commandId] = resolved
     candidates
 
