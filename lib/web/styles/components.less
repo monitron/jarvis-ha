@@ -1,30 +1,48 @@
 @slider-handle-extension: 5px;
 @slider-handle-diameter: @ctrl-track-height + (2 * @slider-handle-extension);
 
-.pages .select {
-  .unstyled-list;
-  overflow: hidden;
-  line-height: 31px;
-  font-size: 20px;
-  text-align: center;
-  margin-bottom: 20px;
+.pages {
+  &.full-size {
+    display: flex;
+    flex-direction: column;
 
-  li {
-    .clickable;
-    display: inline-block;
-    color: @blue;
-    padding: 0 5px;
-    margin: 0 10px;
-    line-height: 33px;
-    font-size: 24px;
-
-    &:hover {
-      background: @lightest-blue;
+    .select {
+      flex: 0 0 auto;
     }
-    
-    &.active {
-      color: @darker-blue;
-      border-bottom: 3px solid @darker-blue;
+
+    .page {
+      position: relative;
+      flex: 0 1 100%;
+      overflow-y: auto;
+    }
+  }
+  
+  .select {
+    .unstyled-list;
+    overflow: hidden;
+    line-height: 31px;
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 10px;
+
+    li {
+      .clickable;
+      display: inline-block;
+      color: @blue;
+      padding: 0 5px;
+      margin: 0 10px;
+      line-height: 33px;
+      font-size: 24px;
+
+      &:hover {
+        background: @lightest-blue;
+      }
+      
+      &.active {
+        color: @darker-blue;
+        border-bottom: 3px solid @darker-blue;
+      }
     }
   }
 }

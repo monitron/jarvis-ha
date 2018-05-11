@@ -93,6 +93,20 @@
         top: 0;
         right: 0;
 
+        > * {
+          float: left;
+          padding: 0 5px;
+        }
+
+        .details {
+          .clickable;
+          color: @blue;
+
+          &:hover {
+            color: @light-blue;
+          }
+        }
+
         .busy {
           display: none;
         }
@@ -190,6 +204,14 @@
     .contents {
       .name, .icons {
         color: @dark-mode-text;
+      }
+
+      .icons .details {
+        color: @dark-blue;
+
+        &:hover {
+          color: @blue;
+        }
       }
     }
 
