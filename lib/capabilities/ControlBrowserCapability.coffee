@@ -9,7 +9,8 @@ module.exports = class ControlBrowserCapability extends Capability
     on:
       forms: [
         '(turn|switch) on( the)? <control>'
-        '(turn|switch)( the)? <control> on']
+        '(turn|switch)( the)? <control> on'
+        '<control> on']
       resolve: (cap, {control}) ->
         control = cap.resolveControlName(control)
         if control?.hasCommand('turnOn') then {control: control} else null
@@ -22,7 +23,8 @@ module.exports = class ControlBrowserCapability extends Capability
     off:
       forms: [
         '(turn|switch|shut) off( the)? <control>'
-        '(turn|switch|shut)( the)? <control> off']
+        '(turn|switch|shut)( the)? <control> off'
+        '<control> off']
       resolve: (cap, {control}) ->
         control = cap.resolveControlName(control)
         if control?.hasCommand('turnOff') then {control: control} else null
