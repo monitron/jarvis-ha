@@ -139,6 +139,18 @@ class Control extends Backbone.Model
 class Controls extends Backbone.Collection
   model: Control
 
+  selectWithFilters: (filters) ->
+    @select (ctrl) ->
+      for filter in filters
+        result = switch filter.type
+          when 'ids'        then _.contains(filter.value, ctrl.id)
+          when 'valid'      then ctrl.isValid()
+          when 'active'     then ctrl.isActive()
+          when 'hasCommand' then ctrl.hasCommand(filter.value)
+          when 'memberOf'   then ctrl.getMembership(filter.value)?
+        return false unless result
+      true
+
   findMembersOfPath: (path) ->
     pairs = @map (control) ->
       control: control

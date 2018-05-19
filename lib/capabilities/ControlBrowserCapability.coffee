@@ -5,6 +5,9 @@ Q = require('q')
 module.exports = class ControlBrowserCapability extends Capability
   name: "Control Browser"
 
+  defaults:
+    pathAliases: []
+
   naturalCommands:
     on:
       forms: [
@@ -33,6 +36,29 @@ module.exports = class ControlBrowserCapability extends Capability
         control.executeCommand('turnOff')
           .fail -> d.reject  "Sorry, that didn't work."
           .then -> d.resolve "Okay, turned off."
+        d.promise
+    offInCategory:
+      forms: [
+        '(turn|switch|shut) off( all| every)?( of)?( the)? <category>'
+        '(turn|switch|shut)( all| every)?( the)? <category> off'
+        '<category> off']
+      resolve: (cap, {category}) ->
+        path = cap.resolvePathName(category, ['category'])
+        if path
+          controls: cap.resolveControls([
+            {type: 'valid'},
+            {type: 'hasCommand', value: 'turnOff'},
+            {type: 'memberOf', value: path}])
+        else null
+      execute: (cap, {controls}) ->
+        d = Q.defer()
+        controls = _.select(controls, (control) -> control.isActive())
+        if _.isEmpty(controls)
+          d.resolve "There is nothing on in that category."
+        else
+          Q.all(control.executeCommand('turnOff') for control in controls)
+            .fail -> d.reject  "Sorry, that didn't work."
+            .then -> d.resolve "Okay, turned off everything in that category."
         d.promise
     setDiscreteSpeed:
       forms: [
@@ -85,8 +111,8 @@ module.exports = class ControlBrowserCapability extends Capability
         d.promise
     status:
       forms: [
-        "(what is |what's |describe |report )?(the )?(status|state) of( the)? <control>",
-        "(what is |what's |describe |report )?(the )?<control> (status|state)",
+        "(what is |describe |report )?(the )?(status|state) of( the)? <control>",
+        "(what is |describe |report )?(the )?<control> (status|state)",
         '(is|are)( the)? <control> (turned |switched |shut )?(on|off|open|closed|locked|unlocked)']
       resolve: (cap, {control}) ->
         control = cap.resolveControlName(control)
@@ -95,15 +121,40 @@ module.exports = class ControlBrowserCapability extends Capability
         Q.fcall => "#{control.get('name')} is #{control.describeCurrentState()}"
     whatIsOn:
       forms: [
-        "is anything on",
-        "are( there)? any devices on",
-        "(what's|what is)( turned| switched)? on",
-        "control(s)? status"]
+        "is anything( turned| switched)? on",
+        "are( there)? any devices( turned| switched)? on",
+        "what is( turned| switched)? on",
+        "(control|device)(s)? status"]
       resolve: (cap) ->
-        controls: cap.resolveControls([{type: 'valid'}, {type: 'offable'}])
+        controls: cap.resolveControls([
+          {type: 'valid'},
+          {type: 'active'},
+          {type: 'hasCommand', value: 'turnOff'}])
       execute: (cap, {controls}) ->
         list = if _.isEmpty(controls)
           "Nothing"
+        else
+          cap.formatNaturalList(_.map(controls, (c) -> c.get('name')))
+        verb = if controls.length > 2 then 'are' else 'is'
+        Q.fcall -> "#{list} #{verb} on."
+    whatIsOnInCategory:
+      forms: [
+        "are( there)? any <category> on",
+        "are( there)? any <category> (turned|switched) on",
+        "(what|which) <category> are( turned| switched)? on",
+        "<category> status"]
+      resolve: (cap, {category}) ->
+        path = cap.resolvePathName(category, ['category'])
+        if path
+          controls: cap.resolveControls([
+            {type: 'valid'},
+            {type: 'active'},
+            {type: 'hasCommand', value: 'turnOff'},
+            {type: 'memberOf', value: path}])
+        else null
+      execute: (cap, {controls}) ->
+        list = if _.isEmpty(controls)
+          "Nothing in that category"
         else
           cap.formatNaturalList(_.map(controls, (c) -> c.get('name')))
         verb = if controls.length > 2 then 'are' else 'is'
@@ -119,11 +170,11 @@ module.exports = class ControlBrowserCapability extends Capability
       _.contains(control.matchableNames(), controlName)
     if controls.length == 1 then controls[0] else undefined
 
+  resolvePathName: (name, prefix = []) ->
+    paths = _.select @get('pathAliases'), (alias) ->
+      _.isEqual(alias.path.slice(0, prefix.length), prefix) and
+        _.contains(alias.names, name)
+    if paths.length == 1 then paths[0].path else undefined
+
   resolveControls: (filters) ->
-    @_server.controls.select (ctrl) ->
-      for filter in filters
-        result = switch filter.type
-          when 'valid'   then ctrl.isValid()
-          when 'offable' then ctrl.isActive() and ctrl.hasCommand('turnOff')
-        return false unless result
-      true
+    @_server.controls.selectWithFilters(filters)
