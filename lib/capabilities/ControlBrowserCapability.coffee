@@ -34,6 +34,31 @@ module.exports = class ControlBrowserCapability extends Capability
           .fail -> d.reject  "Sorry, that didn't work."
           .then -> d.resolve "Okay, turned off."
         d.promise
+    setDiscreteSpeed:
+      forms: [
+        '(set|turn|switch|put)( the)? <control> (to|on|at) <speed>'
+        '(set|turn|switch|put)( the)? <control> (to|on|at) <speed> speed'
+        '(set|turn|switch|put)( the)? <control> speed (to|on|at) <speed>'
+        '(turn|switch|put) on( the)? <control> (to|at) <speed>'
+        '(turn|switch|put) on( the)? <control> (to|at) <speed> speed'
+        '(turn|switch|put)( the)? <control> on (to|at) <speed>'
+        '(turn|switch|put)( the)? <control> on (to|at) <speed> speed'
+        '<control> (on|to|at) <speed>'
+        '<control> (on|to|at) <speed> speed']
+      resolve: (cap, {control, speed}) ->
+        control = cap.resolveControlName(control)
+        if control?.hasCommand('setDiscreteSpeed')
+          speedId = control.resolveSpeedName(speed)
+          if speedId?
+            {control: control, speed: speedId}
+          else null
+        else null
+      execute: (cap, {control, speed}) ->
+        d = Q.defer()
+        control.executeCommand('setDiscreteSpeed', value: speed)
+          .fail -> d.reject  "Sorry, that didn't work."
+          .then -> d.resolve "Okay, speed set."
+        d.promise
     lock:
       forms: [
         'lock( the)? <control>']

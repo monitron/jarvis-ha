@@ -22,6 +22,15 @@ module.exports = class FanSpeedControl extends Control
     speedName: _.findWhere(speed.getAttribute('choices'),
       id: speed.getDatum('state'))?.longName
 
+  resolveSpeedName: (name) ->
+    name = name.toLowerCase()
+    speed = @getConnectionTarget('discreteSpeed').getAspect('discreteSpeed')
+    choices = speed?.getAttribute('choices') or []
+    matching = _.find choices, (choice) ->
+      choice.shortName.toLowerCase() == name or
+        choice.longName.toLowerCase() == name
+    matching?.id
+
   describeState: (state) ->
     if state.speedName?
       "Set to #{state.speedName}"
