@@ -24,10 +24,10 @@ module.exports = class InsteonFanNode extends InsteonNode
             node.getAspect('discreteSpeed').setData state: value
       attributes:
         choices: [
-          {id: 'off',  name: 'Off'}
-          {id: 'low',  name: 'Low'}
-          {id: 'med',  name: 'Med'}
-          {id: 'high', name: 'High'}]
+          {id: 'off',  shortName: 'Off',  longName: 'Off'}
+          {id: 'low',  shortName: 'Low',  longName: 'Low'}
+          {id: 'med',  shortName: 'Med',  longName: 'Medium'}
+          {id: 'high', shortName: 'High', longName: 'High'}]
 
   processData: (data) ->
     if data.power?

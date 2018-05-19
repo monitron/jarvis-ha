@@ -3,7 +3,7 @@ _ = require('underscore')
 
 module.exports = class FanSpeedControl extends Control
   commands:
-    set: (control, params) ->
+    setDiscreteSpeed: (control, params) ->
       target = control.getConnectionTarget('discreteSpeed')
       target.getAspect('discreteSpeed').executeCommand 'set', params.value
     turnOff: (control, params) ->
@@ -20,7 +20,7 @@ module.exports = class FanSpeedControl extends Control
     speed: speed.getDatum('state')
     speedChoices: speed.getAttribute('choices')
     speedName: _.findWhere(speed.getAttribute('choices'),
-      id: speed.getDatum('state'))?.name
+      id: speed.getDatum('state'))?.longName
 
   describeState: (state) ->
     if state.speedName?
