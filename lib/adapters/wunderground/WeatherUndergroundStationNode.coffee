@@ -83,8 +83,11 @@ module.exports = class WeatherUndergroundStationNode extends AdapterNode
     @_processConditions data.current_observation
     @_processAstronomy data.moon_phase
     @_processAlerts data.alerts
-    @_processHourlyForecast data.hourly_forecast
-    @_processDailyForecast data.forecast
+    if data.hourly_forecast.length == 0
+      @log 'error', "Ignoring corrupted forecast data..."
+    else
+      @_processHourlyForecast data.hourly_forecast
+      @_processDailyForecast data.forecast
 
   _processConditions: (conditions) ->
     return unless conditions?
