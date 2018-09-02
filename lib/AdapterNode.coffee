@@ -77,6 +77,13 @@ class AdapterNode extends Backbone.Model
     else
       resource(this) # This must return a promise as well
 
+  toJSON: ->
+    id: @id
+    enabled: @get('enabled')
+    valid: @isValid()
+    children: @children
+    aspects: @_aspects
+
 class AdapterNodes extends Backbone.Collection
   model: AdapterNode
 

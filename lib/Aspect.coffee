@@ -33,3 +33,6 @@ module.exports = class Aspect extends EventEmitter
 
   executeCommand: (commandId, args...) ->
     @config.commands[commandId](@_node, args...)
+
+  toJSON: ->
+    data: @_data

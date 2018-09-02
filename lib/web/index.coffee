@@ -38,6 +38,9 @@ module.exports = class WebServer
     app.get "/api/stations/:stationId", (req, res) =>
       res.json @_server.config.stations?[req.params.stationId] or {}
 
+    app.get "/api/adapters", (req, res) =>
+      res.json @_server.adapters
+
     app.get "/api/controls", (req, res) =>
       res.json @_server.controls
 
