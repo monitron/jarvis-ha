@@ -18,6 +18,8 @@ class AdapterNode extends Backbone.Model
     @server = options?.server or @adapter.server
     @children = new AdapterNodes()
     @_valid = true
+    @_aspectAttributes = options.attributes or {}
+
     # Our logical validity changes when our adapter's changes
     if options?.adapter?
       @listenTo @adapter, 'valid:change', => @trigger 'valid:change', @isValid()
@@ -30,16 +32,7 @@ class AdapterNode extends Backbone.Model
     # Instantiate preconfigured aspects
     @_aspects = {}
     _.each _.result(this, 'aspects'), (aspectConfig, aspectId) =>
-      # Copy in aspect attributes as passed in options
-      aspectConfig.attributes = _.clone(aspectConfig.attributes) or {}
-      _.extend(aspectConfig.attributes, options.attributes?[aspectId] or {})
-      aspect = new Aspect(this, aspectConfig)
-      aspect.on 'aspectEvent', (event) =>
-        @log "debug", "Aspect #{aspectId} emitted event: #{event}"
-      aspect.on 'dataChanged', (data, oldData) =>
-        @log "debug", "Aspect #{aspectId} data became: #{JSON.stringify(data)}"
-        @trigger 'aspectData:change', aspectId, data, oldData
-      @_aspects[aspectId] = aspect
+      @addAspect(aspectId, aspectConfig)
 
   isValid: ->
     @_valid and (this == @adapter or @adapter.isValid())
@@ -52,6 +45,19 @@ class AdapterNode extends Backbone.Model
 
   log: (level, message) ->
     @adapter.log level, "[Node #{@id}] #{message}"
+
+  # It should be pretty unusual to create aspects on-the-fly
+  addAspect: (id, config) ->
+    # Copy in aspect attributes as passed in options
+    config.attributes = _.extend({},
+      config.attributes or {}, @_aspectAttributes[id] or {})
+    aspect = new Aspect(this, config)
+    aspect.on 'aspectEvent', (event) =>
+      @log "debug", "Aspect #{id} emitted event: #{event}"
+    aspect.on 'dataChanged', (data, oldData) =>
+      @log "debug", "Aspect #{id} data became: #{JSON.stringify(data)}"
+      @trigger 'aspectData:change', id, data, oldData
+    @_aspects[id] = aspect
 
   getAspect: (id) ->
     @_aspects[id]
