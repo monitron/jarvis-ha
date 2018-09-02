@@ -121,6 +121,7 @@ module.exports = class WebServer
         @log 'debug', 'Client socket disconnected; unregistering notifications'
         @_server.controls.off 'change', notifyControlChange, socket
         @_server.capabilities.off 'change', notifyCapabilityChange, socket
+        @_server.events.off 'add remove change', notifyOngoingEventsChange, socket
 
     httpServer.listen @_config.port, =>
       @log 'info', "Listening on port #{httpServer.address().port}"
