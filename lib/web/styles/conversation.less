@@ -1,0 +1,128 @@
+@conversation-input-height: 80px;
+
+.conversation {
+  .full-size;
+  display: flex;
+  flex-direction: column;
+
+  .messages {
+    flex: 0 1 100%;
+    overflow-y: auto;
+  }
+
+  .input {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: row;
+
+    .microphone-button {
+      .clickable;
+      flex: 0 0 auto;
+      width: @conversation-input-height;
+      height: @conversation-input-height;
+      border-radius: @conversation-input-height;
+      line-height: @conversation-input-height;
+      border: 2px solid @blue;
+      font-size: 40px;
+      margin: 0 auto;
+
+      &.listening {
+        background: @blue;
+      }
+    }
+
+    .text-input {
+      flex: 0 1 100%;
+      width: 100%;
+      height: @conversation-input-height;
+      border-radius: 5px;
+      border-color: #aaa;
+      font-size: 16px;
+      resize: none;
+    }
+    
+    .microphone-button {
+      text-align: center;
+    }
+    
+    &.with-text .microphone-button {
+      margin-left: 10px;
+    }
+  }
+
+  .message-container {
+    overflow: hidden;
+  }
+  
+  .message {
+    display: inline-block;
+    border-radius: 4px;
+    
+    &.message-from-system {
+      float: left;
+      margin-right: 10%;
+      background: #eee;
+    }
+
+    &.message-from-user {
+      float: right;
+      margin-left: 10%;
+      text-align: right;
+      background: #aaa;
+    }
+  }
+}
+
+.dark .conversation {
+  .message-from-system {
+    background: black;
+  }
+
+  .message-from-user {
+    background: #555;
+  }
+
+  .text-input {
+    background: #333;
+    border-color: #777;
+    color: #eee;
+  }
+}
+
+.display-phone .conversation {
+  .messages, .input {
+    padding: @ph-wide-margin;
+  }
+
+  .message-container {
+    margin-top: @ph-wide-margin;
+    margin-bottom: @ph-wide-margin;
+  }
+  
+  .message {
+    padding: @ph-normal-margin;
+  }
+
+  .text-input {
+    padding: @ph-normal-margin;
+  }
+}
+
+.display-desktop .conversation {
+  .text-input {
+    padding: @dt-normal-margin;
+  }
+  
+  .messages, .input {
+    padding: @dt-normal-margin @dt-wide-margin;
+  }
+
+  .message-container {
+    margin-top: @dt-normal-margin;
+    margin-bottom: @dt-normal-margin;
+  }
+  
+  .message {
+    padding: @dt-normal-margin;
+  }
+}

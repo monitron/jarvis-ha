@@ -1,0 +1,12 @@
+<div class="messages">
+</div>
+<div class="input {{#if hasVoiceInput}}with-voice{{/if}} {{#if hasTextInput}}with-text{{/if}}">
+  {{#if hasTextInput}}
+  <textarea class="text-input" placeholder="Enter your command here."></textarea>
+  {{/if}}
+  {{#if hasVoiceInput}}
+  <div class="microphone-button">
+    <i class="fa fa-microphone"></i>
+  </div>
+  {{/if}}
+</div>
