@@ -1,17 +1,4 @@
 adapters:
-  - id: nest
-    login: some@guy.com
-    password: correct horse battery staple
-  - id: insteon
-    gatewayType: hub
-    gatewayHost: 192.168.1.17
-    deviceIds:
-      - 27d35f
-      - 2bc0d3
-      - 2bb7c6
-      - 26ce6c
-  - id: harmony
-    hubHost: 192.168.1.5
   - id: usnws
     stations:
       - KGAI

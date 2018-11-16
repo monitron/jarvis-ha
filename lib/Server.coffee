@@ -20,13 +20,15 @@ userScripts = require('../user-scripts')
 
 module.exports = class Server
   constructor: ->
-    winston.clear()
-    winston.add winston.transports.Console, level: 'verbose'
-    winston.add winston.transports.File,
-      filename: 'jarvis.log'
+    winston.configure
       level: 'verbose'
-      json: false
-    winston.cli()
+      format: winston.format.simple()
+      transports: [
+        new winston.transports.File(filename: 'jarvis.log'),
+        new winston.transports.Console(
+          format: winston.format.combine(
+            winston.format.colorize(),
+            winston.format.simple()))]
     @log 'info', 'Jarvis Home Automation server'
     @config = @readConfig()
     if @config.debug then require('longjohn')
