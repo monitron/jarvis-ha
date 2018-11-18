@@ -1,7 +1,8 @@
-
-[AdapterNode] = require('../../AdapterNode')
-moment = require('moment')
+Q = require('q')
 _ = require('underscore')
+request = require('request')
+moment = require('moment')
+[AdapterNode] = require('../../AdapterNode')
 
 module.exports = class BloomSkyDeviceNode extends AdapterNode
   invalidDatumMarker: 9999
@@ -40,9 +41,26 @@ module.exports = class BloomSkyDeviceNode extends AdapterNode
     ultravioletIndexSensor:
       events:
         changed: (prev, cur) -> prev.value != cur.value
-    stillCamera:
-      events:
-        changed: (prev, cur) -> prev.captureTime < cur.captureTime
+    stillCamera: {}
+
+  resources:
+    still: (node) ->
+      deferred = Q.defer()
+      url = node.getAspect('stillCamera').getDatum('imageLocation')
+      if url?
+        request {url: url, encoding: null}, (err, res, body) ->
+          if err
+            node.log 'error', "Image request #{url} failed: #{err}"
+            dererred.reject err
+          else
+            deferred.resolve
+              contentType: res.headers['content-type']
+              data: body
+      else
+        deferred.reject "No image has been received"
+      deferred.promise
+
+
 
   processData: (datum) ->
     simpleSetData = (aspect, value, massage) =>
@@ -59,7 +77,9 @@ module.exports = class BloomSkyDeviceNode extends AdapterNode
       simpleSetData 'barometricPressureSensor', skyData.Pressure
       simpleSetData 'dayNightSensor', skyData.Night
       simpleSetData 'liquidPresenceSensor', skyData.Rain
+
       @getAspect('stillCamera').setData
+        imageResource: 'still'
         imageLocation: skyData.ImageURL
         captureTime: moment(skyData.ImageTS, 'X').toISOString()
     stormData = datum.Storm

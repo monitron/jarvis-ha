@@ -1,22 +1,19 @@
 jarvis-ha
 =========
 
-Someday this may be a home automation package.
-
-Right now it is nothing at all.
-
+This is the home automation software I use personally. It may or may not be
+of interest to anyone else.
 
 Requirements
 ------------
 
-* Node.js 4.4.5 LTS
-* An installation of the ``openzwave`` library
+* Node.js Carbon LTS (I'm using 8.12.0)
 
 How to run
 ----------
 
 * Take a look at the sample config in ``configuration.yml``
-* ``npm install -g grunt coffee-script``
+* ``npm install -g grunt coffeescript``
 * ``npm install``
 * ``grunt``
 * ``coffee run.coffee``

@@ -13,7 +13,7 @@ module.exports = class WebServer
     httpServer = http.Server(app)
     io = socketio(httpServer)
 
-    app.use bodyParser.urlencoded()
+    app.use bodyParser.urlencoded(extended: true)
     app.use bodyParser.json()
 
     app.get /^\/api\/resources\/(.*)$/, (req, res) =>
