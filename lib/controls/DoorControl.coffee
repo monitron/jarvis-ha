@@ -3,12 +3,16 @@ _ = require('underscore')
 
 module.exports = class DoorControl extends Control
   commands:
-    unlock: (control, params) ->
-      target = control.getConnectionTarget('lock')
-      target.getAspect('lock').executeCommand 'unlock'
-    lock: (control, params) ->
-      target = control.getConnectionTarget('lock')
-      target.getAspect('lock').executeCommand 'lock'
+    unlock:
+      execute: (control, params) ->
+        target = control.getConnectionTarget('lock')
+        target.getAspect('lock').executeCommand 'unlock'
+      wouldHaveEffect: (params, state) -> state.locked != false
+    lock:
+      execute: (control, params) ->
+        target = control.getConnectionTarget('lock')
+        target.getAspect('lock').executeCommand 'lock'
+      wouldHaveEffect: (params, state) -> state.locked != true
 
   _isActive: ->
     sensor = @getConnectionTarget('openCloseSensor')

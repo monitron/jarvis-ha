@@ -6,14 +6,19 @@ module.exports = class ThermostatControl extends Control
     temperaturePrecision: 0
 
   commands:
-    setMode: (control, params) ->
-      target = control.getConnectionTarget('temperatureSetPoint')
-      target.getAspect('temperatureSetPoint').executeCommand 'setMode',
-        params.value
-    setTarget: (control, params) ->
-      target = control.getConnectionTarget('temperatureSetPoint')
-      target.getAspect('temperatureSetPoint').executeCommand 'setTarget',
-        parseFloat(params.value)
+    setMode:
+      execute: (control, params) ->
+        target = control.getConnectionTarget('temperatureSetPoint')
+        target.getAspect('temperatureSetPoint').executeCommand 'setMode',
+          params.value
+      wouldHaveEffect: (params, state) -> state.mode != params.value
+    setTarget:
+      execute: (control, params) ->
+        target = control.getConnectionTarget('temperatureSetPoint')
+        target.getAspect('temperatureSetPoint').executeCommand 'setTarget',
+          parseFloat(params.value)
+      wouldHaveEffect: (params, state) ->
+        state.targetTemperature != parseFloat(params.value)
 
   _getState: ->
     setPoint = @getConnectionTarget('temperatureSetPoint').

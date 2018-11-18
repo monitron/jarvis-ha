@@ -63,10 +63,15 @@ class Control extends Backbone.Model
 
   executeCommand: (verb, params) ->
     if @isValid()
-      @log 'debug', "Executing command #{verb} with params: #{JSON.stringify(params)}"
-      @commands[verb](this, params)
+      command = @commands[verb]
+      description = "#{verb} with params #{JSON.stringify(params)}"
+      if command.wouldHaveEffect(params, @_getState())
+        @log 'debug', "Executing command #{description}"
+        @commands[verb].execute(this, params)
+      else
+        @log 'debug', "Not executing command with no effect: #{description}"
     else
-      @log 'warn', "Ignoring #{verb} command; not valid"
+      @log 'warn', "Ignoring #{verb} command; control not currently valid"
       Q.fcall(-> throw new Error("Invalid"))
 
   hasCommand: (verb) ->

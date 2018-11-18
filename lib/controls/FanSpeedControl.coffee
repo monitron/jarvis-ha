@@ -3,12 +3,16 @@ _ = require('underscore')
 
 module.exports = class FanSpeedControl extends Control
   commands:
-    setDiscreteSpeed: (control, params) ->
-      target = control.getConnectionTarget('discreteSpeed')
-      target.getAspect('discreteSpeed').executeCommand 'set', params.value
-    turnOff: (control, params) ->
-      target = control.getConnectionTarget('discreteSpeed')
-      target.getAspect('discreteSpeed').executeCommand 'set', 'off'
+    setDiscreteSpeed:
+      execute: (control, params) ->
+        target = control.getConnectionTarget('discreteSpeed')
+        target.getAspect('discreteSpeed').executeCommand 'set', params.value
+      wouldHaveEffect: (params, state) -> state.speed != params.value
+    turnOff:
+      execute: (control, params) ->
+        target = control.getConnectionTarget('discreteSpeed')
+        target.getAspect('discreteSpeed').executeCommand 'set', 'off'
+      wouldHaveEffect: (params, state) -> state.speed != 'off'
 
   isActive: ->
     speed = @getConnectionTarget('discreteSpeed')?.getAspect('discreteSpeed').

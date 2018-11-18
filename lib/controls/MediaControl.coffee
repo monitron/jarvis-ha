@@ -2,15 +2,21 @@
 
 module.exports = class MediaControl extends Control
   commands:
-    turnOff: (control, params)->
-      target = control.getConnectionTarget('powerOnOff')
-      target.getAspect('powerOnOff').executeCommand 'set', false
-    turnOn: (control, params) ->
-      target = control.getConnectionTarget('powerOnOff')
-      target.getAspect('powerOnOff').executeCommand 'set', true
-    setSource: (control, params) ->
-      target = control.getConnectionTarget('mediaSource')
-      target.getAspect('mediaSource').executeCommand 'set', params.value
+    turnOff:
+      execute: (control, params) ->
+        target = control.getConnectionTarget('powerOnOff')
+        target.getAspect('powerOnOff').executeCommand 'set', false
+      wouldHaveEffect: (params, state) -> state.power != false
+    turnOn:
+      execute: (control, params) ->
+        target = control.getConnectionTarget('powerOnOff')
+        target.getAspect('powerOnOff').executeCommand 'set', true
+      wouldHaveEffect: (params, state) -> state.power != true
+    setSource:
+      execute: (control, params) ->
+        target = control.getConnectionTarget('mediaSource')
+        target.getAspect('mediaSource').executeCommand 'set', params.value
+      wouldHaveEffect: (params, state) -> state.source != params.value
 
   _isActive: ->
     @getConnectionTarget('powerOnOff').getAspect('powerOnOff').getDatum('state')

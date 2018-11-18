@@ -2,16 +2,23 @@
 
 module.exports = class DimmerControl extends Control
   commands:
-    turnOff: (control, params) ->
-      target = control.getConnectionTarget('powerOnOff')
-      target.getAspect('powerOnOff').executeCommand 'set', false
-    turnOn: (control, params) ->
-      target = control.getConnectionTarget('powerOnOff')
-      target.getAspect('powerOnOff').executeCommand 'set', true
-    setBrightness: (control, params) ->
-      target = control.getConnectionTarget('brightness')
-      target.getAspect('brightness').executeCommand 'set',
-        parseInt(params.value)
+    turnOff:
+      execute: (control, params) ->
+        target = control.getConnectionTarget('powerOnOff')
+        target.getAspect('powerOnOff').executeCommand 'set', false
+      wouldHaveEffect: (params, state) -> state.power != false
+    turnOn:
+      execute: (control, params) ->
+        target = control.getConnectionTarget('powerOnOff')
+        target.getAspect('powerOnOff').executeCommand 'set', true
+      wouldHaveEffect: (params, state) -> state.power != true
+    setBrightness:
+      execute: (control, params) ->
+        target = control.getConnectionTarget('brightness')
+        target.getAspect('brightness').executeCommand 'set',
+          parseInt(params.value)
+      wouldHaveEffect: (params, state) ->
+        state.brightness != parseInt(params.value)
     togglePower: (control, params) ->
       # Turns off if on. Turns on if off or undefined
       aspect = control.getConnectionTarget('powerOnOff').getAspect('powerOnOff')

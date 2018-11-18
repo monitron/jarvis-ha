@@ -2,16 +2,21 @@
 
 module.exports = class SwitchControl extends Control
   commands:
-    turnOff: (control, params) ->
-      target = control.getConnectionTarget('powerOnOff')
-      target.getAspect('powerOnOff').executeCommand 'set', false
-    turnOn: (control, params) ->
-      target = control.getConnectionTarget('powerOnOff')
-      target.getAspect('powerOnOff').executeCommand 'set', true
-    togglePower: (control, params) ->
-      # Turns off if on. Turns on if off or undefined
-      aspect = control.getConnectionTarget('powerOnOff').getAspect('powerOnOff')
-      aspect.executeCommand 'set', !aspect.getDatum('state')
+    turnOff:
+      execute: (control, params) ->
+        target = control.getConnectionTarget('powerOnOff')
+        target.getAspect('powerOnOff').executeCommand 'set', false
+      wouldHaveEffect: (params, state) -> state.power != false
+    turnOn:
+      execute: (control, params) ->
+        target = control.getConnectionTarget('powerOnOff')
+        target.getAspect('powerOnOff').executeCommand 'set', true
+      wouldHaveEffect: (params, state) -> state.power != true
+    togglePower: # Turns off if on. Turns on if off or undefined
+      execute: (control, params) ->
+        aspect = control.getConnectionTarget('powerOnOff').getAspect('powerOnOff')
+        aspect.executeCommand 'set', !aspect.getDatum('state')
+      wouldHaveEffect: -> true
 
   _isActive: ->
     @getConnectionTarget('powerOnOff').getAspect('powerOnOff').getDatum('state')
