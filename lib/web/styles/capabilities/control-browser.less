@@ -145,7 +145,21 @@
       }
     }
 
-    .icon, .busy {
+    &.failed {
+      cursor: wait;
+      color: @red;
+      pointer-events: none;
+      
+      .failed {
+        display: block;
+      }
+
+      .icon {
+        display: none;
+      }
+    }
+    
+    .icon, .busy, .failed {
       position: absolute;
       top: 0;
       left: 0;
@@ -153,7 +167,7 @@
       text-align: center;
     }
 
-    .busy {
+    .busy, .failed {
       display: none;
     }
 
