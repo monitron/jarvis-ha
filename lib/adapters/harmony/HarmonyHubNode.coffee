@@ -29,12 +29,24 @@ module.exports = class HarmonyHubNode extends AdapterNode
 
   initialize: ->
     super
+    @connect()
+
+  connect: ->
     @setValid false
+    @log "verbose", "Connecting to Harmony"
+    # Most kinds of connection errors don't fail the promise, so improvise...
+    connectTimeout = setTimeout((=>
+      @log "error", "Harmony connection never resolved...will retry"
+      setTimeout((=> @connect()), @get('retryInterval') * 1000)
+    ), @get('connectTimeout') * 1000)
     promise = harmony(@get('host'))
     promise.catch (error) =>
-      @log "error", "Failed to connect to Harmony (#{error})"
+      @log "error", "Failed to connect to Harmony (#{error})...will retry"
+      clearTimeout(connectTimeout)
+      setTimeout((=> @connect()), @get('retryInterval') * 1000)
     promise.then (client) =>
-      @log "debug", "Connected to Harmony"
+      @log "verbose", "Connected to Harmony"
+      clearTimeout(connectTimeout)
       @_harmony = client
       @discoverActivities()
       @_keepalive = setInterval((=> @pollCurrentActivity()),
@@ -42,8 +54,17 @@ module.exports = class HarmonyHubNode extends AdapterNode
       @_harmony._xmppClient.on 'stanza', (s) => @_processXMPPMessage(s)
     promise.done()
 
+  disconnect: ->
+    @log "verbose", "Disconnecting from Harmony"
+    @setValid false
+    @_harmony?.end()
+    if @_keepalive? then clearInterval(@_keepalive)
+    delete @_harmony
+    delete @_keepalive
+    delete @_pollWaiting
+
   discoverActivities: ->
-    @log "debug", "Discovering activities..."
+    @log "verbose", "Discovering activities..."
     promise = @_harmony.getActivities()
     promise.catch (error) =>
       @log "error", "Failed to discover activities (#{error})"
@@ -51,7 +72,7 @@ module.exports = class HarmonyHubNode extends AdapterNode
       activityMap = {}
       # Fun fact: activity IDs are strings and must stay that way
       (activityMap[activity.id] = activity.label) for activity in activities
-      @log "debug", "Discovered #{_.size(activityMap)} activities"
+      @log "verbose", "Discovered #{_.size(activityMap)} activities"
       @getAspect('mediaSource').setAttribute 'choices',
         _.omit(activityMap, @powerOffActivityId)
       @pollCurrentActivity().then => @setValid(true) # Get initial state
@@ -61,19 +82,23 @@ module.exports = class HarmonyHubNode extends AdapterNode
     deferred = Q.defer()
     @log "verbose", "Polling current activity..."
     if @_pollWaiting
-      @log "warn", "Current activity poll has eaten itself"
-    @_pollWaiting = true
-    promise = @_harmony.getCurrentActivity()
-    promise.catch (error) =>
-      @log "error", "Failed to poll current activity (#{error})"
-      @_pollWaiting = false
+      @log "warn", "Current activity poll has eaten itself...will reconnect"
       deferred.reject()
-    promise.then (activity) =>
-      @log "verbose", "Current activity is #{activity}"
-      @processData currentActivity: activity
-      @_pollWaiting = false
-      deferred.resolve()
-    promise.done()
+      @disconnect()
+      @connect()
+    else
+      @_pollWaiting = true
+      promise = @_harmony.getCurrentActivity()
+      promise.catch (error) =>
+        @log "error", "Failed to poll current activity (#{error})"
+        @_pollWaiting = false
+        deferred.reject()
+      promise.then (activity) =>
+        @log "verbose", "Current activity is #{activity}"
+        @processData currentActivity: activity
+        @_pollWaiting = false
+        deferred.resolve()
+      promise.done()
     deferred.promise
 
   turnOff: ->
