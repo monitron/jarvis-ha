@@ -15,17 +15,55 @@
       font-size: 90%;
     }
   }
+
+  .category-contents {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    border-radius: 7px;
+  }
   
   .shortcut {
-    color: @dark-blue;
-    font-size: 110%;
-
+    flex: 1 0 50%;
+    
     &.important {
       font-weight: 600;
     }
 
+    &.link {
+      flex: 0 0 100%;
+      line-height: 30px;
+
+      .icon {
+        float: left;
+        font-size: 24px;
+        line-height: 28px;
+      }
+
+      .shortcut-text {
+        margin: 0;
+      }
+    }
+
+    .shortcut-body {
+      .clickable;
+      margin: 0.5px;
+      background: @blue;
+      color: @lightest-blue;
+      text-align: center;
+      padding: 10px;
+    }
+
+    .busy, .icon {
+      font-size: 36px;
+    }
+
     .busy {
       display: none;
+    }
+
+    .shortcut-text {
+      margin-top: 5px;
     }
 
     &.busy {
@@ -47,17 +85,14 @@
 .dark .home-capability .shortcuts {
   color: white;
 
-  .shortcut {
+  .shortcut-body {
+    background: @darkest-blue;
     color: @blue;
   }
 }
 
 .display-desktop .home-capability .shortcuts {
   padding: @dt-normal-margin;
-
-  .icon, i.busy {
-    width: 25px;
-  }
   
   .category {
     margin-bottom: @dt-wide-margin;
@@ -66,30 +101,16 @@
   .header {
     margin-bottom: @dt-thin-margin;
   }
-
-  .shortcut {
-    .clickable;
-    line-height: 160%;
-  }
 }
 
 .display-touchscreen .home-capability .shortcuts {
   padding: @ts-wide-margin;
 
-  .icon, i.busy {
-    width: 25px;
-  }
-  
   .category {
     margin-bottom: @ts-wider-margin;
   }
 
   .header {
     margin-bottom: @ts-normal-margin;
-  }
-
-  .shortcut {
-    .clickable;
-    line-height: 250%;
   }
 }
