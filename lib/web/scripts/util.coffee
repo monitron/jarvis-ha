@@ -86,6 +86,9 @@ module.exports =
   lengthToInches: (length) -> # input: mm
     length * 0.0393701
 
+  distanceToMiles: (dist) -> # input: km
+    dist * 0.621371
+
   resourceURI: (adapterPath, resource) ->
     "api/resources/#{adapterPath.join('/')}/#{resource}?#{new Date().getTime()}"
 

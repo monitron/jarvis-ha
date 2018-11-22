@@ -1,0 +1,20 @@
+<div class="section">
+  <div class="title">
+    {{title}}
+  </div>
+</div>
+{{#each vehicles}}
+<div class="section description">
+  <div class="right">
+    {{chargingStatus}}
+    {{#if batteryLevelText}} <span class="minor">&bull;</span> {{batteryLevelText}}{{/if}}
+  </div>
+  <div class="normal-weight">{{name}}</div>
+  <div class="minor">
+  {{#if asOf}}<div class="right">as of {{asOf}}</div>{{/if}}
+  <div>{{#if rangeText}}Range {{rangeText}}{{/if}}</div>
+  </div>
+</div>
+{{/each}}
+
+

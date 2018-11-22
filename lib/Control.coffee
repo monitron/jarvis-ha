@@ -37,7 +37,7 @@ class Control extends Backbone.Model
   isValid: ->
     _.every @getUniqueConnectionPaths(), (path) =>
       p = @_server.adapters.getPath(path)
-      unless p? then @log 'warn', "Path #{path} is missing"
+      unless p? then @log 'debug', "Path #{path} is missing"
       p? and p.isValid()
 
   getConnectionTarget: (connId) ->
