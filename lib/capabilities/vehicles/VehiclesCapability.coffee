@@ -23,16 +23,17 @@ module.exports = class VehiclesCapability extends Capability
   vehicleState: (id) ->
     config = @get('vehicles')[id]
     node = @_server.adapters.getPath(config.path)
-    sensorValues = {}
-    asOf = null
-    for aspectName in @sensorAspectNames
-      if node.hasAspect(aspectName)
-        data = node.getAspect(aspectName).getData()
-        asOf ||= data.asOf
-        sensorValues[aspectName] = data.value
-    name: config.name
-    sensorValues: sensorValues
-    asOf: asOf
+    result = name: config.name
+    if node?
+      sensorValues = {}
+      asOf = null
+      for aspectName in @sensorAspectNames
+        if node.hasAspect(aspectName)
+          data = node.getAspect(aspectName).getData()
+          asOf ||= data.asOf
+          sensorValues[aspectName] = data.value
+      Object.assign(result, {sensorValues: sensorValues, asOf: asOf})
+    result
 
   _getState: ->
     vehicles: _.object(for vehicle in _.keys(@get('vehicles'))
