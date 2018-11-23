@@ -7,7 +7,10 @@ module.exports = class VehiclesCapability extends Capability
   sensorAspectNames: [
     'batteryLevelSensor',
     'chargingStatusSensor',
-    'vehicleRangeSensor'
+    'vehicleRangeSensor',
+    'chargingTimeRemainingSensor',
+    'vehicleStatusSensor',
+    'locationSensor'
   ]
 
   # Vehicles have: name, source
@@ -32,8 +35,22 @@ module.exports = class VehiclesCapability extends Capability
           data = node.getAspect(aspectName).getData()
           asOf ||= data.asOf
           sensorValues[aspectName] = data.value
-      Object.assign(result, {sensorValues: sensorValues, asOf: asOf})
+      Object.assign(result, {
+        sensorValues: sensorValues
+        asOf: asOf
+        status: @combinedVehicleStatus(sensorValues.chargingStatusSensor,
+          sensorValues.vehicleStatusSensor)
+      })
     result
+
+  combinedVehicleStatus: (chargingStatus, vehicleStatus) ->
+    if chargingStatus?
+      if chargingStatus == 'disconnected'
+        vehicleStatus or 'unknown'
+      else chargingStatus
+    else if vehicleStatus?
+      vehicleStatus
+    else 'unknown'
 
   _getState: ->
     vehicles: _.object(for vehicle in _.keys(@get('vehicles'))

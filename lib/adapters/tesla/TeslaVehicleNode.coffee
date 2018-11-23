@@ -8,6 +8,9 @@ module.exports = class TeslaVehicleNode extends AdapterNode
     batteryLevelSensor: {}
     chargingStatusSensor: {}
     vehicleRangeSensor: {}
+    chargingTimeRemainingSensor: {}
+    vehicleStatusSensor: {}
+    locationSensor: {}
 
   chargingStatusMap:
     'Disconnected': 'disconnected'
@@ -38,25 +41,44 @@ module.exports = class TeslaVehicleNode extends AdapterNode
         @_wakeTimer = asOf
 
         # Battery Level
-        aspect = @getAspect('batteryLevelSensor')
-        aspect.setData
+        @getAspect('batteryLevelSensor').setData
           value: data.charge_state.battery_level / 100.0
           asOf:  asOf
 
         # Charging Status
         status = @chargingStatusMap[data.charge_state.charging_state]
         if status?
-          aspect = @getAspect('chargingStatusSensor')
-          aspect.setData value: status, asOf: asOf
+          @getAspect('chargingStatusSensor').setData value: status, asOf: asOf
         else
           @log 'warn', "Unknown charging_state: " +
             JSON.stringify(data.charge_state.charging_state)
 
+        # Charging Time Remaining
+        value = if data.charge_state.time_to_full_charge > 0
+          data.charge_state.time_to_full_charge * 3600
+        else
+          null
+        @getAspect('chargingTimeRemainingSensor').setData(
+          {value: value, asOf:  asOf})
+
         # Range
-        aspect = @getAspect('vehicleRangeSensor')
-        aspect.setData
+        @getAspect('vehicleRangeSensor').setData
           value: units.milesToKm(data.charge_state.battery_range)
           asOf:  asOf
+
+        # Vehicle Status
+        @getAspect('vehicleStatusSensor').setData
+          value: @shiftStatusToVehicleStatus(data.drive_state.shift_state)
+          asOf:  asOf
+
+        # Location
+        if data.drive_state.latitude?
+          @getAspect('locationSensor').setData
+            value:
+              lat: data.drive_state.latitude
+              lng: data.drive_state.longitude
+            asOf: moment(data.drive_state.gps_as_of, 'X').toDate()
+
 
   maybeWake: ->
     # Wake if we haven't received data or tried to wake in a long time
@@ -78,6 +100,17 @@ module.exports = class TeslaVehicleNode extends AdapterNode
       clearInterval(@_wakePollInterval)
       delete @_wakePollAttemptsLeft
       delete @_wakePollInterval
+
+  shiftStatusToVehicleStatus: (shiftStatus) ->
+    if shiftStatus == null then return 'off'
+    status = {
+      P: 'parked'
+      D: 'driving'
+      R: 'driving'
+    }[status]
+    if !status? then @log 'warn', "Unknown shift_status: " +
+      JSON.stringify(shiftStaus)
+    status
 
   options: ->
     authToken: @get('authToken')

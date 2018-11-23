@@ -6,14 +6,21 @@
 {{#each vehicles}}
 <div class="section description">
   <div class="right">
-    {{chargingStatus}}
-    {{#if batteryLevelText}} <span class="minor">&bull;</span> {{batteryLevelText}}{{/if}}
+    {{status}}
+    {{#if batteryLevelText}}
+    <span class="minor">&bull;</span>
+    {{batteryLevelText}}
+    <i class="fa {{batteryLevelIcon}}"></i>
+    {{/if}}
   </div>
   <div class="normal-weight">{{name}}</div>
   <div class="minor">
-  {{#if asOf}}<div class="right">as of {{asOf}}</div>{{/if}}
-  <div>{{#if rangeText}}Range {{rangeText}}{{/if}}</div>
+    {{#if asOf}}<div class="right">as of {{asOf}}</div>{{/if}}
+    <div>{{#if rangeText}}Range {{rangeText}}{{/if}}</div>
   </div>
+  {{#if chargeDoneAt}}
+  <div class="subsection"><i class="fa fa-bolt"></i> Charging will finish at about {{chargeDoneAt}}.</div>
+  {{/if}}
 </div>
 {{/each}}
 
