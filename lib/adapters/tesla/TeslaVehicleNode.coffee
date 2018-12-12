@@ -109,7 +109,7 @@ module.exports = class TeslaVehicleNode extends AdapterNode
       R: 'driving'
     }[status]
     if !status? then @log 'warn', "Unknown shift_status: " +
-      JSON.stringify(shiftStaus)
+      JSON.stringify(shiftStatus)
     status
 
   options: ->
