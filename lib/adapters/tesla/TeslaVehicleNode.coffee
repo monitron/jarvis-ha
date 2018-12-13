@@ -107,7 +107,7 @@ module.exports = class TeslaVehicleNode extends AdapterNode
       P: 'parked'
       D: 'driving'
       R: 'driving'
-    }[status]
+    }[shiftStatus]
     if !status? then @log 'warn', "Unknown shift_status: " +
       JSON.stringify(shiftStatus)
     status
