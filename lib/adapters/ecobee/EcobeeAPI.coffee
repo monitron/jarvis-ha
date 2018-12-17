@@ -101,9 +101,14 @@ module.exports = class EcobeeAPI extends Backbone.Model
       client_id: @get('key')
     @_request('token', 'POST', data)
       .then (body) =>
-        @log 'verbose', 'Succeeded refreshing tokens'
-        @set 'tokens', {access: body.access_token, refresh: body.refresh_token}
-        deferred.resolve()
+        if body.access_token?
+          @log 'verbose', 'Succeeded refreshing tokens'
+          @set 'tokens', {access: body.access_token, refresh: body.refresh_token}
+          deferred.resolve()
+        else
+          @log 'warn', 'Token refresh response did not contain access_token!'
+          @log 'verbose', "Token refresh response: #{JSON.stringify(body)}"
+          deferred.reject()
       .fail (err) =>
         @log 'warn', "Failed refreshing token: #{JSON.stringify(err)}"
         deferred.reject(err)
