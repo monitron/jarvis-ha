@@ -28,15 +28,25 @@
 </div>
 {{/with}}
 {{/if}}
+{{#if nowNarrative}}
+<div class="section description">{{nowNarrative}}</div>
+{{/if}}
 {{#if today}}
 <div class="section clickable description">
   {{#with today}}
-  <span class="minor">Today:</span>
+  <span class="normal-weight">Today:</span>
   <span>&nbsp;</span>
-  <i class="wi {{conditionIcon}} minor"></i> {{conditionName}}
+  <i class="wi {{conditionIcon}} minor"></i>
+  {{#if ../todayNarrative}}
+  {{else}}
+  {{conditionName}}
+  {{/if}}
   <span>&nbsp;</span>
   <i class="wi wi-direction-up minor"></i> {{highTemperature}}&deg;
   <i class="wi wi-direction-down minor"></i> {{lowTemperature}}&deg;
   {{/with}}
+  {{#if todayNarrative}}
+  <div>{{todayNarrative}}</div>
+  {{/if}}
 </div>
 {{/if}}
