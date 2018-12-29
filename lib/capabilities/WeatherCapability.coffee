@@ -80,6 +80,10 @@ module.exports = class WeatherCapability extends Capability
       'apparentTemperature', 'windGustSpeed', 'precipitationRate']
       aspect = @getSourceAspect(aspectName + 'Sensor')
       if aspect? then data[aspectName] = aspect.getDatum('value')
+    fn = 'ForecastNarrative'
+    for aspectName in ['daily', 'hourly', 'minutely']
+      aspect = @getSourceAspect(aspectName + fn)
+      if aspect? then data[aspectName + fn] = aspect.getDatum('text')
     data
 
   updateAlertEvents: ->

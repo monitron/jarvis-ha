@@ -1,14 +1,20 @@
-<div class="scroll">
-  <div class="temp-chart-container"></div>
-  <div class="pop-chart-container"></div>
-  {{#each hours}}
-  <div class="hour">
-    <div class="time">{{hour}}</div>
-    <div class="temperature">{{temperatureString}}&deg;</div>
-    <div class="icon"><i class="wi {{conditionIcon}}"></i></div>
-    <div class="pop">{{#if nonzeroPop}}{{pop}}%{{/if}}</div>
-    <div class="humidity"><i class="fa fa-tint"></i> {{humidityString}}%</div>
-    <div class="wind"><i class="wi wi-strong-wind"></i> {{windSpeedString}}</div>
+{{#if narrative}}
+<div class="narrative">{{narrative}}</div>
+{{/if}}
+
+<div class="scroll-container">
+  <div class="scroll">
+    <div class="temp-chart-container"></div>
+    <div class="pop-chart-container"></div>
+    {{#each hours}}
+    <div class="hour">
+      <div class="time">{{hour}}</div>
+      <div class="temperature">{{temperatureString}}&deg;</div>
+      <div class="icon"><i class="wi {{conditionIcon}}"></i></div>
+      <div class="pop">{{#if nonzeroPop}}{{pop}}%{{/if}}</div>
+      <div class="humidity"><i class="fa fa-tint"></i> {{humidityString}}%</div>
+      <div class="wind"><i class="wi wi-strong-wind"></i> {{windSpeedString}}</div>
+    </div>
+    {{/each}}
   </div>
-  {{/each}}
 </div>

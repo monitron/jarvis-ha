@@ -4,45 +4,22 @@ moment = require('moment')
 
 module.exports = class DarkSkyLocationNode extends AdapterNode
   aspects:
-    temperatureSensor:
-      events:
-        changed: (prev, cur) -> prev.value != cur.value
-    humiditySensor:
-      events:
-        changed: (prev, cur) -> prev.value != cur.value
-    weatherConditionSensor:
-      events:
-        changed: (prev, cur) -> prev.value != cur.value
-    dayNightSensor:
-      events:
-        changed: (prev, cur) -> prev.value != cur.value
-    ultravioletIndexSensor:
-      events:
-        changed: (prev, cur) -> prev.value != cur.value
-    apparentTemperatureSensor:
-      events:
-        changed: (prev, cur) -> prev.value != cur.value
-    windSpeedSensor:
-      events:
-        changed: (prev, cur) -> prev.value != cur.value
-    windDirectionSensor:
-      events:
-        changed: (prev, cur) -> prev.value != cur.value
-    dewpointSensor:
-      events:
-        changed: (prev, cur) -> prev.value != cur.value
-    barometricPressureSensor:
-      events:
-        changed: (prev, cur) -> prev.value != cur.value
-    weatherAlerts:
-      events:
-        changed: (prev, cur) -> prev.alerts != cur.alerts
-    hourlyForecast:
-      events:
-        changed: (prev, cur) -> prev.alerts != cur.hours
-    dailyForecast:
-      events:
-        changed: (prev, cur) -> prev.alerts != cur.hours
+    temperatureSensor: {}
+    humiditySensor: {}
+    weatherConditionSensor: {}
+    dayNightSensor: {}
+    ultravioletIndexSensor: {}
+    apparentTemperatureSensor: {}
+    windSpeedSensor: {}
+    windDirectionSensor: {}
+    dewpointSensor: {}
+    barometricPressureSensor: {}
+    weatherAlerts: {}
+    hourlyForecast: {}
+    dailyForecast: {}
+    minutelyForecastNarrative: {}
+    hourlyForecastNarrative: {}
+    dailyForecastNarrative: {}
 
   conditionMap:
     'clear-day': 'clear'
@@ -78,7 +55,25 @@ module.exports = class DarkSkyLocationNode extends AdapterNode
       @processDaily     result.daily.data
 
     promise.catch (err) =>
-      @log 'warn', "Fetch request failed (#{err})"
+      @log 'warn', "Quantitative fetch request failed (#{err})"
+
+    # Also narratives
+    promise = @adapter.api
+      .latitude(@get('location')[0])
+      .longitude(@get('location')[1])
+      .units(@get('narrativeUnits'))
+      .language(@get('narrativeLanguage'))
+      .get()
+
+    promise.then (result) => @processNarratives result
+
+    promise.catch (err) =>
+      @log 'warn', "Narrative fetch request failed (#{err})"
+
+  processNarratives: (result) ->
+    @getAspect('dailyForecastNarrative').setData text: result.daily.summary
+    @getAspect('hourlyForecastNarrative').setData text: result.hourly.summary
+    @getAspect('minutelyForecastNarrative').setData text: result.minutely.summary
 
   processCurrently: (currently) ->
     toSet =

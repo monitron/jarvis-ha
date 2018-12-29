@@ -1,9 +1,11 @@
 @weather-hourly-width: 70px;
 
 .hourly-forecast {
-  overflow-x: auto;
-  height: 300px;
-  white-space: nowrap;
+  .scroll-container {
+    overflow-x: auto;
+    height: 300px;
+    white-space: nowrap;
+  }
 
   .scroll {
     position: relative;
@@ -84,14 +86,6 @@
       i {
         opacity: .6;
       }
-    }
-  }
-}
-
-.dark .hourly-forecast {
-  .temperature-chart {
-    .gradient-start {
-      
     }
   }
 }

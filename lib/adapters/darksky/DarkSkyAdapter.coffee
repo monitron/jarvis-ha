@@ -7,8 +7,10 @@ module.exports = class DarkSkyAdapter extends Adapter
   name: "Dark Sky"
 
   defaults:
-    interval: 240 # seconds; defaults to every four minutes
+    interval: 200 # seconds; defaults to every 3.33 minutes
     locations: {}
+    narrativeLanguage: "en"
+    narrativeUnits: "auto"
     # must specify apiKey and locations {name: [lat, lng]}
     # Please see https://darksky.net/dev
 
@@ -30,6 +32,8 @@ module.exports = class DarkSkyAdapter extends Adapter
         {
           id: locationKey,
           interval: @get('interval'),
+          narrativeLanguage: @get('narrativeLanguage'),
+          narrativeUnits: @get('narrativeUnits'),
           location: location
         },
         {adapter: this})

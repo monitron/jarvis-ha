@@ -1,15 +1,21 @@
-{{#each days}}
-<div class="day">
-  <div class="date">
-    <div class="day-of-month">{{dayOfMonth}}</div>
-    <div class="day-of-week">{{dayOfWeek}}</div>
+{{#if narrative}}
+<div class="narrative">{{narrative}}</div>
+{{/if}}
+
+<div class="scroll-container">
+  {{#each days}}
+  <div class="day">
+    <div class="date">
+      <div class="day-of-month">{{dayOfMonth}}</div>
+      <div class="day-of-week">{{dayOfWeek}}</div>
+    </div>
+    <div class="temperatures">
+      <div class="high">{{highTemperature}}&deg;</div>
+      <div class="low">{{lowTemperature}}&deg;</div>
+    </div>
+    <div class="icon"><i class="wi {{conditionIcon}}"></i></div>
+    <div class="pop">{{pop}}%</div>
+    <div class="wind"><i class="wi wi-strong-wind"></i> {{windSpeed}}</div>
   </div>
-  <div class="temperatures">
-    <div class="high">{{highTemperature}}&deg;</div>
-    <div class="low">{{lowTemperature}}&deg;</div>
-  </div>
-  <div class="icon"><i class="wi {{conditionIcon}}"></i></div>
-  <div class="pop">{{pop}}%</div>
-  <div class="wind"><i class="wi wi-strong-wind"></i> {{windSpeed}}</div>
+  {{/each}}
 </div>
-{{/each}}
