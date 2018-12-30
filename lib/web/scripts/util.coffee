@@ -17,6 +17,7 @@ module.exports =
       partlyCloudy: ['wi-cloud', 'wi-day-cloudy', 'wi-night-alt-cloudy']
       partlySunny:  ['wi-cloud', 'wi-day-cloudy', 'wi-night-alt-cloudy']
       mostlySunny:  ['wi-day-sunny', 'wi-day-sunny', 'wi-night-clear']
+      wind:         ['wi-strong-wind', 'wi-strong-wind', 'wi-strong-wind']
     condSet = map[cond]
     if condSet?
       if day?
@@ -42,6 +43,7 @@ module.exports =
       partlySunny:  'Partly Sunny'
       mostlySunny:  'Mostly Sunny'
       sunny:        'Sunny'
+      wind:         'Windy'
     map[cond] or 'Unknown'
 
   angleToCardinalDirection: (degrees) ->
