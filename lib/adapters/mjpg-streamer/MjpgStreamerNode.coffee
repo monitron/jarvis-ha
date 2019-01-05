@@ -25,9 +25,7 @@ module.exports = class MjpgStreamerNode extends AdapterNode
 
   initialize: ->
     super
-    @getAspect('stillCamera').setData
-      imageResource: 'still'
-      aspectRatio: 16.0 / 9
+    @getAspect('stillCamera').setData imageResource: 'still'
 
   _apiBaseUrl: ->
     "http://#{@get('host')}:#{@get('port')}/"
