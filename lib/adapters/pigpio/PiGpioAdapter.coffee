@@ -19,7 +19,8 @@ module.exports = class PiGpioAdapter extends Adapter
     for id, details of @get('devices')
       klass = PIGPIO_DEVICE_CLASSES[details.type]
       @children.add new klass(_.defaults({id: id}, details), {adapter: this})
-    for connKey, host of @get('daemons')
+    _.each @get('daemons'), (host, connKey) =>
+      @log 'error', "connecting to #{connKey} at #{host}"
       pigpio = pigpioClient.pigpio({host: host})
       @_connections[connKey] = pigpio
       pigpio.on 'connected', (info) =>
