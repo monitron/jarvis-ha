@@ -1,4 +1,4 @@
-
+crypto = require('crypto')
 moment = require('moment')
 [AdapterNode] = require('../../AdapterNode')
 
