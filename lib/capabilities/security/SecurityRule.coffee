@@ -25,6 +25,8 @@ class SecurityRule extends Backbone.Model
       @_server.adapters.onEventAtPath path, 'aspectData:change',
         (args...) => @trigger('connection:change', args...)
 
+    # XXX Notice if source becomes invalid
+
     @listenTo this, 'mode:change', @cancelDelayTimeout
     @listenTo this, 'mode:change connection:change', @evaluate
 
@@ -38,7 +40,7 @@ class SecurityRule extends Backbone.Model
     _.every @getUniqueConnectionPaths(), (path) =>
       p = @_server.adapters.getPath(path)
       unless p? then @log 'warn', "Connected path #{path} is missing"
-      p?
+      p?.isValid()
 
   evaluate: ->
     if !@isValid()
@@ -118,7 +120,8 @@ class SecurityRule extends Backbone.Model
 
   toStateJSON: ->
     if !@isValid()
-      undefined
+      state: null
+      description: @buildMessage('unknownTitle')
     else
       state: @state()
       description: @stateDescription()

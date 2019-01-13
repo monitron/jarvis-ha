@@ -16,6 +16,12 @@ module.exports = class Aspect extends EventEmitter
     @_data = newData
     unless _.isEqual(oldData, @_data) then @emit('dataChanged', @_data, oldData)
 
+  setDatum: (key, value) ->
+    # set datum individually, leaving others alone
+    data = _.clone(@getData() or {})
+    data[key] = value
+    @setData data
+
   clearData: ->
     @setData {}
 
