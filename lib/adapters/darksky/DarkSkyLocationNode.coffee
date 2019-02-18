@@ -51,7 +51,8 @@ module.exports = class DarkSkyLocationNode extends AdapterNode
       @processCurrently result.currently
       @processDayNight  result
       @processAlerts    result.alerts
-      @processHourly    result.hourly.data
+      @processHourly    result.hourly.data, (hour) =>
+        @isDaylightHour(result.daily.data, hour)
       @processDaily     result.daily.data
 
     promise.catch (err) =>
@@ -111,9 +112,10 @@ module.exports = class DarkSkyLocationNode extends AdapterNode
         attributes
     @getAspect('weatherAlerts').setData alerts: processedAlerts
 
-  processHourly: (hourly) ->
+  processHourly: (hourly, isDaylightHour) ->
     @getAspect('hourlyForecast').setData hours: for hour in hourly
-      time: moment(hour.time, 'X').toDate()
+      hourMoment = moment(hour.time, 'X')
+      time: hourMoment.toDate()
       condition: @conditionMap[hour.icon]
       temperature: hour.temperature
       humidity: hour.humidity * 100
@@ -121,6 +123,7 @@ module.exports = class DarkSkyLocationNode extends AdapterNode
       pop: hour.precipProbability * 100
       windSpeed: hour.windSpeed
       windDirection: hour.windBearing
+      dayNight: isDaylightHour(hourMoment)
 
   processDaily: (daily) ->
     @getAspect('dailyForecast').setData days: for day in daily
@@ -131,3 +134,9 @@ module.exports = class DarkSkyLocationNode extends AdapterNode
       pop: day.precipProbability * 100
       windSpeed: day.windSpeed
       windDirection: day.windBearing
+
+  isDaylightHour: (days, hourMoment) ->
+    time = hourMoment.add(30, 'minutes').unix()
+    for day in days
+      if time >= day.sunriseTime and time <= day.sunsetTime then return true
+    false
