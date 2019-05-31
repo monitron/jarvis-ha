@@ -1,7 +1,15 @@
 <div class="columns">
+  {{#if isPhone}}
+  <div class="greeting"></div>
+  <div class="shortcuts-container"></div>
+  <div class="main-column">
+    <div class="cards-container"></div>
+  </div>
+  {{else}}
   <div class="main-column">
     <div class="greeting"></div>
     <div class="cards-container"></div>
   </div>
   <div class="shortcuts-container"></div>
+  {{/if}}
 </div>
