@@ -6,22 +6,30 @@ module.exports = class TeslaAdapter extends Adapter
   name: 'Tesla'
 
   defaults:
-    accounts: [] # tokens
+    accounts: []             # { email, password }
     pollInterval:  300       # seconds between attempted vehicle data loads
-    wakeInterval:  1800      # seconds beteen wake attempts on sleeping vehicle
+    wakeInterval:  3600      # seconds beteen wake attempts on sleeping vehicle
     postWakePollInterval: 30 # seconds after wake attempt to load data
     postWakePollAttempts: 5  # times to try polling after wake attempt
     retryInterval: 300       # seconds after an error before trying again
 
   start: ->
     @setValid false
-    @discoverVehicles(token) for token in @get('accounts')
+    @login(account) for account in @get('accounts')
+
+  login: (account) ->
+    @log 'verbose', "Logging in to #{account.email}"
+    teslajs.login account.email, account.password, (err, result) =>
+      if err?
+        @log 'error', "Couldn't log in to #{account.email}, giving up (#{err})"
+      else
+        # XXX Does not make use of refresh token; will crap out after 2 months
+        @discoverVehicles result.authToken
 
   discoverVehicles: (token) ->
-    @log 'verbose', "Discovering vehicles for #{token}"
     teslajs.vehicles {authToken: token}, (err, vehicles) =>
       if err?
-        @log 'error', "Couldn't retrieve vehicles for #{token} (#{err})"
+        @log 'error', "Couldn't retrieve vehicles for #{account.email} (#{err})"
         setTimeout (=> @discoverVehicles(token)), @get('retryInterval')
       else
         for vehicle in vehicles
