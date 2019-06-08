@@ -7,7 +7,7 @@ module.exports = class EnergyCapability extends Capability
   defaults:
     meters: {} # {meter: {sources: {period: [path], ...}, ...}, ...}
     idlePeriod: 'day'
-    wastefulControlDelay: 360 # wait 5 minutes
+    wastefulControlDelay: 1200 # wait 20 minutes
 
   start: ->
     # Listen to all our meter sources
