@@ -29,6 +29,7 @@
     "longjohn": "^0.2.11",
     "mdns-js": "^0.5.3",
     "moment": "^2.13.0",
+    "node-hue-api": "^2.4.5",
     "pigpio-client": "^1.1.0",
     "ping": "^0.1.10",
     "q": "^1.0.1",
