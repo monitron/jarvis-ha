@@ -13,11 +13,15 @@ module.exports = class HueNode extends AdapterNode
   aspects:
     powerOnOff:
       commands:
-        set: (node, value) -> node.setState on: value
+        set: (node, value) ->
+          node.setState(on: value).then ->
+            node.getAspect('powerOnOff').setData state: value
     brightness:
       commands:
         set: (node, value) ->
-          node.setState lightState.create().brightness(value)
+          node.setState(lightState.create().brightness(value)).then ->
+            node.getAspect('brightness').setData state: value
+            node.getAspect('powerOnOff').setData state: true
     chroma:
       commands:
         set: (node, value) ->
@@ -28,7 +32,9 @@ module.exports = class HueNode extends AdapterNode
               state.hue(value.hue * HUE_SCALE)
                 .sat(value.saturation * SATURATION_SCALE)
             else node.log 'error', "Unknown chroma type #{value.type}"
-          node.setState state
+          node.setState(state).then ->
+            node.getAspect('chroma').setData state: value
+            node.getAspect('powerOnOff').setData state: true
 
   _processData: (data) ->
     if data.on?
