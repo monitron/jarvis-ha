@@ -61,6 +61,9 @@ class Control extends Backbone.Model
   getMembership: (path) ->
     _.find(@get('memberships'), (membership) -> _.isEqual(membership.path, path))
 
+  getParameter: (param) ->
+    @get('parameters')[param]
+
   executeCommand: (verb, params) ->
     if @isValid()
       command = @commands[verb]

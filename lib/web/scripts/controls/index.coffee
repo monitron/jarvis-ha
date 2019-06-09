@@ -2,6 +2,7 @@
 module.exports =
   switch:          require('./SwitchControlBodyView.js')
   dimmer:          require('./DimmerControlBodyView.js')
+  colorLight:      require('./ColorLightControlBodyView.js')
   media:           require('./MediaControlBodyView.js')
   climateSensor:   require('./ClimateSensorBodyView.js')
   thermostat:      require('./ThermostatBodyView.coffee')
