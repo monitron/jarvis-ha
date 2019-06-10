@@ -33,7 +33,7 @@ module.exports = class HueNode extends AdapterNode
                 .sat(value.saturation * SATURATION_SCALE)
             else node.log 'error', "Unknown chroma type #{value.type}"
           node.setState(state).then ->
-            node.getAspect('chroma').setData state: value
+            node.getAspect('chroma').setData value
             node.getAspect('powerOnOff').setData state: true
 
   _processData: (data) ->
@@ -47,15 +47,24 @@ module.exports = class HueNode extends AdapterNode
     else
       @getAspect('brightness').clearData()
 
+    chroma = @getAspect('chroma')
     if data.colormode?
       switch data.colormode
-        when "ct" then @getAspect('chroma').setData
-          type: 'temperature'
-          temperature: data.ct # mired
-        when "xy", "hs" then @getAspect('chroma').setData
-          type: 'hue-saturation'
-          hue: data.hue / HUE_SCALE
-          saturation: data.sat / SATURATION_SCALE
+        when 'ct'
+          if data.ct?
+            chroma.setData
+              type: 'temperature'
+              temperature: data.ct # mired
+          else
+            chroma.clearData()
+        when 'xy', 'hs'
+          if data.hue? and data.sat?
+            chroma.setData
+              type: 'hue-saturation'
+              hue: data.hue / HUE_SCALE
+              saturation: data.sat / SATURATION_SCALE
+          else
+            chroma.clearData()
         else @log 'warn', "Unknown colormode #{data.colormode}"
     else
-      @getAspect('chroma').clearData()
+      chroma.clearData()

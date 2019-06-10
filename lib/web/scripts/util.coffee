@@ -112,3 +112,42 @@ module.exports =
         drawWidth,
         drawHeight
     img.src = uri
+
+  chromaToRgbStyle: (chroma) ->
+    rgb = switch chroma.type
+      when 'temperature' then module.exports.miredToRgb(chroma.temperature)
+      when 'hue-saturation' then module.exports.hueSatToRgb(chroma.hue, chroma.saturation)
+      else [0, 0, 0]
+    "rgb(#{rgb.join(',')})"
+
+  hueSatToRgb: (hue, sat) ->
+    h = hue / 360
+    s = sat / 100
+    i = Math.floor(h * 6)
+    f = h * 6 - i
+    p = 1 - s
+    q = 1 - f * s
+    t = 1 - (1 - f) * s
+    switch i % 6
+      when 0 then r = 1; g = t; b = p
+      when 1 then r = q; g = 1; b = p
+      when 2 then r = p; g = 1; b = t
+      when 3 then r = p; g = q; b = 1
+      when 4 then r = t; g = p; b = 1
+      when 5 then r = 1; g = p; b = q
+    [r, g, b].map (c) -> Math.round(c * 255)
+
+  miredToRgb: (mired) ->
+    temp = 10000 / mired
+    if temp <= 66
+      red = 255
+      green = 99.4708025861 * Math.log(temp) - 161.1195681661
+      if temp <= 19
+        blue = 0
+      else
+        blue = 138.5177312231 * Math.log(temp - 10) - 305.0447927307
+    else
+      red = 329.698727446 * Math.pow(temp - 60, -0.1332047592)
+      green = 288.1221695283 * Math.pow(temp - 60, -0.0755148492)
+      blue = 255
+    [red, green, blue].map (n) -> Math.min(Math.max(0, n), 255)
