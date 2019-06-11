@@ -20,8 +20,9 @@ userScripts = require('../user-scripts')
 
 module.exports = class Server
   constructor: ->
+    @config = @readConfig()
     winston.configure
-      level: 'verbose'
+      level: if @config.debug then 'debug' else 'verbose'
       format: winston.format.simple()
       transports: [
         new winston.transports.File(filename: 'jarvis.log'),
@@ -30,7 +31,6 @@ module.exports = class Server
             winston.format.colorize(),
             winston.format.simple()))]
     @log 'info', 'Jarvis Home Automation server'
-    @config = @readConfig()
     if @config.debug then require('longjohn')
     @persistence = new Persistence()
     @events = new Events()
