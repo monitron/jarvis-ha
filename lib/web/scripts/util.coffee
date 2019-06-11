@@ -150,4 +150,4 @@ module.exports =
       red = 329.698727446 * Math.pow(temp - 60, -0.1332047592)
       green = 288.1221695283 * Math.pow(temp - 60, -0.0755148492)
       blue = 255
-    [red, green, blue].map (n) -> Math.min(Math.max(0, n), 255)
+    [red, green, blue].map (n) -> Math.round(Math.min(Math.max(0, n), 255))
