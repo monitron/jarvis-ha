@@ -92,6 +92,8 @@ class Capability extends Backbone.Model
   # Override this to return a Consumptions collection identifying the
   # current rate of physical resources used by devices represented by
   # this capability
+  # Make sure your Capability triggers consumption:change when its consumption
+  # has changed
   getResourceConsumption: -> new Consumptions()
 
   log: (level, message) ->
@@ -107,5 +109,10 @@ class Capability extends Backbone.Model
 
 class Capabilities extends Backbone.Collection
   model: Capability
+
+  getResourceConsumption: ->
+    collection = new Consumptions()
+    @each (cap) => collection.add(cap.getResourceConsumption().toJSON())
+    collection
 
 module.exports = [Capability, Capabilities]

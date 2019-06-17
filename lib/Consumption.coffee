@@ -1,5 +1,6 @@
 
 Backbone = require('backbone')
+uuid = require('uuid/v4')
 
 # Consumption reports consumption rate of a resource
 # such as liters per minute of water or watts of electricity

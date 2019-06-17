@@ -162,7 +162,8 @@ module.exports = class ControlBrowserCapability extends Capability
         Q.fcall -> "#{list} #{verb} on."
 
   start: ->
-    # no-op server side
+    @listenTo @_server.controls, 'change', =>
+      @trigger 'consumption:change', this
     @setValid true
 
   resolveControlName: (controlName) ->
@@ -182,13 +183,13 @@ module.exports = class ControlBrowserCapability extends Capability
 
   getResourceConsumption: ->
     consumptions = new Consumptions()
-    getControlCategory = control =>
+    getControlCategory = (control) =>
       path = control.getDefaultMembershipPath(['category'])
       if path? then _.last(path) else 'Other'
     @_server.controls.each (control) =>
       rates = control.getConsumptionRates()
       if rates?
-        for resource, rate of rates
+        for resource, rate of rates when rate > 0
           consumptions.add
             capabilityId: @id
             node: control.id
