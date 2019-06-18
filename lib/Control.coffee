@@ -83,6 +83,9 @@ class Control extends Backbone.Model
   getState: ->
     if @isValid() then @_getState() else null
 
+  getConsumptionRates: ->
+    if @isValid() then @_getConsumptionRates() else null
+
   describeCurrentState: ->
     if @isValid()
       @describeState(@_getState())
@@ -95,6 +98,12 @@ class Control extends Backbone.Model
 
   _getState: ->
     {} # This is boring and you should probably override it
+
+  # Override this and return an object mapping resource type to
+  # current consumption rate (a number). see Consumption for more.
+  # return null if the control can't (currently or ever) calculate its
+  # consumption rates. This won't be called if the control is invalid.
+  _getConsumptionRates: -> null
 
   # Override me with a function that generates English from a state object.
   # The return value should be a phrase that can follow the words "is" or "was"

@@ -36,3 +36,11 @@ module.exports = class SwitchControl extends Control
   describeStateTransition: (before, after) ->
     return null unless before.power? and after.power?
     if after.power then 'was turned on' else 'was turned off'
+
+  _getConsumptionRates: ->
+    state = @_getState()
+    rating = @get('parameters').ratedElectricalPower
+    if rating? and state.power?
+      electricity: if state.power then rating else 0
+    else
+      null

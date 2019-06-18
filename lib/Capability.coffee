@@ -2,6 +2,8 @@
 Backbone = require('backbone')
 _ = require('underscore')
 
+[Consumption, Consumptions] = require('./Consumption.coffee')
+
 # This is the generic Capability.
 #
 # Capabilities build on Adapters/Nodes/Controls by offering higher level
@@ -87,6 +89,13 @@ class Capability extends Backbone.Model
       head = things.slice(0, -1).join(', ')
       [head, things.slice(-1)[0]].join(" and ")
 
+  # Override this to return a Consumptions collection identifying the
+  # current rate of physical resources used by devices represented by
+  # this capability
+  # Make sure your Capability triggers consumption:change when its consumption
+  # has changed
+  getResourceConsumption: -> new Consumptions()
+
   log: (level, message) ->
     # Logs through the server because including winston breaks browserify
     @_server.log level, "[#{@name} capability] #{message}"
@@ -100,5 +109,10 @@ class Capability extends Backbone.Model
 
 class Capabilities extends Backbone.Collection
   model: Capability
+
+  getResourceConsumption: ->
+    collection = new Consumptions()
+    @each (cap) => collection.add(cap.getResourceConsumption().toJSON())
+    collection
 
 module.exports = [Capability, Capabilities]

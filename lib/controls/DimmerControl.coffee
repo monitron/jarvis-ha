@@ -33,6 +33,18 @@ module.exports = class DimmerControl extends Control
     power: power.getDatum('state')
     brightness: dimmer.getDatum('state')
 
+  _getConsumptionRates: ->
+    state = @_getState()
+    rating = @get('parameters').ratedElectricalPower
+    if rating? and state.power?
+      electricity:
+        if state.power and state.brightness?
+          rating * (state.brightness / 100)
+        else
+          if state.power then rating else 0
+    else
+      null
+
   describeState: (state) ->
     if state.power == true
       if state.brightness?
