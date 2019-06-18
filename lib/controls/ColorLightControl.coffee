@@ -57,6 +57,18 @@ module.exports = class ColorLightControl extends Control
     brightness: bright.getDatum('state')
     chroma: chroma.getData()
 
+  _getConsumptionRates: ->
+    state = @_getState()
+    rating = @get('parameters').ratedElectricalPower
+    if rating? and state.power?
+      electricity:
+        if state.power and state.brightness?
+          rating * (state.brightness / 100)
+        else
+          if state.power then rating else 0
+    else
+      null
+
   describeState: (state) ->
     if state.power == true
       if state.brightness?
