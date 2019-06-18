@@ -2,7 +2,7 @@
 Backbone = require('backbone')
 _ = require('underscore')
 
-[Consumption, Consumptions] = require('./Consumption')
+[Consumption, Consumptions] = require('./Consumption.coffee')
 
 # This is the generic Capability.
 #

@@ -1,0 +1,14 @@
+<ul>
+  {{#each consumers}}
+  <li>
+    <div class="consumer-name">{{name}}</div>
+    <div class="consumer-bar-track">
+      <div class="consumer-bar" style="width: {{proportionalValue}}%;"></div>
+    </div>
+    <div class="consumer-value">
+      {{formattedValue}}
+      <span class="units"> W</span>
+    </div>
+  </li>
+  {{/each}}
+</ul>
