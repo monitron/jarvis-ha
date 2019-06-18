@@ -1,6 +1,7 @@
 _ = require('underscore')
 Q = require('q')
 [Capability] = require('../Capability')
+[Consumption, Consumptions] = require('../Consumption')
 
 module.exports = class ControlBrowserCapability extends Capability
   name: "Control Browser"
@@ -161,7 +162,8 @@ module.exports = class ControlBrowserCapability extends Capability
         Q.fcall -> "#{list} #{verb} on."
 
   start: ->
-    # no-op server side
+    @listenTo @_server.controls, 'change', =>
+      @trigger 'consumption:change', this
     @setValid true
 
   resolveControlName: (controlName) ->
@@ -178,3 +180,21 @@ module.exports = class ControlBrowserCapability extends Capability
 
   resolveControls: (filters) ->
     @_server.controls.selectWithFilters(filters)
+
+  getResourceConsumption: ->
+    consumptions = new Consumptions()
+    getControlCategory = (control) =>
+      path = control.getDefaultMembershipPath(['category'])
+      if path? then _.last(path) else 'Other'
+    @_server.controls.each (control) =>
+      rates = control.getConsumptionRates()
+      if rates?
+        for resource, rate of rates when rate > 0
+          consumptions.add
+            capabilityId: @id
+            node: control.id
+            name: control.get('name')
+            category: getControlCategory(control)
+            resourceType: resource
+            rate: rate
+    consumptions

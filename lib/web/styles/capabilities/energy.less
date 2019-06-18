@@ -4,6 +4,57 @@
   overflow-y: auto;
 }
 
+.energy-consumers {
+  .consumers-chart ul {
+    .unstyled-list;
+
+    li {
+      position: relative;
+      height: 40px;
+      line-height: 40px;
+
+      .consumer-name {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 170px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .consumer-bar-track {
+        position: absolute;
+        left: 180px;
+        top: 6px;
+        bottom: 6px;
+        right: 70px;
+      }
+
+      .consumer-bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        background: @blue;
+      }
+
+      .consumer-value {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 70px;
+        text-align: right;
+        font-weight: 300;
+        
+        .units {
+          opacity: .35;
+        }
+      }
+    }  
+  }
+}
+
 .energy-meter-values {
   .period-name {
     font-weight: 300;
@@ -87,6 +138,10 @@
   .meter-graphs li .meter-bar {
     background: @dark-blue;
   }
+
+  .energy-consumers .consumers-chart li .consumer-bar {
+    background: @dark-blue;
+  }
 }
 
 .display-touchscreen .energy-idle {
@@ -163,58 +218,76 @@
   }
 }
 
-.display-desktop .energy-meter-values {
-  width: 50%;
-  min-width: 450px;
-  max-width: 600px;
-  float: left;
-  padding: @dt-wider-margin;
+.display-desktop {
+  .energy-consumers {
+    padding: @dt-wider-margin;
+  }
   
-  .period-name {
-    margin-bottom: @dt-wide-margin;
-  }
+  .energy-meter-values {
+    width: 50%;
+    min-width: 450px;
+    max-width: 600px;
+    float: left;
+    padding: @dt-wider-margin;
+    
+    .period-name {
+      margin-bottom: @dt-wide-margin;
+    }
 
-  .meter-graphs li {
-    margin-bottom: @dt-thin-margin;
-  }
+    .meter-graphs li {
+      margin-bottom: @dt-thin-margin;
+    }
 
-  .offsets {
-    margin-top: @dt-normal-margin;
+    .offsets {
+      margin-top: @dt-normal-margin;
+    }
   }
 }
 
-.display-touchscreen .energy-meter-values {
-  width: 50%;
-  float: left;
-  padding: @ts-wider-margin;
+.display-touchscreen {
+  .energy-consumers {
+    padding: @ts-wider-margin;
+  }
   
-  .period-name {
-    margin-bottom: @ts-wide-margin;
-  }
+  .energy-meter-values {
+    width: 50%;
+    float: left;
+    padding: @ts-wider-margin;
+    
+    .period-name {
+      margin-bottom: @ts-wide-margin;
+    }
 
-  .meter-graphs li {
-    margin-bottom: @ts-thin-margin;
-  }
+    .meter-graphs li {
+      margin-bottom: @ts-thin-margin;
+    }
 
-  .offsets {
-    margin-top: @ts-wide-margin;
+    .offsets {
+      margin-top: @ts-wide-margin;
+    }
   }
 }
 
-.display-phone .energy-meter-values {
-  padding: @ph-wide-margin;
-  border-bottom: 1px solid #ddd;
-  
-  .period-name {
-    margin-bottom: @ph-wide-margin;
+.display-phone {
+  .energy-consumers {
+    padding: @ph-wide-margin;
   }
 
-  .meter-graphs li {
-    margin-bottom: @ph-normal-margin;
-  }
+  .energy-meter-values {
+    padding: @ph-wide-margin;
+    border-bottom: 1px solid #ddd;
+    
+    .period-name {
+      margin-bottom: @ph-wide-margin;
+    }
 
-  .offsets {
-    margin-top: @ph-wide-margin;
+    .meter-graphs li {
+      margin-bottom: @ph-normal-margin;
+    }
+
+    .offsets {
+      margin-top: @ph-wide-margin;
+    }
   }
 }
 

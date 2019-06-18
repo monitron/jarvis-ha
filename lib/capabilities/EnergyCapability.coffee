@@ -21,6 +21,9 @@ module.exports = class EnergyCapability extends Capability
         @calculateWastefulControls()
     @calculateWastefulControls()
     setInterval((=> @manageWastefulControlEvents()), 30000)
+    # Listen to capabilities to detect consumption changes
+    @listenTo @_server.capabilities, 'consumption:change', =>
+      @trigger 'change', this
     @setValid true # XXX Notice if sources become invalid
 
   summarizeMeters: ->
@@ -96,4 +99,5 @@ module.exports = class EnergyCapability extends Capability
 
   _getState: ->
     meters: @summarizeMeters()
+    currentConsumption: @_server.capabilities.getResourceConsumption().toJSON()
     wastefulControls: @_wastefulControls
