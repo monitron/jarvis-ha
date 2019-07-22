@@ -19,13 +19,13 @@ module.exports = class HueNode extends AdapterNode
     brightness:
       commands:
         set: (node, value) ->
-          node.setState(lightState.create().brightness(value)).then ->
+          node.setState(lightState.create().turnOn().brightness(value)).then ->
             node.getAspect('brightness').setData state: value
             node.getAspect('powerOnOff').setData state: true
     chroma:
       commands:
         set: (node, value) ->
-          state = lightState.create()
+          state = lightState.create().turnOn()
           switch value.type
             when 'temperature' then state.ct(value.temperature)
             when 'hue-saturation'
