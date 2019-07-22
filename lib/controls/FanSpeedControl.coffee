@@ -26,6 +26,14 @@ module.exports = class FanSpeedControl extends Control
     speedName: _.findWhere(speed.getAttribute('choices'),
       id: speed.getDatum('state'))?.longName
 
+  _getConsumptionRates: ->
+    state = @_getState()
+    rating = @get('parameters').ratedElectricalPower
+    if rating?[state.speed]?
+      electricity: rating[state.speed]
+    else
+      null
+
   resolveSpeedName: (name) ->
     name = name.toLowerCase()
     speed = @getConnectionTarget('discreteSpeed').getAspect('discreteSpeed')
