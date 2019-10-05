@@ -1,6 +1,7 @@
 _ = require('underscore')
 geolib = require('geolib')
 [Capability] = require('../../Capability')
+[Consumption, Consumptions] = require('../../Consumption')
 
 module.exports = class VehiclesCapability extends Capability
   name: "Vehicles"
@@ -11,7 +12,8 @@ module.exports = class VehiclesCapability extends Capability
     'vehicleRangeSensor',
     'chargingTimeRemainingSensor',
     'vehicleStatusSensor',
-    'locationSensor'
+    'locationSensor',
+    'chargingPowerSensor'
   ]
 
   # Vehicles have: name, source
@@ -20,11 +22,14 @@ module.exports = class VehiclesCapability extends Capability
     home: {} # lat, lng, radius (in meters)
     distanceUnits: 'km'
     distancePrecision: 0
+    onlyConsumeAtHome: true
 
   start: ->
     _.each @get('vehicles'), (vehicle, id) =>
       @_server.adapters.onEventAtPath vehicle.path,
-        'aspectData:change', => @trigger 'change', this
+        'aspectData:change', =>
+        @trigger 'change', this
+        @trigger 'consumption:change', this
     @setValid true
 
   vehicleState: (id) ->
@@ -63,12 +68,36 @@ module.exports = class VehiclesCapability extends Capability
       vehicleStatus
     else 'unknown'
 
+  isHome: (distance) ->
+    if distance? then distance <= @get('home').radius else null
+
   distanceFromHome: (location) ->
     home = @get('home')
     return null unless location? and location.lat? and home.lat?
     geolib.getDistance(
       {latitude: location.lat, longitude: location.lng},
       {latitude: home.lat, longitude: location.lng})
+
+  getResourceConsumption: ->
+    consumptions = new Consumptions()
+    onlyConsumeAtHome = @get('onlyConsumeAtHome')
+    for id, config of @get('vehicles')
+      node = @_server.adapters.getPath(config.path)
+      if node?.hasAspect('chargingPowerSensor')
+        power = node.getAspect('chargingPowerSensor').getData().value
+        canConsume = true
+        if onlyConsumeAtHome
+          canConsume = @isHome(@distanceFromHome(
+            node.getAspect('locationSensor').getData().value))
+        if canConsume and power > 0 then consumptions.add
+          capabilityId: @id
+          node: id
+          name: config.name
+          category: 'Vehicles'
+          resourceType: 'electricity'
+          rate: power
+    consumptions
+
 
   _getState: ->
     vehicles: _.object(for vehicle in _.keys(@get('vehicles'))

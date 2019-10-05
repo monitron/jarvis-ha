@@ -11,6 +11,7 @@ module.exports = class TeslaVehicleNode extends AdapterNode
     chargingTimeRemainingSensor: {}
     vehicleStatusSensor: {}
     locationSensor: {}
+    chargingPowerSensor: {}
 
   chargingStatusMap:
     'Disconnected': 'disconnected'
@@ -79,6 +80,12 @@ module.exports = class TeslaVehicleNode extends AdapterNode
               lng: data.drive_state.longitude
             asOf: moment(data.drive_state.gps_as_of, 'X').toDate()
 
+        # Charging Power
+        if data.charge_state.charger_actual_current? and data.charge_state.charger_voltage?
+          @getAspect('chargingPowerSensor').setData
+            value: data.charge_state.charger_voltage *
+              data.charge_state.charger_actual_current # V * A = W
+            asOf:  asOf
 
   maybeWake: ->
     # Wake if we haven't received data or tried to wake in a long time
