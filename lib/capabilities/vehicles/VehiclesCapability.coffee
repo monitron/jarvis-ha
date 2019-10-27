@@ -25,11 +25,12 @@ module.exports = class VehiclesCapability extends Capability
     onlyConsumeAtHome: true
 
   start: ->
+    notifyChangeSoon = _.debounce(=>
+      @trigger 'change', this
+      @trigger 'consumption:change', this)
     _.each @get('vehicles'), (vehicle, id) =>
       @_server.adapters.onEventAtPath vehicle.path,
-        'aspectData:change', =>
-        @trigger 'change', this
-        @trigger 'consumption:change', this
+        'aspectData:change', notifyChangeSoon
     @setValid true
 
   vehicleState: (id) ->
