@@ -1,4 +1,5 @@
 _ = require('underscore')
+Q = require('q')
 
 [AdapterNode] = require('../../AdapterNode')
 

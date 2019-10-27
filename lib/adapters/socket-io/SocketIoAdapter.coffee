@@ -56,5 +56,4 @@ module.exports = class SocketIoAdapter extends Adapter
       @children.add new SocketIoNode(config, adapter: this)
 
   client: (server) ->
-    console.log "looking for", server
     @_clients[server]

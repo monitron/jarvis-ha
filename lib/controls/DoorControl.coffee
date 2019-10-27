@@ -13,6 +13,11 @@ module.exports = class DoorControl extends Control
         target = control.getConnectionTarget('lock')
         target.getAspect('lock').executeCommand 'lock'
       wouldHaveEffect: (params, state) -> state.locked != true
+    actuate:
+      execute: (control, params) ->
+        target = control.getConnectionTarget('oneShotActuator')
+        target.getAspect('oneShotActuator').executeCommand 'actuate'
+      wouldHaveEffect: -> true
 
   _isActive: ->
     sensor = @getConnectionTarget('openCloseSensor')
@@ -29,8 +34,10 @@ module.exports = class DoorControl extends Control
   _getState: ->
     sensor = @getConnectionTarget('openCloseSensor')
     lock = @getConnectionTarget('lock')
+    actuator = @getConnectionTarget('oneShotActuator')
     hasSensor: sensor?.hasAspect('openCloseSensor')
     hasLock: lock?.hasAspect('lock')
+    hasActuator: actuator?.hasAspect('oneShotActuator')
     open: sensor?.getAspect('openCloseSensor').getDatum('state')
     locked: lock?.getAspect('lock').getDatum('state')
 
