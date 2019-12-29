@@ -10,3 +10,4 @@ module.exports =
   media: require('./media/MediaCapability')
   people: require('./people/PeopleCapability')
   vehicles: require('./vehicles/VehiclesCapability')
+  doorbell: require('./doorbell/DoorbellCapability')

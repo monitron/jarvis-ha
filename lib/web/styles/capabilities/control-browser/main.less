@@ -60,66 +60,9 @@
   }
 
   .control-container {
-    position: relative;
     float: left;
     border-bottom: 1px solid @browser-grid-color;
     border-right: 1px solid @browser-grid-color;
-
-    &.active {
-      background: @lightest-blue;
-    }
-
-    &.busy {
-      cursor: wait;
-      
-      .contents .icons .busy {
-        display: block;
-      }
-    }
-
-    .contents {
-      position: absolute;
-      
-      .name {
-        .unselectable;
-        position: absolute;
-        font-size: 18px;
-        top: 0;
-        left: 0;
-      }
-
-      .icons {
-        position: absolute;
-        top: 0;
-        right: 0;
-
-        > * {
-          float: left;
-          padding: 0 5px;
-        }
-
-        .details {
-          .clickable;
-          color: @blue;
-
-          &:hover {
-            color: @light-blue;
-          }
-        }
-
-        .busy {
-          display: none;
-        }
-      }
-
-      .control-body {
-        position: absolute;
-        top: 30px;
-        bottom: 0;
-        left: 0;
-        right: 0;
-      }
-    }
   }
 
   .scene {
@@ -199,6 +142,66 @@
   }
 }
 
+.control-container {
+  position: relative;
+
+  &.active {
+    background: @lightest-blue;
+  }
+
+  &.busy {
+    cursor: wait;
+    
+    .contents .icons .busy {
+      display: block;
+    }
+  }
+
+  .contents {
+    position: absolute;
+    
+    .name {
+      .unselectable;
+      position: absolute;
+      font-size: 18px;
+      top: 0;
+      left: 0;
+    }
+
+    .icons {
+      position: absolute;
+      top: 0;
+      right: 0;
+
+      > * {
+        float: left;
+        padding: 0 5px;
+      }
+
+      .details {
+        .clickable;
+        color: @blue;
+
+        &:hover {
+          color: @light-blue;
+        }
+      }
+
+      .busy {
+        display: none;
+      }
+    }
+
+    .control-body {
+      position: absolute;
+      top: 30px;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+  }
+}
+
 .dark .control-browser {
   background: #222;
 
@@ -210,29 +213,6 @@
   .sensors {
     color: #999;
   }
-
-  .control-container {
-    border-bottom-color: @dark-browser-grid-color;
-    border-right-color: @dark-browser-grid-color;
-
-    .contents {
-      .name, .icons {
-        color: @dark-mode-text;
-      }
-
-      .icons .details {
-        color: @dark-blue;
-
-        &:hover {
-          color: @blue;
-        }
-      }
-    }
-
-    &.active {
-      background: fadeout(@darkest-blue, 70%);
-    }
-  }
   
   > .body .scenes {
     background: #333;
@@ -241,6 +221,29 @@
 
   .scene:hover {
     color: @light-blue;
+  }
+}
+
+.dark .control-container {
+  border-bottom-color: @dark-browser-grid-color;
+  border-right-color: @dark-browser-grid-color;
+
+  .contents {
+    .name, .icons {
+      color: @dark-mode-text;
+    }
+
+    .icons .details {
+      color: @dark-blue;
+
+      &:hover {
+        color: @blue;
+      }
+    }
+  }
+
+  &.active {
+    background: fadeout(@darkest-blue, 70%);
   }
 }
 

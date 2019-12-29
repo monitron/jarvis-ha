@@ -48,9 +48,9 @@ module.exports = class DoorBirdStationNode extends AdapterNode
         @log 'error', "Monitor #{options.url} failed: #{err}, will retry"
         setTimeout (=> @connectEventStream()),
           @get('eventStreamReconnectInterval') * 1000
-    stream = new stream.PassThrough()
-    @_request.pipe stream
-    stream.on 'data', (data) => @processStreamData(data)
+    estream = new stream.PassThrough()
+    @_request.pipe estream
+    estream.on 'data', (data) => @processStreamData(data)
     @resetStreamDataTimeout()
 
   processStreamData: (data) ->

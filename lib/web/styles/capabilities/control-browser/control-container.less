@@ -1,0 +1,141 @@
+@control-container-header-height: 30px;
+
+.control-container {
+  position: relative;
+
+  &.active {
+    background: @lightest-blue;
+  }
+
+  &.busy {
+    cursor: wait;
+    
+    .contents .icons .busy {
+      display: block;
+    }
+  }
+
+  .contents {
+    position: absolute;
+    
+    .name {
+      .unselectable;
+      position: absolute;
+      font-size: 18px;
+      top: 0;
+      left: 0;
+    }
+
+    .icons {
+      position: absolute;
+      top: 0;
+      right: 0;
+
+      > * {
+        float: left;
+        padding: 0 5px;
+      }
+
+      .details {
+        .clickable;
+        color: @blue;
+
+        &:hover {
+          color: @light-blue;
+        }
+      }
+
+      .busy {
+        display: none;
+      }
+    }
+
+    .control-body {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+  }
+  
+  &.with-header .control-body {
+    top: @control-container-header-height;
+  }
+}
+
+.dark .control-container {
+  border-bottom-color: @dark-browser-grid-color;
+  border-right-color: @dark-browser-grid-color;
+
+  .contents {
+    .name, .icons {
+      color: @dark-mode-text;
+    }
+
+    .icons .details {
+      color: @dark-blue;
+
+      &:hover {
+        color: @blue;
+      }
+    }
+  }
+
+  &.active {
+    background: fadeout(@darkest-blue, 70%);
+  }
+}
+
+.display-desktop .control-container {
+  height: 95px;
+
+  .contents {
+    top: @dt-wide-margin;
+    left: @dt-wide-margin;
+    bottom: @dt-wide-margin;
+    right: @dt-wide-margin;
+
+    .name {
+      font-size: 17px;
+    }
+  }
+
+  &.with-header {
+    height: 100px + @control-container-header-height;
+  }
+}
+
+.display-phone .control-container {
+  height: 80px;
+  
+  .contents {
+    top: @ph-wide-margin;
+    left: @ph-wide-margin;
+    bottom: @ph-wide-margin;
+    right: @ph-wide-margin;
+
+    .name {
+      font-size: 17px;
+    }
+  }
+
+  &.with-header {
+    height: 85px + @control-container-header-height;
+  }
+}
+
+.display-touchscreen .control-container {
+  height: 80px;
+
+  .contents {
+    top: @ts-wide-margin;
+    left: @ts-wide-margin;
+    bottom: @ts-wide-margin;
+    right: @ts-wide-margin;
+  }
+  
+  &.with-header {
+    height: 85px + @control-container-header-height;
+  }
+}
