@@ -43,7 +43,7 @@ module.exports = class DoorBirdStationNode extends AdapterNode
       auth:
         username: @get('username')
         password: @get('password')
-    @_request = request options, (err, res, body) ->
+    @_request = request options, (err, res, body) =>
       if err
         @log 'error', "Monitor #{options.url} failed: #{err}, will retry"
         setTimeout (=> @connectEventStream()),
