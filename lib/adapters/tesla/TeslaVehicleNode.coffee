@@ -15,7 +15,7 @@ module.exports = class TeslaVehicleNode extends AdapterNode
 
   chargingStatusMap:
     'Disconnected': 'disconnected'
-    'Stopped':      'connected'
+    'Stopped':      'stopped'
     'Charging':     'charging'
     'Complete':     'done'
 
