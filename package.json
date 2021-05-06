@@ -39,7 +39,7 @@
     "sqlite3": "^4.0.4",
     "teslajs": "^4.0.0",
     "ubnt-unifi": "^1.0.0",
-    "underscore": "~1.8.3",
+    "underscore": "~1.12.1",
     "unofficial-nest-api": "^0.1.4",
     "uuid": "^3.0.1",
     "websocket": "^1.0.24",
