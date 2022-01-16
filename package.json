@@ -38,7 +38,7 @@
     "socket.io": "^2.1.1",
     "sqlite3": "^4.0.4",
     "teslajs": "^4.0.0",
-    "ubnt-unifi": "^1.0.0",
+    "unifi-events": "^2.0.0",
     "underscore": "~1.8.3",
     "unofficial-nest-api": "^0.1.4",
     "uuid": "^3.0.1",

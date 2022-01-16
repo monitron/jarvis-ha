@@ -1,6 +1,6 @@
 
 Adapter = require('../../Adapter')
-Unifi = require('ubnt-unifi')
+Unifi = require('unifi-events')
 UnifiClientNode = require('./UnifiClientNode')
 _ = require('underscore')
 
@@ -32,6 +32,7 @@ module.exports = class UnifiAdapter extends Adapter
         password: @get('password')
         site: @get('site')
         insecure: true
+        unifios: true
       @_unifi.on 'ctrl.connect', =>
         @log 'verbose', "Connected to #{@get('host')}"
         @setValid true
