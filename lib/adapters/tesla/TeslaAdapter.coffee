@@ -29,7 +29,7 @@ module.exports = class TeslaAdapter extends Adapter
   discoverVehicles: (token) ->
     teslajs.vehicles {authToken: token}, (err, vehicles) =>
       if err?
-        @log 'error', "Couldn't retrieve vehicles for #{account.email} (#{err})"
+        @log 'error', "Couldn't retrieve vehicles (#{err})"
         setTimeout (=> @discoverVehicles(token)), @get('retryInterval')
       else
         for vehicle in vehicles
