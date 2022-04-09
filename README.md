@@ -7,7 +7,7 @@ of interest to anyone else.
 Requirements
 ------------
 
-* Node.js Carbon LTS (I'm using 8.12.0)
+* Node.js Erbium LTS (I'm using 12.22.1)
 
 How to run
 ----------
