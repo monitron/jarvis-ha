@@ -1,5 +1,5 @@
 _ = require('underscore')
-geolib = require('geolib')
+#geolib = require('geolib')
 [Capability] = require('../../Capability')
 [Consumption, Consumptions] = require('../../Consumption')
 
@@ -74,10 +74,10 @@ module.exports = class VehiclesCapability extends Capability
 
   distanceFromHome: (location) ->
     home = @get('home')
-    return null unless location? and location.lat? and home.lat?
-    geolib.getDistance(
-      {latitude: location.lat, longitude: location.lng},
-      {latitude: home.lat, longitude: location.lng})
+    return null #unless location? and location.lat? and home.lat?
+#    geolib.getDistance(
+#      {latitude: location.lat, longitude: location.lng},
+#      {latitude: home.lat, longitude: location.lng})
 
   getResourceConsumption: ->
     consumptions = new Consumptions()

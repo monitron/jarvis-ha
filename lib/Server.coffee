@@ -9,7 +9,6 @@ contractions = require('contractions')
 [Control, Controls] = require('./Control')
 controls = require('./controls')
 WebServer = require('./web')
-Slack = require('./Slack')
 Persistence = require('./Persistence')
 [AdapterNode, AdapterNodes] = require('./AdapterNode')
 [Capability, Capabilities] = require('./Capability')
@@ -80,10 +79,6 @@ module.exports = class Server
 
     # Start a web server
     @web = new WebServer(this, @config.webServer)
-
-    # Start Slack integration if applicable
-    if @config.slack?
-      @slack = new Slack(this, @config.slack)
 
   log: (level, message) ->
     winston.log level, "#{message}"
