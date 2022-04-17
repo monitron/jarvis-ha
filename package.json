@@ -29,7 +29,7 @@
     "longjohn": "^0.2.11",
     "lutron-leap": "^3.0.3",
     "mdns-js": "^0.5.3",
-    "moment": "^2.13.0",
+    "moment": "^2.29.2",
     "node-hue-api": "^2.4.5",
     "pigpio-client": "^1.1.0",
     "ping": "^0.1.10",
