@@ -27,6 +27,7 @@
     "jquery": "^3.3.1",
     "js-yaml": "^3.2.3",
     "longjohn": "^0.2.11",
+    "lutron-leap": "^3.0.3",
     "mdns-js": "^0.5.3",
     "moment": "^2.13.0",
     "node-hue-api": "^2.4.5",
