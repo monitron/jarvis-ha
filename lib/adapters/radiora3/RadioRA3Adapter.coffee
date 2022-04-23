@@ -11,7 +11,8 @@ module.exports = class RadioRA3Adapter extends Adapter
   name: 'RadioRA3'
 
   # Required: host, ca, certificate, private-key
-  defaults: {}
+  defaults:
+    pingInterval: 60 # seconds
 
   initialize: ->
     super
@@ -21,7 +22,10 @@ module.exports = class RadioRA3Adapter extends Adapter
     @log 'verbose', 'Connecting to LEAP host'
     @_api = new leap.LeapClient(@get('host'), leap.LEAP_PORT, @get('ca'),
       @get('private-key'), @get('certificate'))
+    @_api.on 'disconnected', =>
+      @log 'warn', 'Disconnected from processor. We should probably do something about this.'
     @_api.connect().then =>
+      setInterval (=> @_ping()), @get('pingInterval') * 1000
       @_loadAreas()
       @_api.subscribe "/zone/status", (r) => @_processMultiZoneStatus(r)
 
@@ -46,7 +50,6 @@ module.exports = class RadioRA3Adapter extends Adapter
   _loadZonesForArea: (areaUri) ->
     p = @_api.request "ReadRequest", "#{areaUri}/associatedzone"
     p.then (result) =>
-      @log 'verbose', JSON.stringify(result)
       if result.Header.StatusCode.code == 200
         for zone in result.Body.Zones
           id = @_hrefToId(zone.href)
@@ -57,8 +60,17 @@ module.exports = class RadioRA3Adapter extends Adapter
               "type #{zone.ControlType}"
             newNode = new klass({id: id}, {adapter: this})
             @children.add newNode
+            @_loadZoneStatus(id)
           else
             @log 'warn', "Ignoring node #{id} - no match for control type #{zone.ControlType}"
+  
+  _loadZoneStatus: (zoneid) ->
+    @log 'verbose', "Requesting status for zone #{zoneid}"
+    p = @_api.request "ReadRequest", "/zone/#{zoneid}/status"
+    p.then (result) => @children.get(zoneid)?.processData result.Body.ZoneStatus
+  
+  _ping: ->
+    @_api.request "ReadRequest", '/server/1/status/ping'
 
   _processMultiZoneStatus: (message) ->
     for status in message.Body.ZoneStatuses

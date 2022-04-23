@@ -20,8 +20,5 @@ module.exports = class RadioRA3DimmerNode extends AdapterNode
         Level: value
 
   processData: (data) ->
-    @log 'verbose', data.Level
-    @log 'verbose', 'before: ' + JSON.stringify(@toJSON())
     @getAspect('brightness').setData state: data.Level
     @getAspect('powerOnOff').setData state: (data.Level != 0)
-    @log 'verbose', 'after: ' + JSON.stringify(@toJSON())
