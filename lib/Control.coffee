@@ -10,6 +10,7 @@ class Control extends Backbone.Model
     connections: {}
     memberships: []
     alternateNames: []
+    dangerous: false
 
   defaultParameters: {}
 
