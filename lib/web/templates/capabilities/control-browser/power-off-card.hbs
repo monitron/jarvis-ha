@@ -3,13 +3,15 @@
 </div>
 {{#each controls}}
 <div class="section control{{#if overflow}} overflow{{/if}}" data-id="{{id}}">
-  {{#if busy}}
-  <div class="busy">
-    <i class="fa fa-refresh fa-spin fa-fw"></i>
-  </div>
-  {{else}}
-  <div class="action off-button">Turn Off</div>
-  {{/if}}
+  {{#unless dangerous}}
+    {{#if busy}}
+    <div class="busy">
+      <i class="fa fa-refresh fa-spin fa-fw"></i>
+    </div>
+    {{else}}
+    <div class="action off-button">Turn Off</div>
+    {{/if}}
+  {{/unless}}
   <div class="name clickable">{{name}} <i class="fa fa-external-link"></i></div>
 </div>
 {{/each}}
