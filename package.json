@@ -20,7 +20,7 @@
     "contractions": "^0.0.7",
     "d3": "^4.4.0",
     "dark-sky": "^1.1.5",
-    "express": "^4.3.2",
+    "express": "^4.17.3",
     "geolib": "^3.0.4",
     "harmonyhubjs-client": "^1.1.8",
     "insteon-api": "^1.0.0",
