@@ -54,7 +54,7 @@
     "coffeeify": "^0.6.0",
     "grunt": "^1.5.2",
     "grunt-browserify": "^5.0.0",
-    "grunt-contrib-handlebars": "^1.0.0",
+    "grunt-contrib-handlebars": "^3.0.0",
     "grunt-contrib-less": "^2.0.0",
     "grunt-contrib-watch": "^1.0.0",
     "vows": "^0.8.3"
