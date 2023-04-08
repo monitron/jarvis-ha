@@ -19,7 +19,7 @@
     "coffeescript": "^1.11.0",
     "contractions": "^0.0.7",
     "d3": "^4.4.0",
-    "dark-sky": "^1.1.5",
+    "dark-sky": "monitron/dark-sky#use-pirate-weather",
     "express": "^4.3.2",
     "geolib": "^3.0.4",
     "harmonyhubjs-client": "^1.1.8",
