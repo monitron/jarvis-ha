@@ -4,7 +4,8 @@ Adapter = require('../../Adapter')
 leap = require('lutron-leap')
 
 DEVICE_CLASSES = [
-  require('./RadioRA3DimmerNode')
+  require('./RadioRA3DimmerNode'),
+  require('./RadioRA3SwitchNode')
 ]
 
 module.exports = class RadioRA3Adapter extends Adapter
