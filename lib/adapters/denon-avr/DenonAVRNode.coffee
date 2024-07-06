@@ -3,7 +3,6 @@
 DenonAVRAPI = require('./DenonAVRAPI')
 
 # Currently only supports the main zone
-# Conspicuously missing any concept of sources
 
 module.exports = class DenonAVRNode extends AdapterNode
   aspects:
@@ -23,6 +22,11 @@ module.exports = class DenonAVRNode extends AdapterNode
         set: (node, value) ->
           node.setMute(value).then ->
             node.getAspect('mute').setData state: value
+    mediaSource:
+      commands:
+        set: (node, value) ->
+          node.setInput(value).then ->
+            node.getAspect('mediaSource').setData state: value
 
   initialize: ->
     super
@@ -47,6 +51,9 @@ module.exports = class DenonAVRNode extends AdapterNode
   setVolume: (vol) ->
     @_api.sendCommand 'MV', @_api.percentageVolumeToCommand(vol)
 
+  setInput: (input) ->
+    @_api.sendCommand 'SI', input
+
   # Calculates what the observed volume will actually be after roundtrip
   nearestSettableVolume: (v) ->
     @_api.statusVolumeToPercentage(@_api.scalePercentageVolume(v) - 80)
@@ -59,3 +66,4 @@ module.exports = class DenonAVRNode extends AdapterNode
     @getAspect('volume').setData
       state: @_api.statusVolumeToPercentage(data.MasterVolume[0].value[0])
     @getAspect('mute').setData state: (data.Mute[0].value[0] == 'on')
+    @getAspect('mediaSource').setData state: data.InputFuncSelect[0].value[0]
