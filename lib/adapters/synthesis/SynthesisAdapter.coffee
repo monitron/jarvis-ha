@@ -3,7 +3,8 @@ Adapter = require('../../Adapter')
 
 SYNTHESIS_NODE_CLASSES = [
   require('./OccupancyNode'),
-  require('./OccupantsNode')
+  require('./OccupantsNode'),
+  require('./PowerOnOffNode'),
 ]
 
 module.exports = class SynthesisAdapter extends Adapter
