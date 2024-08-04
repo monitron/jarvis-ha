@@ -24,6 +24,7 @@ module.exports = class ESPHomeDeviceNode extends AdapterNode
       @log 'verbose', "Found entity '#{entity.name}' type #{entity.type}"
       deviceClass = _.find ENTITY_CLASSES, (klass) -> klass.prototype.entityType == entity.type
       if deviceClass
+        @children.remove entity.name # In case we're replacing a defunct one during a reconnect
         @children.add new deviceClass({id: entity.name, entity: entity}, {adapter: this})
       else
         @log 'verbose', "No entity node available for type #{entity.type}"
