@@ -14,8 +14,14 @@ module.exports = class MediaControl extends Control
       wouldHaveEffect: (params, state) -> state.power != true
     setSource:
       execute: (control, params) ->
-        target = control.getConnectionTarget('mediaSource')
-        target.getAspect('mediaSource').executeCommand 'set', params.value
+        powerTarget = control.getConnectionTarget('powerOnOff')
+        sourceTarget = control.getConnectionTarget('mediaSource')
+        if powerTarget?
+          # Repetitive...but I can deal with this until I have "await"
+          powerTarget.getAspect('powerOnOff').executeCommand('set', true).then =>
+            sourceTarget.getAspect('mediaSource').executeCommand 'set', params.value
+        else
+          sourceTarget.getAspect('mediaSource').executeCommand 'set', params.value
       wouldHaveEffect: (params, state) -> state.source != params.value
 
   _isActive: ->
