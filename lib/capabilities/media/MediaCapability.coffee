@@ -35,7 +35,8 @@ module.exports = class MediaCapability extends Capability
       zone = capability.zones.get(params.zone)
       if !zone? or !zone.isValid()
         return Q.fcall(-> throw new Error("Missing or invalid zone"))
-      zone.setBasic('mediaSource', params.source)
+      zone.powerOn().then =>
+        zone.setBasic('mediaSource', params.source)
 
     sourcePlay: (capability, params) ->
       zone = capability.zones.get(params.zone)

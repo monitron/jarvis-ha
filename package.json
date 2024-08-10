@@ -28,6 +28,7 @@
     "jquery": "^3.6.0",
     "js-yaml": "^3.14.1",
     "lgtv-ip-control": "^4.2.0",
+    "lgtv-ip-control-cli": "^4.2.0",
     "longjohn": "^0.2.11",
     "lutron-leap": "^3.0.4",
     "mdns-js": "^0.5.3",

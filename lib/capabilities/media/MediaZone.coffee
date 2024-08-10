@@ -1,10 +1,12 @@
 _ = require('underscore')
+Q = require('q')
 Backbone = require('backbone')
 
 class MediaZone extends Backbone.Model
   defaults:
     connections: []
     sources: []
+    powerOnDelay: 0
 
   initialize: (attrs, options) ->
     @_parent = @collection.parent
@@ -55,6 +57,20 @@ class MediaZone extends Backbone.Model
 
   setBasic: (aspectName, newState) ->
     @getConnectionAspect(aspectName).executeCommand('set', newState)
+
+  powerOn: ->
+    deferred = Q.defer()
+    powerOnOff = @getConnectionAspect('powerOnOff')
+    if !powerOnOff?
+      deferred.resolve
+    else
+      # Send power on command either way, but if we thought it was already on,
+      # don't bother waiting out the delay before sending further commands
+      delayTime = if powerOnOff.getDatum('state') then 0 else @get('powerOnDelay')
+      @setBasic('powerOnOff', true)
+        .fail (err) => deferred.reject(err)
+        .then => setTimeout((=> deferred.resolve()), delayTime)
+    deferred.promise
 
   sourceCommand: (sourceId, command) ->
     @getSourceConnectionAspect(sourceId, 'mediaTransport').

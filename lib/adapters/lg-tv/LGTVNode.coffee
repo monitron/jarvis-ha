@@ -7,18 +7,15 @@ module.exports = class LGTVNode extends AdapterNode
     powerOnOff:
       commands:
         set: (node, value) ->
-          node.setPower(value).then ->
-            node.getAspect('powerOnOff').setData state: value
-
-  initialize: ->
-    super
-    @setValid false
-    @_api = new lgtv.LGTV(@get('host'), @get('mac'), @get('keycode'))
-
+          node.setPower(value)
+  
   setPower: (power) ->
+    tv = new lgtv.LGTV(@get('host'), @get('mac'), @get('keycode'))
     if power
-      @_api.connect().then ->
-        @_api.powerOn().then ->
-          @_api.disconnect()
+      @log 'verbose', "Attempting Wake-on-LAN to power on"
+      tv.powerOn()
     else
-      @_api.powerOff()
+      @log 'verbose', "Attempting power off"
+      tv.connect().then ->
+        tv.powerOff().then ->
+          tv.disconnect()
