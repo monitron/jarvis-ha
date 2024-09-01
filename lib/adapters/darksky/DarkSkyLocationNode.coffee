@@ -47,16 +47,19 @@ module.exports = class DarkSkyLocationNode extends AdapterNode
       .language('en')
       .get()
 
-    promise.then (result) =>
-      @processCurrently result.currently
-      @processDayNight  result
-      @processAlerts    result.alerts
-      @processHourly    result.hourly.data, (hour) =>
-        @isDaylightHour(result.daily.data, hour)
-      @processDaily     result.daily.data
-
-    promise.catch (err) =>
-      @log 'warn', "Quantitative fetch request failed (#{err})"
+    promise.then(
+      (result) =>
+        @processCurrently result.currently
+        @processDayNight  result
+        @processAlerts    result.alerts
+        @processHourly    result.hourly.data, (hour) =>
+          @isDaylightHour(result.daily.data, hour)
+        @processDaily     result.daily.data
+        @setValid true,
+      (err) =>
+        @log 'warn', "Quantitative fetch request failed (#{err})"
+        @setValid false
+    )      
 
     # Also narratives
     promise = @adapter.api
@@ -66,10 +69,14 @@ module.exports = class DarkSkyLocationNode extends AdapterNode
       .language(@get('narrativeLanguage'))
       .get()
 
-    promise.then (result) => @processNarratives result
-
-    promise.catch (err) =>
-      @log 'warn', "Narrative fetch request failed (#{err})"
+    promise.then(
+      (result) =>
+        @processNarratives result
+        @setValid true,
+      (err) =>
+        @log 'warn', "Narrative fetch request failed (#{err})"
+        @setValid false
+    )
 
   processNarratives: (result) ->
     @getAspect('dailyForecastNarrative').setData text: result.daily.summary

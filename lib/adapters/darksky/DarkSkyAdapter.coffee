@@ -4,7 +4,7 @@ Adapter = require('../../Adapter')
 DarkSkyLocationNode = require('./DarkSkyLocationNode')
 
 module.exports = class DarkSkyAdapter extends Adapter
-  name: "Dark Sky"
+  name: "Pirate Weather"
 
   defaults:
     interval: 200 # seconds; defaults to every 3.33 minutes
