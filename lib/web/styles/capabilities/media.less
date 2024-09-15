@@ -28,6 +28,7 @@
 
     .select, .button {
       margin-top: 10px;
+      margin-bottom: 10px;
     }
 
     > div > .label {
@@ -64,20 +65,27 @@
         float: left;
         margin-right: 10px;
       }
+
+      .mute-button {
+        margin-left: 10px;
+        width: 16%;
+        float: right;
+      }
     }
 
-    .volume {
+    .volume .controls {
       overflow: hidden;
-      
-      .button-container {
-        width: 16%;
-        padding-left: 10px;
-        float: right;
+      display: flex;
+      flex-direction: row;
+
+      .button {
+        flex: 0 0 14%;
+        min-width: 70px;
       }
       
       .control {
-        width: 84%;
-        float: left;
+        flex: 0 1 100%;
+        margin: 0 10px;
       }
     }
   }

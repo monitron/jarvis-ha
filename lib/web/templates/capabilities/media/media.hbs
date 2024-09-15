@@ -8,6 +8,15 @@
     <div class="button off-button{{#if isOff}} disabled{{/if}}">
       <i class="fa fa-power-off"></i> Off
     </div>
+    {{#if hasVolumeControls}}
+    <div class="button mute-button{{#if isOff}} disabled{{/if}}">
+      {{#if isMuted}}
+      <i class="fa fa-volume-up"></i>
+      {{else}}
+      <i class="fa fa-volume-off"></i>
+      {{/if}}
+    </div>
+    {{/if}}
     <div class="select">
       {{#if sourceName}}
       {{sourceName}}
@@ -22,16 +31,13 @@
   <div class="volume">
     <div class="label">Volume</div>
     <div class="controls">
-      <div class="button-container">
-        <div class="button mute-button{{#if isOff}} disabled{{/if}}">
-          {{#if isMuted}}
-          <i class="fa fa-volume-up"></i>
-          {{else}}
-          <i class="fa fa-volume-off"></i>
-          {{/if}}
-        </div>
+      <div class="button vol-down-button{{#if isOff}} disabled{{/if}}">
+        <i class="fa fa-caret-down"></i>
       </div>
       <div class="control"></div>
+      <div class="button vol-up-button{{#if isOff}} disabled{{/if}}">
+        <i class="fa fa-caret-up"></i>
+      </div>
     </div>
   </div>
   {{/if}}

@@ -31,11 +31,15 @@ module.exports = class DenonAVRNode extends AdapterNode
   initialize: ->
     super
     @setValid false
+    @_skipNextPoll = false
     @_api = new DenonAVRAPI(host: @get('host'))
     @updateStatus()
     setInterval((=> @updateStatus()), @adapter.get('pollInterval') * 1000)
 
   updateStatus: ->
+    if @_skipNextPoll
+      @_skipNextPoll = false
+      return
     @_api.fetchMainZoneStatus()
       .then (data) =>
         @processData data
@@ -46,15 +50,18 @@ module.exports = class DenonAVRNode extends AdapterNode
       .done()
 
   setPower: (power) ->
+    @_skipNextPoll = true
     @_api.sendCommand 'PW', if power then 'ON' else 'STANDBY'
 
   setVolume: (vol) ->
     maxVol = @get("maxVolume")
     if maxVol?
       vol = vol * (maxVol / 100)
+    @_skipNextPoll = true
     @_api.sendCommand 'MV', @_api.percentageVolumeToCommand(vol)
 
   setInput: (input) ->
+    @_skipNextPoll = true
     @_api.sendCommand 'SI', input
 
   # Calculates what the observed volume will actually be after roundtrip
@@ -62,6 +69,7 @@ module.exports = class DenonAVRNode extends AdapterNode
     @_api.statusVolumeToPercentage(@_api.scalePercentageVolume(v) - 80)
 
   setMute: (mute) ->
+    @_skipNextPoll = true
     @_api.sendCommand 'MU', (if mute then 'ON' else 'OFF')
 
   processData: (data) ->

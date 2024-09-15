@@ -16,6 +16,16 @@ module.exports = class MediaCapability extends Capability
         return Q.fcall(-> throw new Error("Missing or invalid zone"))
       volume = Number(params.volume)
       zone.setBasic('volume', volume)
+    
+    setZoneVolumeRelative: (capability, params) ->
+      zone = capability.zones.get(params.zone)
+      if !zone? or !zone.isValid()
+        return Q.fcall(-> throw new Error("Missing or invalid zone"))
+      prevVolume = zone.summarizeBasics().volume
+      if !prevVolume?
+        return Q.fcall(-> throw new Error("Current volume is unknown"))
+      volumeDelta = Number(params.volumeDelta)
+      zone.setBasic('volume', prevVolume + volumeDelta)
 
     setZonePower: (capability, params) ->
       zone = capability.zones.get(params.zone)
