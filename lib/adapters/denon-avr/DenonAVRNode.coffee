@@ -49,6 +49,9 @@ module.exports = class DenonAVRNode extends AdapterNode
     @_api.sendCommand 'PW', if power then 'ON' else 'STANDBY'
 
   setVolume: (vol) ->
+    maxVol = @get("maxVolume")
+    if maxVol?
+      vol = vol * (maxVol / 100)
     @_api.sendCommand 'MV', @_api.percentageVolumeToCommand(vol)
 
   setInput: (input) ->
@@ -62,8 +65,11 @@ module.exports = class DenonAVRNode extends AdapterNode
     @_api.sendCommand 'MU', (if mute then 'ON' else 'OFF')
 
   processData: (data) ->
+    maxVol = @get("maxVolume")
+    volume = @_api.statusVolumeToPercentage(data.MasterVolume[0].value[0])
+    if maxVol?
+      volume = Math.min(volume * (100 / maxVol), 100)
     @getAspect('powerOnOff').setData state: (data.Power[0].value[0] == 'ON')
-    @getAspect('volume').setData
-      state: @_api.statusVolumeToPercentage(data.MasterVolume[0].value[0])
+    @getAspect('volume').setData state: volume
     @getAspect('mute').setData state: (data.Mute[0].value[0] == 'on')
     @getAspect('mediaSource').setData state: data.InputFuncSelect[0].value[0]
